@@ -8,7 +8,7 @@ time period too.
 
 ## TODO List
 
-* [ ] Chuck out music and music code
+* [x] Chuck out music and music code
 * [ ] Chuck out four colours and adapt code that renders it
 * [ ] Rewrite rendering to use 8x8 sprites
 * [ ] Find & replace out all the invalid instructions
