@@ -10,6 +10,8 @@ time period too.
 
 * [x] Chuck out music and music code
 * [ ] Chuck out four colours and adapt code that renders it
-* [ ] Rewrite rendering to use 8x8 sprites
+  * [x] Bitmaps
+  * [x] Rewrite rendering to use 8x15 tiles
+  * [ ] Sprites
 * [ ] Find & replace out all the invalid instructions
 * [ ] See what we're left with
