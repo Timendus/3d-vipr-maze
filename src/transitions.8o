@@ -10,7 +10,6 @@
   i := long sprites+16+16
   foreground-draw
 
-  play-click
   v1 := 20
   wait
 
@@ -25,7 +24,6 @@
   i := long sprites+16+0
   foreground-draw
 
-  play-click
   v1 := 20
   wait
 
@@ -41,10 +39,8 @@
   column-four
 
   # "Death"
-  play-click
   v1 := 30
   wait
-  play-click
   scroll-up-animation
   v1 := 50
   wait
@@ -54,10 +50,8 @@
   return
 
 : snakeless-death-animation
-  play-click
   v1 := 30
   wait
-  play-click
   v0 := 0
   loop
     scroll-up 1
@@ -121,9 +115,6 @@
   return
 
 : title-screen
-  # Select background music
-  unpack-long im-too-young-to-vipe
-  select-song
   # Render this image
   i := long title-screen+0+0
   jump default-bitmap-wait
@@ -138,12 +129,6 @@
 
 : map-victory-screen
   set-text-invisible
-  # Select background music
-  unpack-long im-too-young-to-vipe
-  select-song
-  # Select immediate sound effect
-  unpack-long victory-1
-  interject-song
   # Render this image
   i := long map-victory+0+0
   # Fall through
@@ -244,12 +229,6 @@
 
 : end-of-game
   set-text-invisible
-  # Select background music
-  unpack-long im-too-young-to-vipe
-  select-song
-  # Select immediate sound effect
-  unpack-long victory-1
-  interject-song
   i := long end-of-game-screen+0+0
   bitmap-to-screen
   loop

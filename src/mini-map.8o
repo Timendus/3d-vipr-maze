@@ -5,7 +5,6 @@
 : mini-map
   wait-key-release
   clear
-  play-click
   render-map
 : mini-map-loop
   render-player
@@ -91,7 +90,6 @@
   return
 
 : exit-from-map
-  play-click
   v0 := OCTO_KEY_1
   if v0 key then jump exit-from-map
   v0 := OCTO_KEY_Q

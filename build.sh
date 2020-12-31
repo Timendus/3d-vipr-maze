@@ -23,8 +23,6 @@ cat screens/screens.txt >> 3dvipermaze.8o
 cat data/pre-xor.8o >> 3dvipermaze.8o
 cat data/binary-tree.8o >> 3dvipermaze.8o
 
-cat data/songs.8o >> 3dvipermaze.8o
-
 # Put program code below 3.5K border
 
 echo >> 3dvipermaze.8o
@@ -40,7 +38,6 @@ cat src/mini-map.8o >> 3dvipermaze.8o
 
 cat src/viper-ai.8o >> 3dvipermaze.8o
 cat src/print-text.8o >> 3dvipermaze.8o
-cat src/music-player.8o >> 3dvipermaze.8o
 
 cat src/key-input.8o >> 3dvipermaze.8o
 cat src/map-triggers.8o >> 3dvipermaze.8o

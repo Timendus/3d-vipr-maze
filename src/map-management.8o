@@ -74,7 +74,6 @@
 #####################
 # Map switching routines
 # `select-map` loads the right map and player position
-# `start-map` starts the matching soundtrack
 
 # Input: Address of map 'unpacked' in v0 and v1
 : select-map
@@ -103,12 +102,4 @@
   v1 := v5
   v2 := 1
   save v2
-  return
-
-# Input: none
-: start-map
-  # Load the map's soundtrack from the meta-data and select it
-  map-metadata-start
-  load v1
-  select-song
   return

@@ -295,15 +295,14 @@
   make-visible
   unpack-long string-button-pressed
   select-text
-  unpack-long victory-2
-  jump interject-song
+  return
 
 : default-finish-behaviour
   map-victory-screen
   map-stats-screen
   unpack-long string-good-luck
   select-text
-  jump start-map
+  return
 
 : default-snake-behaviour
   make-visible
@@ -315,7 +314,7 @@
   v0 += 1
   i := long num-deaths
   save v0
-  jump start-map
+  return
 
 : default-secret-behaviour
   # Don't give away the fact that we hit a secret
@@ -355,9 +354,7 @@
   # Show friendly text
   unpack-long string-coin
   select-text
-  # Play ping
-  unpack-long coin
-  jump interject-song
+  return
 
 : make-visible
   v5 := v0

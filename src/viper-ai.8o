@@ -164,7 +164,6 @@
   save v0
   unpack-long string-snake-got-you
   select-text
-  start-map
   jump mark-screen-dirty
 
 : viper-abs-coords

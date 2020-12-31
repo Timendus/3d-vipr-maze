@@ -10,7 +10,6 @@
 
   # Prepare virtual timers
   viper-delay := 1
-  music-delay := 1
   text-delay := 1
   v0 := 1
   delay := v0
@@ -23,7 +22,6 @@
 
   # Start with training map
   send-player-back-to-start
-  start-map
 
   # Wish them luck!
   unpack-long string-good-luck
@@ -48,10 +46,8 @@
   v0 := delay
   if v0 != 0 then return
   viper-delay -= 1
-  music-delay -= 1
   text-delay -= 1
   if viper-delay == 0 then vipers
-  if music-delay == 0 then play-music
   if text-delay == 0 then show-text
   v0 := 1
   delay := v0
