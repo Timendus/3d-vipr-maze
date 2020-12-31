@@ -129,7 +129,7 @@
   v3 >>= v3
   v3 >>= v3
   map-metadata-start
-  v0 := 4
+  v0 := 2
   i += v0
   i += v3
   load v1

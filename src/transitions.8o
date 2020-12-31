@@ -161,7 +161,7 @@
   v4 := 7
   sprite v3 v4 5
   map-metadata-start
-  v0 := 5
+  v0 := 3
   i += v0
   load v0
   get-number
@@ -174,7 +174,7 @@
   v4 := 19
   sprite v3 v4 5
   map-metadata-start
-  v0 := 4
+  v0 := 2
   i += v0
   load v0
   get-number
@@ -211,8 +211,6 @@
   jump map-stats-wait-key
 : map-stats-next
   map-metadata-start
-  v0 := 2
-  i += v0
   load v1
   v2 := v0
   v2 |= v1
