@@ -151,7 +151,6 @@
   i := long stats-screen+0+0
   bitmap-to-screen
   # Render stats
-  plane 1
   i := long game-stats
   load v2
   v5 := v1 # Save, because get-number messes it up
@@ -202,7 +201,6 @@
   v0 := v2
   get-number
   sprite v3 v4 5
-  plane 3
 : map-stats-wait-key
   wait-key-release
   wait-key-press
@@ -236,14 +234,28 @@
 : bitmap-to-screen
   clear
   v0 := 0
-  v2 := 64
+  v2 := 15
+  v3 := 1
 : bitmap-to-screen-loop
-  v1 := 0
-  sprite v0 v1 0
+  v1 := 1
+  i += v3
+  sprite v0 v1 15
   i += v2
   v1 := 16
-  sprite v0 v1 0
+  sprite v0 v1 15
   i += v2
-  v0 += 16
+  i += v3
+  v0 += 8
+
+  v1 := 1
+  i += v3
+  sprite v0 v1 15
+  i += v2
+  v1 := 16
+  sprite v0 v1 15
+  i += v2
+  i += v3
+  v0 += 8
+
   if v0 != 64 then jump bitmap-to-screen-loop
   return

@@ -42,7 +42,6 @@
   # Else it's blinking, fall through
 
 : blinking-text
-  plane 2
   v2 := 1
   v3 := 15 # X
   v4 := 26 # Y
@@ -52,7 +51,6 @@
   draw-next-char
   v2 += 1
   if v0 != 0 then jump show-text-loop
-  plane 3
   text-delay := 30
   return
 
@@ -63,7 +61,6 @@
   # v0 == current line
   if v0 > v1 then jump text-done # Did we reach the end of the sequence?
 
-  plane 2
   if v0 == 0 begin
     # Is this the first call in the sequence?
     #draw-current-text
@@ -88,7 +85,6 @@
   # Fall through
 
 : text-done
-  plane 3
   text-delay := 60
   return
 
@@ -105,7 +101,6 @@
   if v0 == v1 then return
   if v0 > v1 then return
   # Otherwise, draw the text
-  plane 2
   draw-current-text
   select-next-line
   jump text-done

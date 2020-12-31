@@ -40,12 +40,25 @@
   # Fall through
 
 : render-column
-  v1 := 0
-  sprite v0 v1 0
-  v1 := 64
-  i += v1
+  v2 := 15
+  v3 := 1
+
+  v1 := 1
+  i += v3
+  sprite v0 v1 15
+  i += v2
   v1 := 16
-  sprite v0 v1 0
+  sprite v0 v1 15
+  i += v2
+  i += v3
+  v0 += 8
+
+  v1 := 1
+  i += v3
+  sprite v0 v1 15
+  i += v2
+  v1 := 16
+  sprite v0 v1 15
   return
 
 : foreground

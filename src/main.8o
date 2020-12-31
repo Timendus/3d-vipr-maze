@@ -5,9 +5,6 @@
 # https://github.com/Timendus/3d-viper-maze
 
 : main
-  lores
-  plane 3
-
   # Prepare virtual timers
   viper-delay := 1
   text-delay := 1
