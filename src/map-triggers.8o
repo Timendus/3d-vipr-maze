@@ -296,7 +296,6 @@
   return
 
 : default-finish-behaviour
-  map-victory-screen
   map-stats-screen
   return
 

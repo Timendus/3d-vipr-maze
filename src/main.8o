@@ -10,12 +10,6 @@
   v0 := 1
   delay := v0
 
-  # Welcome the user!
-  credits-screen
-  title-screen
-  clown-screen1
-  clown-screen2
-
   # Start with training map
   send-player-back-to-start
 

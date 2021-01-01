@@ -61,10 +61,5 @@ sed -n 25,73p viper-neck.txt >> screens.txt
 sed -n 73,96p sprites2.txt >> screens.txt
 
 # Bitmaps
-cat map-victory.txt >> screens.txt
-cat title-screen.txt >> screens.txt
 cat stats-screen.txt >> screens.txt
-cat clown.txt >> screens.txt
-cat clown2.txt >> screens.txt
 cat end-of-game-screen.txt >> screens.txt
-cat credits-screen.txt >> screens.txt

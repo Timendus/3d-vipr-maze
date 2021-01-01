@@ -103,36 +103,6 @@
   again
   return
 
-: credits-screen
-  i := long credits-screen+0+0
-  bitmap-to-screen
-  v0 := 100
-  delay := v0
-  loop
-    v0 := delay
-    if v0 != 0 then
-  again
-  return
-
-: title-screen
-  # Render this image
-  i := long title-screen+0+0
-  jump default-bitmap-wait
-
-: clown-screen1
-  i := long clown+0+0
-  jump default-bitmap-wait
-
-: clown-screen2
-  i := long clown2+0+0
-  jump default-bitmap-wait
-
-: map-victory-screen
-  set-text-invisible
-  # Render this image
-  i := long map-victory+0+0
-  # Fall through
-
 : default-bitmap-wait
   bitmap-to-screen
   # And wait for a key press
