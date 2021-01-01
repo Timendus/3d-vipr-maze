@@ -16,9 +16,6 @@ echo >> 3dvipermaze.8o
 
 cat data/top-down-tiles.8o >> 3dvipermaze.8o
 
-cat data/strings.8o >> 3dvipermaze.8o
-cat data/font.8o >> 3dvipermaze.8o
-
 cat screens/screens.txt >> 3dvipermaze.8o
 cat data/pre-xor.8o >> 3dvipermaze.8o
 cat data/binary-tree.8o >> 3dvipermaze.8o
@@ -37,7 +34,6 @@ cat src/render-3d.8o >> 3dvipermaze.8o
 cat src/mini-map.8o >> 3dvipermaze.8o
 
 cat src/viper-ai.8o >> 3dvipermaze.8o
-cat src/print-text.8o >> 3dvipermaze.8o
 
 cat src/key-input.8o >> 3dvipermaze.8o
 cat src/map-triggers.8o >> 3dvipermaze.8o

@@ -135,27 +135,21 @@
 
 : default-bitmap-wait
   bitmap-to-screen
-  # Blink text
-  unpack-long string-press-any-key
-  select-text
-  set-text-visible
   # And wait for a key press
   wait-key-release
   wait-key-press
-  set-text-invisible
   jump wait-key-release
 
 : map-stats-screen
-  set-text-invisible
   # Render background
   i := long stats-screen+0+0
   bitmap-to-screen
   # Render stats
   i := long game-stats
   load v2
-  v5 := v1 # Save, because get-number messes it up
+  v5 := v1 # Old get-number subroutine used to mess up v1, can be refactored away now
   # Coins
-  get-number
+  i := hex v0
   v3 := 36
   v4 := 7
   sprite v3 v4 5
@@ -163,12 +157,12 @@
   v0 := 3
   i += v0
   load v0
-  get-number
+  i := hex v0
   v3 := 43
   sprite v3 v4 5
   # Secrets
   v0 := v2
-  get-number
+  i := hex v0
   v3 := 11
   v4 := 19
   sprite v3 v4 5
@@ -176,7 +170,7 @@
   v0 := 2
   i += v0
   load v0
-  get-number
+  i := hex v0
   v3 := 18
   sprite v3 v4 5
   # Deaths
@@ -186,20 +180,20 @@
   v4 := 1
   i := long bcd-pad
   load v2
-  v5 := v1 # Save, because get-number messes it up
+  v5 := v1 # Old get-number subroutine used to mess up v1, can be refactored away now
   if v0 == 0 then jump map-stats-skip-digit-one
-  get-number
+  i := hex v0
   sprite v3 v4 5
 : map-stats-skip-digit-one
   v3 += 4
   if v1 == 0 then jump map-stats-skip-digit-two
   v0 := v5
-  get-number
+  i := hex v0
   sprite v3 v4 5
 : map-stats-skip-digit-two
   v3 += 4
   v0 := v2
-  get-number
+  i := hex v0
   sprite v3 v4 5
 : map-stats-wait-key
   wait-key-release
@@ -224,7 +218,6 @@
   jump wait-key-release
 
 : end-of-game
-  set-text-invisible
   i := long end-of-game-screen+0+0
   bitmap-to-screen
   loop

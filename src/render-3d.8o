@@ -7,7 +7,6 @@
   column-three
     clock-tick
   foreground
-  redraw-current-text
     clock-tick
   column-one
     clock-tick
@@ -62,7 +61,6 @@
   return
 
 : foreground
-  set-text-visible
   v4 := 1
   foreground-look
   if v0 == 1 then jump foreground-first-place-taken # We can't see through walls
@@ -106,7 +104,7 @@
   return
 
 : foreground-first-place-taken
-  set-text-invisible
+  # This can be refactored away
   return
 
 #####################

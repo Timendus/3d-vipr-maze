@@ -162,8 +162,6 @@
   v0 += 1
   i := long num-deaths
   save v0
-  unpack-long string-snake-got-you
-  select-text
   jump mark-screen-dirty
 
 : viper-abs-coords

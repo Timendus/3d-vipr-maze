@@ -293,15 +293,11 @@
 
 : default-button-behaviour
   make-visible
-  unpack-long string-button-pressed
-  select-text
   return
 
 : default-finish-behaviour
   map-victory-screen
   map-stats-screen
-  unpack-long string-good-luck
-  select-text
   return
 
 : default-snake-behaviour
@@ -351,9 +347,6 @@
   v0 += 1
   i := long coins-collected
   save v0
-  # Show friendly text
-  unpack-long string-coin
-  select-text
   return
 
 : make-visible

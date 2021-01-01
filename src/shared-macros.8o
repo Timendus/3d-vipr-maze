@@ -10,5 +10,4 @@
   v1 := lo
 }
 
-:alias viper-delay vD
-:alias text-delay vE
+:alias viper-delay vE

@@ -7,7 +7,6 @@
 : main
   # Prepare virtual timers
   viper-delay := 1
-  text-delay := 1
   v0 := 1
   delay := v0
 
@@ -19,10 +18,6 @@
 
   # Start with training map
   send-player-back-to-start
-
-  # Wish them luck!
-  unpack-long string-good-luck
-  select-text
 
 : main-redraw
   clear
@@ -43,9 +38,7 @@
   v0 := delay
   if v0 != 0 then return
   viper-delay -= 1
-  text-delay -= 1
   if viper-delay == 0 then vipers
-  if text-delay == 0 then show-text
   v0 := 1
   delay := v0
   return

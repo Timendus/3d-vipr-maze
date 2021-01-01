@@ -14,6 +14,6 @@ time period too.
   * [x] Rewrite rendering to use 8x15 tiles
   * [x] Sprites
   * [ ] Pre-XORed finish
-* [ ] Chuck out font and text routines
+* [x] Chuck out font and text routines
 * [ ] Find & replace out all the invalid instructions
 * [ ] See what we're left with
