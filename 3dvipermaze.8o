@@ -10,10 +10,9 @@
   v1 := lo
 }
 
-:alias viper-delay vD
-:alias text-delay vE
+:alias viper-delay vE
 
-:org 0x1000
+:org 0xB70
 
 #####################
 # Tiles for the mini-map
@@ -141,745 +140,6 @@
   0b00000000
   0b01100000
   0b01100000
-  0b00000000
-#####################
-# String data
-
-:const blinking   0
-:const sequential 1
-
-:stringmode ascii "\0 !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~" {
-  :byte { VALUE }
-}
-:macro part STR {
-  ascii STR 0
-}
-:macro blinking-string STR {
-  :byte blinking
-  ascii STR 0
-}
-:macro sequential-string NUM {
-  :byte sequential
-  :byte { NUM }
-}
-
-: string-none
-  sequential-string 0
-
-: string-press-any-key
-  blinking-string "Press any key!"
-
-: string-good-luck
-  sequential-string 1
-  part "Good luck!"
-
-: string-you-hear-slithering
-  sequential-string 2
-  part "You  hear"
-  part " slithering"
-
-: string-button-pressed
-  sequential-string 3
-  part "The button"
-  part "  made the"
-  part "walls move!"
-
-: string-coin
-  sequential-string 2
-  part "You found"
-  part "   a coin!"
-
-: string-snake-got-you
-  sequential-string 2
-  part "   A viper"
-  part "  got you!"
-#####################
-# Text font data
-
-: font
-
-  # Ascii 32 - 47: special characters
-
-  0
-  0 0 0 0 0 # Placeholder for end of string
-
-  2
-  0 0 0 0 0 # Space
-
-  2
-  0b10000000 # !
-  0b10000000
-  0b10000000
-  0b00000000
-  0b10000000
-
-  4
-  0b10100000 # "
-  0b10100000
-  0b00000000
-  0b00000000
-  0b00000000
-
-  6
-  0b01010000 # #
-  0b11111000
-  0b01010000
-  0b11111000
-  0b01010000
-
-  6
-  0b01111000 # $
-  0b10100000
-  0b01110000
-  0b00101000
-  0b11110000
-
-  4
-  0b10100000 # %
-  0b00100000
-  0b01000000
-  0b10000000
-  0b10100000
-
-  5
-  0b01000000 # &
-  0b10100000
-  0b01000000
-  0b10100000
-  0b01110000
-
-  2
-  0b10000000 # '
-  0b10000000
-  0b00000000
-  0b00000000
-  0b00000000
-
-  3
-  0b01000000 # (
-  0b10000000
-  0b10000000
-  0b10000000
-  0b01000000
-
-  3
-  0b10000000 # )
-  0b01000000
-  0b01000000
-  0b01000000
-  0b10000000
-
-  6
-  0b00100000 # *
-  0b10101000
-  0b01110000
-  0b10101000
-  0b00100000
-
-  4
-  0b00000000 # +
-  0b01000000
-  0b11100000
-  0b01000000
-  0b00000000
-
-  3
-  0b00000000 # ,
-  0b00000000
-  0b00000000
-  0b01000000
-  0b10000000
-
-  4
-  0b00000000 # -
-  0b00000000
-  0b11100000
-  0b00000000
-  0b00000000
-
-  2
-  0b00000000 # .
-  0b00000000
-  0b00000000
-  0b00000000
-  0b10000000
-
-  4
-  0b00100000 # /
-  0b00100000
-  0b01000000
-  0b10000000
-  0b10000000
-
-: font-numbers
-
-  # Ascii 48 - 57: Numbers
-
-  5
-  0b01000000 # 0
-  0b10100000
-  0b10100000
-  0b10100000
-  0b01000000
-
-  4
-  0b01000000 # 1
-  0b11000000
-  0b01000000
-  0b01000000
-  0b11100000
-
-  5
-  0b11000000 # 2
-  0b00100000
-  0b01000000
-  0b10000000
-  0b11100000
-
-  5
-  0b11000000 # 3
-  0b00100000
-  0b01000000
-  0b00100000
-  0b11000000
-
-  5
-  0b10000000 # 4
-  0b10100000
-  0b11100000
-  0b00100000
-  0b00100000
-
-  5
-  0b11100000 # 5
-  0b10000000
-  0b11000000
-  0b00100000
-  0b11000000
-
-  5
-  0b01100000 # 6
-  0b10000000
-  0b11000000
-  0b10100000
-  0b01000000
-
-  5
-  0b11100000 # 7
-  0b00100000
-  0b01000000
-  0b10000000
-  0b10000000
-
-  5
-  0b01000000 # 8
-  0b10100000
-  0b01000000
-  0b10100000
-  0b01000000
-
-  5
-  0b01100000 # 9
-  0b10100000
-  0b01100000
-  0b00100000
-  0b01000000
-
-
-  # Ascii 58 - 64: More special characters
-
-  2
-  0b00000000 # :
-  0b10000000
-  0b00000000
-  0b10000000
-  0b00000000
-
-  3
-  0b00000000 # ;
-  0b01000000
-  0b00000000
-  0b01000000
-  0b10000000
-
-  4
-  0b00100000 # <
-  0b01000000
-  0b10000000
-  0b01000000
-  0b00100000
-
-  4
-  0b00000000 # =
-  0b11100000
-  0b00000000
-  0b11100000
-  0b00000000
-
-  4
-  0b10000000 # >
-  0b01000000
-  0b00100000
-  0b01000000
-  0b10000000
-
-  4
-  0b11000000 # ?
-  0b00100000
-  0b01000000
-  0b00000000
-  0b01000000
-
-  5
-  0b01100000 # @
-  0b10010000
-  0b10110000
-  0b10000000
-  0b01100000
-
-
-  # Ascii 65 - 90: Capital letters
-
-  5
-  0b01100000 # A
-  0b10010000
-  0b11110000
-  0b10010000
-  0b10010000
-
-  5
-  0b11100000 # B
-  0b10010000
-  0b11100000
-  0b10010000
-  0b11100000
-
-  5
-  0b01110000 # C
-  0b10000000
-  0b10000000
-  0b10000000
-  0b01110000
-
-  5
-  0b11100000 # D
-  0b10010000
-  0b10010000
-  0b10010000
-  0b11100000
-
-  4
-  0b11100000 # E
-  0b10000000
-  0b11100000
-  0b10000000
-  0b11100000
-
-  4
-  0b11100000 # F
-  0b10000000
-  0b11000000
-  0b10000000
-  0b10000000
-
-  5
-  0b01110000 # G
-  0b10000000
-  0b10110000
-  0b10010000
-  0b01100000
-
-  5
-  0b10010000 # H
-  0b10010000
-  0b11110000
-  0b10010000
-  0b10010000
-
-  4
-  0b11100000 # I
-  0b01000000
-  0b01000000
-  0b01000000
-  0b11100000
-
-  4
-  0b11100000 # J
-  0b00100000
-  0b00100000
-  0b00100000
-  0b11000000
-
-  5
-  0b10010000 # K
-  0b10100000
-  0b11000000
-  0b10100000
-  0b10010000
-
-  4
-  0b10000000 # L
-  0b10000000
-  0b10000000
-  0b10000000
-  0b11100000
-
-  6
-  0b10001000 # M
-  0b11011000
-  0b10101000
-  0b10001000
-  0b10001000
-
-  5
-  0b10010000 # N
-  0b11010000
-  0b11110000
-  0b10110000
-  0b10010000
-
-  5
-  0b01100000 # O
-  0b10010000
-  0b10010000
-  0b10010000
-  0b01100000
-
-  5
-  0b11100000 # P
-  0b10010000
-  0b11100000
-  0b10000000
-  0b10000000
-
-  5
-  0b01100000 # Q
-  0b10010000
-  0b10010000
-  0b10110000
-  0b01110000
-
-  5
-  0b11100000 # R
-  0b10010000
-  0b11100000
-  0b10010000
-  0b10010000
-
-  5
-  0b01110000 # S
-  0b10000000
-  0b01100000
-  0b00010000
-  0b11100000
-
-  6
-  0b11111000 # T
-  0b00100000
-  0b00100000
-  0b00100000
-  0b00100000
-
-  5
-  0b10010000 # U
-  0b10010000
-  0b10010000
-  0b10010000
-  0b01100000
-
-  5
-  0b10010000 # V
-  0b10010000
-  0b10010000
-  0b01100000
-  0b01100000
-
-  6
-  0b10001000 # W
-  0b10001000
-  0b10101000
-  0b11011000
-  0b10001000
-
-  6
-  0b10001000 # X
-  0b01010000
-  0b00100000
-  0b01010000
-  0b10001000
-
-  6
-  0b10001000 # Y
-  0b01010000
-  0b00100000
-  0b00100000
-  0b00100000
-
-  4
-  0b11100000 # Z
-  0b00100000
-  0b01000000
-  0b10000000
-  0b11100000
-
-
-  # Ascii 91 - 96: Even more special characters
-
-  3
-  0b11000000 # [
-  0b10000000
-  0b10000000
-  0b10000000
-  0b11000000
-
-  4
-  0b10000000 # \
-  0b10000000
-  0b01000000
-  0b00100000
-  0b00100000
-
-  3
-  0b11000000 # ]
-  0b01000000
-  0b01000000
-  0b01000000
-  0b11000000
-
-  4
-  0b01000000 # ^
-  0b10100000
-  0b00000000
-  0b00000000
-  0b00000000
-
-  4
-  0b00000000 # _
-  0b00000000
-  0b00000000
-  0b00000000
-  0b11100000
-
-  3
-  0b10000000 # `
-  0b01000000
-  0b00000000
-  0b00000000
-  0b00000000
-
-
-  # Ascii 97 - 122: Lower case letters
-
-  4
-  0b00000000 # a
-  0b01100000
-  0b10100000
-  0b10100000
-  0b01100000
-
-  4
-  0b10000000 # b
-  0b10000000
-  0b11000000
-  0b10100000
-  0b11000000
-
-  4
-  0b00000000 # c
-  0b01100000
-  0b10000000
-  0b10000000
-  0b01100000
-
-  4
-  0b00100000 # d
-  0b00100000
-  0b01100000
-  0b10100000
-  0b01100000
-
-  4
-  0b00000000 # e
-  0b01000000
-  0b10100000
-  0b11000000
-  0b01100000
-
-  3
-  0b01000000 # f
-  0b10000000
-  0b11000000
-  0b10000000
-  0b10000000
-
-  4
-  0b00000000 # g
-  0b01100000
-  0b10100000
-  0b01100000
-  0b11000000
-
-  4
-  0b10000000 # h
-  0b10000000
-  0b11000000
-  0b10100000
-  0b10100000
-
-  2
-  0b10000000 # i
-  0b00000000
-  0b10000000
-  0b10000000
-  0b10000000
-
-  3
-  0b01000000 # j
-  0b00000000
-  0b01000000
-  0b01000000
-  0b10000000
-
-  4
-  0b10000000 # k
-  0b10000000
-  0b10100000
-  0b11000000
-  0b10100000
-
-  3
-  0b11000000 # l
-  0b01000000
-  0b01000000
-  0b01000000
-  0b01000000
-
-  4
-  0b00000000 # m
-  0b10100000
-  0b11100000
-  0b10100000
-  0b10100000
-
-  4
-  0b00000000 # n
-  0b11000000
-  0b10100000
-  0b10100000
-  0b10100000
-
-  4
-  0b00000000 # o
-  0b01000000
-  0b10100000
-  0b10100000
-  0b01000000
-
-  4
-  0b00000000 # P
-  0b11000000
-  0b10100000
-  0b11000000
-  0b10000000
-
-  4
-  0b00000000 # q
-  0b01100000
-  0b10100000
-  0b01100000
-  0b00100000
-
-  4
-  0b00000000 # r
-  0b10100000
-  0b11000000
-  0b10000000
-  0b10000000
-
-  3
-  0b00000000 # s
-  0b01000000
-  0b10000000
-  0b01000000
-  0b10000000
-
-  3
-  0b10000000 # t
-  0b10000000
-  0b11000000
-  0b10000000
-  0b01000000
-
-  4
-  0b00000000 # u
-  0b10100000
-  0b10100000
-  0b10100000
-  0b01000000
-
-  4
-  0b00000000 # v
-  0b10100000
-  0b10100000
-  0b01000000
-  0b01000000
-
-  4
-  0b00000000 # w
-  0b10100000
-  0b10100000
-  0b11100000
-  0b10100000
-
-  4
-  0b00000000 # x
-  0b10100000
-  0b01000000
-  0b01000000
-  0b10100000
-
-  4
-  0b00000000 # y
-  0b10100000
-  0b10100000
-  0b01000000
-  0b10000000
-
-  3
-  0b00000000 # z
-  0b11000000
-  0b01000000
-  0b10000000
-  0b11000000
-
-  # Ascii 123 - 126: Even more characters
-
-  4
-  0b01100000 # {
-  0b01000000
-  0b10000000
-  0b01000000
-  0b01100000
-
-  2
-  0b10000000 # |
-  0b10000000
-  0b10000000
-  0b10000000
-  0b10000000
-
-  4
-  0b11000000 # }
-  0b01000000
-  0b00100000
-  0b01000000
-  0b11000000
-
-  5
-  0b00000000
-  0b01010000 # ~
-  0b10100000
-  0b00000000
   0b00000000
 
 : hall-0+0+0
@@ -3096,200 +2356,6 @@
 : sprites2+56+24
     0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 
 
-: map-victory+0+0
-    0xff 0xaf 0xad 0xda 0xda 0xdd 0x7f 0xa 
-  
-: map-victory+0+8
-    0x4e 0x6a 0x6a 0xb 0x9f 0xa8 0x10 0x6 
-  
-: map-victory+0+16
-    0x40 0x49 0x18 0x92 0x1 0x44 0x44 0x40 
-  
-: map-victory+0+24
-    0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 
-  
-: map-victory+8+0
-    0xff 0xff 0xae 0xae 0xae 0xce 0xff 0xff 
-  
-: map-victory+8+8
-    0x7b 0xf5 0xf5 0x7b 0xfe 0x20 0x0 0x40 
-  
-: map-victory+8+16
-    0x88 0x28 0x80 0x30 0x0 0x0 0x0 0x0 
-  
-: map-victory+8+24
-    0x0 0x0 0x31 0x1 0x1 0x1 0x3 0x2 
-  
-: map-victory+16+0
-    0xff 0xff 0x5c 0xaa 0xea 0xec 0xff 0xf7 
-  
-: map-victory+16+8
-    0x53 0x57 0x57 0x9b 0xff 0x0 0x0 0x0 
-  
-: map-victory+16+16
-    0x0 0x0 0x0 0x0 0x0 0x7 0x18 0x20 
-  
-: map-victory+16+24
-    0x40 0x80 0xc1 0x2a 0xcc 0x8 0x88 0x50 
-  
-: map-victory+24+0
-    0xff 0xef 0xcd 0xaa 0xa9 0xcc 0xff 0x7e 
-  
-: map-victory+24+8
-    0x7e 0x7d 0xe1 0x40 0xc3 0x3 0x0 0x1 
-  
-: map-victory+24+16
-    0x4 0x4 0x1 0x1e 0xe0 0x0 0x0 0x0 
-  
-: map-victory+24+24
-    0x0 0x70 0x90 0x54 0xb9 0xe4 0x69 0x20 
-  
-: map-victory+32+0
-    0xff 0xff 0xff 0xc3 0x80 0x80 0x81 0x3 
-  
-: map-victory+32+8
-    0x3 0x3 0x1 0x80 0x40 0x20 0x50 0xce 
-  
-: map-victory+32+16
-    0x41 0x60 0xf0 0x1e 0x9 0x6 0x0 0xa 
-  
-: map-victory+32+24
-    0x2 0xa 0x4 0x96 0xe 0xaa 0xe 0x28 
-  
-: map-victory+40+0
-    0xff 0xff 0xff 0xfe 0x31 0x40 0xc0 0xc1 
-  
-: map-victory+40+8
-    0xe2 0xf2 0xfc 0x72 0x1 0x0 0x0 0x1 
-  
-: map-victory+40+16
-    0xe7 0x38 0x70 0x8e 0x7 0x2 0x0 0x0 
-  
-: map-victory+40+24
-    0x24 0x48 0x48 0xfb 0xaa 0xa6 0xaa 0x2 
-  
-: map-victory+48+0
-    0xf8 0xc3 0x7 0x37 0x37 0xf7 0xf0 0x80 
-  
-: map-victory+48+8
-    0x67 0x1f 0xf 0x7 0x1 0x80 0x40 0xe0 
-  
-: map-victory+48+16
-    0x60 0x20 0x40 0x80 0x1 0x3 0x7 0xf 
-  
-: map-victory+48+24
-    0x10 0x30 0xf3 0x77 0x3f 0x33 0x29 0x0 
-  
-: map-victory+56+0
-    0xc 0xe 0x6 0x80 0x80 0x0 0x3c 0x3e 
-  
-: map-victory+56+8
-    0x3e 0x3c 0x3c 0x0 0xf 0x8e 0x4e 0x2e 
-  
-: map-victory+56+16
-    0x2e 0x4e 0x8e 0x84 0x0 0x7e 0x3e 0x3e 
-  
-: map-victory+56+24
-    0x3e 0xe 0xe 0x2e 0xab 0x98 0xbe 0x3c 
-  
-
-: title-screen+0+0
-    0x30 0x70 0x40 0x1f 0x3f 0x3f 0x1f 0x40 
-  
-: title-screen+0+8
-    0x60 0x2f 0x2f 0xf 0xe0 0x40 0x1f 0x3f 
-  
-: title-screen+0+16
-    0x3f 0x1f 0x40 0xef 0xaa 0xbb 0xd6 0x56 
-  
-: title-screen+0+24
-    0x6e 0x7b 0x70 0x20 0x81 0x19 0x7c 0x3c 
-  
-: title-screen+8+0
-    0x1f 0xc0 0x7 0xfb 0xfd 0xfd 0xfd 0x3d 
-  
-: title-screen+8+8
-    0x3d 0xfd 0xfd 0xfd 0x3d 0x3d 0xfd 0xfd 
-  
-: title-screen+8+16
-    0xfd 0xf8 0x0 0x81 0xf7 0x9d 0xaa 0x99 
-  
-: title-screen+8+24
-    0xbc 0xef 0xcf 0xef 0xed 0xc1 0x1 0x0 
-  
-: title-screen+16+0
-    0xff 0x0 0xfe 0xff 0xff 0x7 0x43 0x5d 
-  
-: title-screen+16+8
-    0x1d 0x1 0x21 0x61 0x63 0x7 0xff 0xff 
-  
-: title-screen+16+16
-    0xfe 0x0 0x0 0x67 0xfc 0xad 0x9d 0xb5 
-  
-: title-screen+16+24
-    0xb5 0xe7 0xc2 0x2a 0xce 0xa 0xa 0x2 
-  
-: title-screen+24+0
-    0xff 0xff 0x7f 0xbf 0x9f 0xdf 0xdf 0xc6 
-  
-: title-screen+24+8
-    0xc0 0xcc 0xd0 0xc0 0xdc 0xc4 0x84 0x94 
-  
-: title-screen+24+16
-    0x6 0x3e 0x40 0xf8 0x4f 0xb6 0xb5 0xb5 
-  
-: title-screen+24+24
-    0xb6 0xff 0x80 0x44 0xa9 0xc4 0x69 0x80 
-  
-: title-screen+32+0
-    0xff 0xff 0xff 0xff 0xff 0xff 0xff 0x7 
-  
-: title-screen+32+8
-    0x3 0x3 0x0 0x1 0x2 0x2 0x2 0x2 
-  
-: title-screen+32+16
-    0x4 0xf 0x0 0x7 0xff 0x4d 0x6a 0x59 
-  
-: title-screen+32+24
-    0x4c 0xff 0x0 0x86 0xa 0x8a 0x6 0x0 
-  
-: title-screen+40+0
-    0xff 0xff 0xff 0xff 0xff 0xfe 0xfe 0xfe 
-  
-: title-screen+40+8
-    0xfe 0xfe 0x54 0x84 0x4 0x2 0x2 0x2 
-  
-: title-screen+40+16
-    0x2 0x82 0x7e 0x80 0x7e 0x81 0x80 0x80 
-  
-: title-screen+40+24
-    0xf0 0xce 0x41 0xca 0xea 0xe4 0xe8 0x40 
-  
-: title-screen+48+0
-    0xff 0xff 0xff 0xff 0xff 0x7f 0x7f 0x7d 
-  
-: title-screen+48+8
-    0x78 0x75 0x20 0x10 0x11 0x11 0x20 0x20 
-  
-: title-screen+48+16
-    0x30 0x34 0x21 0x2c 0xa0 0xa0 0x20 0x20 
-  
-: title-screen+48+24
-    0x20 0x60 0xe0 0x21 0x2a 0x33 0x29 0x0 
-  
-: title-screen+56+0
-    0xff 0xff 0xff 0xff 0xff 0xff 0xfc 0x80 
-  
-: title-screen+56+8
-    0x2 0x2a 0x2 0x0 0x51 0x51 0x40 0x0 
-  
-: title-screen+56+16
-    0x2 0x2 0x0 0x1 0x80 0x2 0x2 0x2 
-  
-: title-screen+56+24
-    0x0 0x0 0x2 0x2a 0xaa 0x10 0xa2 0x0 
-  
-
 : stats-screen+0+0
     0xff 0xaf 0xad 0xda 0xda 0xdd 0xff 0xaf 
   
@@ -3387,200 +2453,6 @@
     0xff 0x3 0x9 0x4 0x7e 0x4 0x9 0x3 
   
 
-: clown+0+0
-    0xff 0xff 0x0 0xc 0x7d 0x7d 0xf0 0xf7 
-  
-: clown+0+8
-    0x4 0x37 0x74 0x77 0x34 0x7 0xf7 0xe0 
-  
-: clown+0+16
-    0x1b 0x7b 0xb9 0xc0 0xc0 0x0 0x0 0x0 
-  
-: clown+0+24
-    0x40 0x88 0x28 0x80 0x30 0x0 0x0 0x0 
-  
-: clown+8+0
-    0xff 0xff 0x0 0x79 0xfb 0xfb 0x0 0xff 
-  
-: clown+8+8
-    0x0 0xff 0x0 0xff 0x1 0xff 0xff 0x0 
-  
-: clown+8+16
-    0xdf 0x8e 0x0 0x0 0x0 0x0 0x0 0x0 
-  
-: clown+8+24
-    0x0 0x0 0x1 0x1 0x1 0x1 0x1 0x0 
-  
-: clown+16+0
-    0xff 0xff 0x0 0xe6 0xf7 0xf7 0x1 0xfd 
-  
-: clown+16+8
-    0xfc 0xfd 0x3d 0xfd 0xfd 0xfc 0xfd 0x0 
-  
-: clown+16+16
-    0x7b 0x3b 0x7 0x0 0x0 0x0 0x2 0x0 
-  
-: clown+16+24
-    0x1 0x4 0xc4 0x2a 0xcf 0x8 0x8 0x0 
-  
-: clown+24+0
-    0xff 0xf9 0x17 0x17 0xd5 0xd9 0xff 0xf7 
-  
-: clown+24+8
-    0x1c 0x95 0xd5 0xd5 0x9f 0x1d 0xd9 0xf5 
-  
-: clown+24+16
-    0x35 0xd9 0xbf 0x3d 0x79 0x15 0x15 0x19 
-  
-: clown+24+24
-    0x1f 0x1f 0x3f 0x5f 0xbf 0xdf 0x7f 0x1f 
-  
-: clown+32+0
-    0xff 0xff 0xbb 0x55 0x55 0xbb 0xff 0xed 
-  
-: clown+32+8
-    0xe4 0x6d 0x6d 0x75 0xff 0xff 0x93 0x55 
-  
-: clown+32+16
-    0x55 0x95 0xff 0xff 0x53 0x55 0x55 0x95 
-  
-: clown+32+24
-    0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 
-  
-: clown+40+0
-    0xff 0xd9 0x9d 0x5d 0x5d 0x9d 0xff 0xff 
-  
-: clown+40+8
-    0xec 0x55 0x4e 0x64 0xff 0xff 0x9b 0x55 
-  
-: clown+40+16
-    0x93 0x39 0xff 0xff 0x9b 0x55 0x93 0x39 
-  
-: clown+40+24
-    0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 
-  
-: clown+48+0
-    0xff 0xfe 0x5a 0x56 0x56 0x9a 0xff 0xff 
-  
-: clown+48+8
-    0xdf 0xaf 0x9f 0xcf 0xff 0xff 0x5b 0x35 
-  
-: clown+48+16
-    0x75 0x7b 0xff 0xff 0xb3 0x55 0x55 0xb5 
-  
-: clown+48+24
-    0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 
-  
-: clown+56+0
-    0xff 0xff 0xff 0xbf 0x7f 0xbf 0xff 0xff 
-  
-: clown+56+8
-    0xff 0xff 0xff 0xff 0xff 0xff 0x53 0x57 
-  
-: clown+56+16
-    0x5b 0x93 0xff 0xef 0x2f 0x6f 0xbf 0x2f 
-  
-: clown+56+24
-    0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 
-  
-
-: clown2+0+0
-    0xff 0xff 0x0 0xc 0x7d 0x7d 0xf0 0xf7 
-  
-: clown2+0+8
-    0x4 0x37 0x74 0x77 0x34 0x7 0xf7 0xe0 
-  
-: clown2+0+16
-    0x1b 0x7b 0xb9 0xc0 0xc0 0x0 0x0 0x0 
-  
-: clown2+0+24
-    0x40 0x88 0x28 0x80 0x30 0x0 0x0 0x0 
-  
-: clown2+8+0
-    0xff 0xff 0x0 0x79 0xfb 0xfb 0x0 0xff 
-  
-: clown2+8+8
-    0x0 0xff 0x0 0xff 0x1 0xff 0xff 0x0 
-  
-: clown2+8+16
-    0xdf 0x8e 0x0 0x0 0x0 0x0 0x0 0x0 
-  
-: clown2+8+24
-    0x0 0x0 0x1 0x1 0x1 0x1 0x1 0x0 
-  
-: clown2+16+0
-    0xff 0xff 0x0 0xe6 0xf7 0xf7 0x1 0xfd 
-  
-: clown2+16+8
-    0xfc 0xfd 0x3d 0xfd 0xfd 0xfc 0xfd 0x0 
-  
-: clown2+16+16
-    0x7b 0x3b 0x7 0x0 0x0 0x0 0x2 0x0 
-  
-: clown2+16+24
-    0x1 0x4 0xc4 0x2a 0xcf 0x8 0x8 0x0 
-  
-: clown2+24+0
-    0xff 0xf3 0x15 0x13 0xd7 0xd7 0xff 0xff 
-  
-: clown2+24+8
-    0x15 0x95 0xdb 0xd7 0x9f 0x1b 0xd5 0xf1 
-  
-: clown2+24+16
-    0x35 0xd5 0xbf 0x3f 0x7b 0x15 0x15 0x1b 
-  
-: clown2+24+24
-    0x1f 0x1f 0x3f 0x5f 0xbf 0xdf 0x7f 0x1f 
-  
-: clown2+32+0
-    0xff 0xff 0x5b 0x35 0x73 0x79 0xff 0xff 
-  
-: clown2+32+8
-    0xb5 0x55 0x55 0xb9 0xff 0xfd 0x39 0x55 
-  
-: clown2+32+16
-    0x55 0x59 0xff 0xb5 0x75 0x35 0x75 0x7b 
-  
-: clown2+32+24
-    0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 
-  
-: clown2+40+0
-    0xff 0xff 0x26 0x6f 0xb7 0x26 0xff 0xff 
-  
-: clown2+40+8
-    0x59 0x3a 0x7b 0x7b 0xff 0xbf 0x9d 0xaa 
-  
-: clown2+40+16
-    0xa9 0x9c 0xff 0x13 0xb5 0xb3 0xb7 0x17 
-  
-: clown2+40+24
-    0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 
-  
-: clown2+48+0
-    0xff 0x7b 0x77 0x72 0x76 0x37 0xff 0xff 
-  
-: clown2+48+8
-    0x72 0xaa 0xaa 0xb2 0xff 0xff 0xac 0xaa 
-  
-: clown2+48+16
-    0x8a 0xac 0xff 0x13 0x75 0x33 0x75 0x15 
-  
-: clown2+48+24
-    0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 
-  
-: clown2+56+0
-    0xff 0xff 0x6b 0xa7 0xaf 0x6f 0xff 0xff 
-  
-: clown2+56+8
-    0x7f 0xbf 0x7f 0xdf 0xff 0xff 0xad 0x9a 
-  
-: clown2+56+16
-    0xb9 0xbc 0xff 0x97 0x77 0xb7 0xdf 0x37 
-  
-: clown2+56+24
-    0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 
-  
-
 : end-of-game-screen+0+0
     0xff 0xff 0xee 0xee 0xea 0xea 0xf5 0xff 
   
@@ -3676,103 +2548,6 @@
   
 : end-of-game-screen+56+24
     0x7f 0xff 0xff 0xff 0xff 0xff 0xff 0xff 
-  
-
-: credits-screen+0+0
-    0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 
-  
-: credits-screen+0+8
-    0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 
-  
-: credits-screen+0+16
-    0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 
-  
-: credits-screen+0+24
-    0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 
-  
-: credits-screen+8+0
-    0xff 0xff 0xff 0xff 0xf8 0xfe 0xfe 0xfe 
-  
-: credits-screen+8+8
-    0xfe 0xfe 0xfe 0xff 0xff 0xff 0xff 0xff 
-  
-: credits-screen+8+16
-    0xff 0xff 0xff 0xff 0xff 0xff 0xfc 0xfd 
-  
-: credits-screen+8+24
-    0xfd 0xfc 0xfd 0xfd 0xfd 0xff 0xff 0xff 
-  
-: credits-screen+16+0
-    0xff 0xff 0xff 0xff 0x2f 0x7f 0xe8 0xe8 
-  
-: credits-screen+16+8
-    0xea 0xeb 0xeb 0xff 0xff 0xff 0xff 0xff 
-  
-: credits-screen+16+16
-    0xff 0xff 0xff 0xff 0xff 0xff 0x3f 0x9f 
-  
-: credits-screen+16+24
-    0x91 0x33 0xf7 0xf7 0xf7 0xff 0xff 0xff 
-  
-: credits-screen+24+0
-    0xff 0xff 0xff 0xff 0xff 0xff 0x73 0x2d 
-  
-: credits-screen+24+8
-    0xa1 0xa7 0xb1 0xff 0xff 0xff 0xff 0xff 
-  
-: credits-screen+24+16
-    0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 
-  
-: credits-screen+24+24
-    0x9c 0x6b 0x9 0x3c 0x89 0xff 0xff 0xff 
-  
-: credits-screen+32+0
-    0xff 0xff 0xff 0xff 0xff 0xff 0x1c 0x49 
-  
-: credits-screen+32+8
-    0x69 0x69 0x6c 0xff 0xff 0xff 0xff 0xff 
-  
-: credits-screen+32+16
-    0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 
-  
-: credits-screen+32+24
-    0xcc 0xb5 0x85 0x9d 0xc5 0xff 0xff 0xff 
-  
-: credits-screen+40+0
-    0xff 0xff 0xff 0xff 0x7f 0x7f 0x5b 0x5a 
-  
-: credits-screen+40+8
-    0x5a 0x4b 0x62 0xff 0xff 0xff 0xff 0xff 
-  
-: credits-screen+40+16
-    0xff 0xff 0xff 0xff 0xff 0xff 0xef 0xef 
-  
-: credits-screen+40+24
-    0x66 0x2d 0xac 0xae 0xa4 0xff 0xff 0xff 
-  
-: credits-screen+48+0
-    0xff 0xff 0xff 0xff 0xff 0xff 0x3f 0xff 
-  
-: credits-screen+48+8
-    0x7f 0x3f 0x7f 0xff 0xff 0xff 0xff 0xff 
-  
-: credits-screen+48+16
-    0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 
-  
-: credits-screen+48+24
-    0x7f 0xff 0xff 0x7f 0xff 0xff 0xff 0xff 
-  
-: credits-screen+56+0
-    0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 
-  
-: credits-screen+56+8
-    0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 
-  
-: credits-screen+56+16
-    0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 
-  
-: credits-screen+56+24
-    0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 
   
 #####################
 # Pre-XOR the map finish tunnel
@@ -4042,22 +2817,11 @@
 : main
   # Prepare virtual timers
   viper-delay := 1
-  text-delay := 1
   v0 := 1
   delay := v0
 
-  # Welcome the user!
-  credits-screen
-  title-screen
-  clown-screen1
-  clown-screen2
-
   # Start with training map
   send-player-back-to-start
-
-  # Wish them luck!
-  unpack-long string-good-luck
-  select-text
 
 : main-redraw
   clear
@@ -4078,9 +2842,7 @@
   v0 := delay
   if v0 != 0 then return
   viper-delay -= 1
-  text-delay -= 1
   if viper-delay == 0 then vipers
-  if text-delay == 0 then show-text
   v0 := 1
   delay := v0
   return
@@ -4154,7 +2916,7 @@
   wait
   v0 := 0
   loop
-    scroll-up 1
+    # scroll-up 1   # This needs a better animation now
     v1 := 10
     wait
     v0 += 1
@@ -4170,7 +2932,7 @@
 : scroll-up-animation
   v0 := 0
   loop
-    scroll-up 1
+    # scroll-up 1   # This needs a better animation now
     i := long viper-neck+16+0
     v1 := 16
     v2 := 16
@@ -4180,7 +2942,7 @@
     sprite v1 v2 0
     v1 := 10
     wait
-    scroll-up 1
+    # scroll-up 1   # This needs a better animation now
     i := long viper-neck+16+16
     v1 := 16
     v2 := 16
@@ -4203,59 +2965,23 @@
   again
   return
 
-: credits-screen
-  i := long credits-screen+0+0
-  bitmap-to-screen
-  v0 := 100
-  delay := v0
-  loop
-    v0 := delay
-    if v0 != 0 then
-  again
-  return
-
-: title-screen
-  # Render this image
-  i := long title-screen+0+0
-  jump default-bitmap-wait
-
-: clown-screen1
-  i := long clown+0+0
-  jump default-bitmap-wait
-
-: clown-screen2
-  i := long clown2+0+0
-  jump default-bitmap-wait
-
-: map-victory-screen
-  set-text-invisible
-  # Render this image
-  i := long map-victory+0+0
-  # Fall through
-
 : default-bitmap-wait
   bitmap-to-screen
-  # Blink text
-  unpack-long string-press-any-key
-  select-text
-  set-text-visible
   # And wait for a key press
   wait-key-release
   wait-key-press
-  set-text-invisible
   jump wait-key-release
 
 : map-stats-screen
-  set-text-invisible
   # Render background
   i := long stats-screen+0+0
   bitmap-to-screen
   # Render stats
   i := long game-stats
   load v2
-  v5 := v1 # Save, because get-number messes it up
+  v5 := v1 # Old get-number subroutine used to mess up v1, can be refactored away now
   # Coins
-  get-number
+  i := hex v0
   v3 := 36
   v4 := 7
   sprite v3 v4 5
@@ -4263,12 +2989,12 @@
   v0 := 3
   i += v0
   load v0
-  get-number
+  i := hex v0
   v3 := 43
   sprite v3 v4 5
   # Secrets
   v0 := v2
-  get-number
+  i := hex v0
   v3 := 11
   v4 := 19
   sprite v3 v4 5
@@ -4276,7 +3002,7 @@
   v0 := 2
   i += v0
   load v0
-  get-number
+  i := hex v0
   v3 := 18
   sprite v3 v4 5
   # Deaths
@@ -4286,20 +3012,20 @@
   v4 := 1
   i := long bcd-pad
   load v2
-  v5 := v1 # Save, because get-number messes it up
+  v5 := v1 # Old get-number subroutine used to mess up v1, can be refactored away now
   if v0 == 0 then jump map-stats-skip-digit-one
-  get-number
+  i := hex v0
   sprite v3 v4 5
 : map-stats-skip-digit-one
   v3 += 4
   if v1 == 0 then jump map-stats-skip-digit-two
   v0 := v5
-  get-number
+  i := hex v0
   sprite v3 v4 5
 : map-stats-skip-digit-two
   v3 += 4
   v0 := v2
-  get-number
+  i := hex v0
   sprite v3 v4 5
 : map-stats-wait-key
   wait-key-release
@@ -4324,7 +3050,6 @@
   jump wait-key-release
 
 : end-of-game
-  set-text-invisible
   i := long end-of-game-screen+0+0
   bitmap-to-screen
   loop
@@ -4473,7 +3198,6 @@
   column-three
     clock-tick
   foreground
-  redraw-current-text
     clock-tick
   column-one
     clock-tick
@@ -4528,7 +3252,6 @@
   return
 
 : foreground
-  set-text-visible
   v4 := 1
   foreground-look
   if v0 == 1 then jump foreground-first-place-taken # We can't see through walls
@@ -4564,11 +3287,15 @@
 : foreground-draw
   v0 := 24
   v1 := 16
-  sprite v0 v1 0
+  sprite v0 v1 15
+  i += v1
+  i += v1
+  v0 := 32
+  sprite v0 v1 15
   return
 
 : foreground-first-place-taken
-  set-text-invisible
+  # This can be refactored away
   return
 
 #####################
@@ -4887,8 +3614,6 @@
   v0 += 1
   i := long num-deaths
   save v0
-  unpack-long string-snake-got-you
-  select-text
   jump mark-screen-dirty
 
 : viper-abs-coords
@@ -4909,210 +3634,6 @@
   return
 : viper-ahead-down
   v1 += v4
-  return
-#####################
-# Text rendering routines
-# `show-text` needs to be called again after 'text-delay' timer ticks.
-#
-# I'm not really happy with this code. It has dangerous loads (that don't
-# explicitly reset `i`) and the sequential text stuff is a mess. But time is a
-# limited resource, so we're moving on!
-
-# Input: Address of a string 'unpacked' into v0 and v1
-: select-text
-  i := long current-text
-  save v1
-  v0 := 0
-  i := long current-text-line
-  save v0
-  return
-
-# Input: none
-# Destroys: v0
-: set-text-visible
-  text-delay := 1
-  v0 := 1
-  jump set-text-visibility
-
-# Input: none
-# Destroys: v0
-: set-text-invisible
-  v0 := 0
-: set-text-visibility
-  i := long text-visible
-  save v0
-  return
-
-# Destroys: v0 - v4
-: show-text
-  i := long text-visible
-  load v0
-  if v0 == 0 then return
-  load-current-text
-  load v1
-  if v0 == sequential then jump sequential-text
-  # Else it's blinking, fall through
-
-: blinking-text
-  v2 := 1
-  v3 := 15 # X
-  v4 := 26 # Y
-: show-text-loop
-  load-current-text
-  v1 := v2
-  draw-next-char
-  v2 += 1
-  if v0 != 0 then jump show-text-loop
-  text-delay := 30
-  return
-
-: sequential-text
-  # v1 == max line
-  i := long current-text-line
-  load v0
-  # v0 == current line
-  if v0 > v1 then jump text-done # Did we reach the end of the sequence?
-
-  if v0 == 0 begin
-    # Is this the first call in the sequence?
-    #draw-current-text
-    select-next-line
-    jump text-done
-  end
-  if v0 == v1 begin
-    # Is this the last call in the sequence?
-    select-previous-line
-    draw-current-text
-    select-next-line
-    select-next-line
-    jump text-done
-  end
-
-  # Erase previous line, draw next line
-  select-previous-line
-  draw-current-text
-  select-next-line
-  draw-current-text
-  select-next-line
-  # Fall through
-
-: text-done
-  text-delay := 60
-  return
-
-: redraw-current-text
-  # Is text visible now?
-  i := long text-visible
-  load v0
-  if v0 == 0 then return
-  # Did we reach the end of the sequence?
-  load-current-text
-  load v1
-  i := long current-text-line
-  load v0
-  if v0 == v1 then return
-  if v0 > v1 then return
-  # Otherwise, draw the text
-  draw-current-text
-  select-next-line
-  jump text-done
-
-: draw-current-text
-  v5 := 0
-  v6 := 15 # X
-  v7 := 26 # Y
-: draw-current-text-loop
-  load-current-text-line
-  v1 := v5
-  v3 := v6  # This is :(
-  v4 := v7
-  draw-next-char
-  v6 := v3
-  v5 += 1
-  if v0 == 0 then return
-  jump draw-current-text-loop
-
-# Input:
-#  * i points to string
-#  * v1 points to character in string (index)
-#  * coordinates in v3, v4
-# Output: updates v3 to next position
-# Destroys: v0
-: draw-next-char
-  i += v1
-  load v0
-  if v0 == 0 then return
-  i := long font
-  v0 <<= v0
-  i += v0
-  i += v0
-  i += v0
-  load v0   # WARNING: this affects i in unpredictable ways!
-  sprite v3 v4 5
-  v3 += v0
-  return
-
-# Input: none
-# Output: i points to current text
-# Destroys: v0, v1
-: load-current-text
-  i := long current-text
-  load v1
-  i := load-current-text-smc
-  save v1
-  0xF0 0x00  # i := long ...
-: load-current-text-smc
-  0 0
-  return
-
-# Input: none
-# Output: i points to current text line
-# Destroys: v0 - v4
-: load-current-text-line
-  i := long current-text-line
-  load v0
-  v2 := v0
-  v3 := 0
-  v4 := 2
-  load-current-text
-  i += v4
-: load-current-text-line-loop1
-  if v2 == v3 then return
-: load-current-text-line-loop2
-  load v0   # WARNING: this affects i in unpredictable ways!
-  if v0 != 0 then jump load-current-text-line-loop2
-  v3 += 1
-  jump load-current-text-line-loop1
-
-: select-previous-line
-  i := long current-text-line
-  load v0
-  v0 -= 1
-  i := long current-text-line
-  save v0
-  return
-
-: select-next-line
-  i := long current-text-line
-  load v0
-  v0 += 1
-  i := long current-text-line
-  save v0
-  return
-
-#####################
-# Input: Number 0-9 in v0
-# Output: i points to right sprite
-# Destroys: v1
-: get-number
-  i := long font-numbers
-  v1 := v0
-  v1 += v0
-  v1 += v0
-  v1 <<= v1
-  i += v1
-  v1 := 1
-  i += v1
   return
 #####################
 # Non-blocking key input check
@@ -5562,15 +4083,10 @@
 
 : default-button-behaviour
   make-visible
-  unpack-long string-button-pressed
-  select-text
   return
 
 : default-finish-behaviour
-  map-victory-screen
   map-stats-screen
-  unpack-long string-good-luck
-  select-text
   return
 
 : default-snake-behaviour
@@ -5620,9 +4136,6 @@
   v0 += 1
   i := long coins-collected
   save v0
-  # Show friendly text
-  unpack-long string-coin
-  select-text
   return
 
 : make-visible
@@ -5638,7 +4151,7 @@
   save v0
   return
 
-:org 0x6000
+:org 0x2700
 
 #####################
 # Level definitions

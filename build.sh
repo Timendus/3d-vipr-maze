@@ -11,7 +11,7 @@ cat src/shared-macros.8o > 3dvipermaze.8o
 # all the labels later
 
 echo >> 3dvipermaze.8o
-echo ":org 0xD00" >> 3dvipermaze.8o
+echo ":org 0xB70" >> 3dvipermaze.8o
 echo >> 3dvipermaze.8o
 
 cat data/top-down-tiles.8o >> 3dvipermaze.8o
@@ -43,7 +43,7 @@ cat src/map-triggers.8o >> 3dvipermaze.8o
 # upper memory. Put it after the rest:
 
 echo >> 3dvipermaze.8o
-echo ":org 0x3000" >> 3dvipermaze.8o
+echo ":org 0x2700" >> 3dvipermaze.8o
 echo >> 3dvipermaze.8o
 
 cat data/maps.8o >> 3dvipermaze.8o

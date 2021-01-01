@@ -15,5 +15,10 @@ time period too.
   * [x] Sprites
   * [ ] Pre-XORed finish
 * [x] Chuck out font and text routines
-* [ ] Find & replace out all the invalid instructions
-* [ ] See what we're left with
+* [x] Find & replace out all the invalid instructions
+  * [x] `audio`
+  * [x] `scroll-up`
+  * [x] `plane`
+  * [ ] `i := long NNNN`
+    * [ ] Reduce the program size to fit in ~3.5K bytes
+* [ ] See what we're left with and try to make a game out of it again...
