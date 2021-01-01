@@ -54,7 +54,7 @@
   wait
   v0 := 0
   loop
-    scroll-up 1
+    # scroll-up 1   # This needs a better animation now
     v1 := 10
     wait
     v0 += 1
@@ -70,7 +70,7 @@
 : scroll-up-animation
   v0 := 0
   loop
-    scroll-up 1
+    # scroll-up 1   # This needs a better animation now
     i := long viper-neck+16+0
     v1 := 16
     v2 := 16
@@ -80,7 +80,7 @@
     sprite v1 v2 0
     v1 := 10
     wait
-    scroll-up 1
+    # scroll-up 1   # This needs a better animation now
     i := long viper-neck+16+16
     v1 := 16
     v2 := 16
