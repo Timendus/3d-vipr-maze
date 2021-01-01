@@ -98,7 +98,11 @@
 : foreground-draw
   v0 := 24
   v1 := 16
-  sprite v0 v1 0
+  sprite v0 v1 15
+  i += v1
+  i += v1
+  v0 := 32
+  sprite v0 v1 15
   return
 
 : foreground-first-place-taken

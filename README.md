@@ -12,6 +12,8 @@ time period too.
 * [ ] Chuck out four colours and adapt code that renders it
   * [x] Bitmaps
   * [x] Rewrite rendering to use 8x15 tiles
-  * [ ] Sprites
+  * [x] Sprites
+  * [ ] Pre-XORed finish
+* [ ] Chuck out font and text routines
 * [ ] Find & replace out all the invalid instructions
 * [ ] See what we're left with
