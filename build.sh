@@ -14,10 +14,7 @@ echo >> 3dvipermaze.8o
 echo ":org 0xB70" >> 3dvipermaze.8o
 echo >> 3dvipermaze.8o
 
-cat data/top-down-tiles.8o >> 3dvipermaze.8o
-
 cat screens/screens.txt >> 3dvipermaze.8o
-cat data/pre-xor.8o >> 3dvipermaze.8o
 cat data/binary-tree.8o >> 3dvipermaze.8o
 
 # Put program code below 3.5K border
@@ -27,16 +24,9 @@ echo ":org 0x200" >> 3dvipermaze.8o
 echo >> 3dvipermaze.8o
 
 cat src/main.8o >> 3dvipermaze.8o
-cat src/transitions.8o >> 3dvipermaze.8o
-
 cat src/map-management.8o >> 3dvipermaze.8o
 cat src/render-3d.8o >> 3dvipermaze.8o
-cat src/mini-map.8o >> 3dvipermaze.8o
-
-cat src/viper-ai.8o >> 3dvipermaze.8o
-
 cat src/key-input.8o >> 3dvipermaze.8o
-cat src/map-triggers.8o >> 3dvipermaze.8o
 
 # Map data is an exception, because maps reference map triggers. And the game
 # state references the start map. So these need to be loaded last, but reside in

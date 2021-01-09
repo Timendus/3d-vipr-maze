@@ -53,13 +53,3 @@ sed -n 25,73p wall-5-5-3.txt >> screens.txt
 sed -n 25,73p wall-5-5.txt >> screens.txt
 sed -n 25,73p wall-5-6.txt >> screens.txt
 sed -n 25,73p wall-5-6-3.txt >> screens.txt
-
-# Sprites
-sed -n 1,97p sprites.txt >> screens.txt
-sed -n 25,73p viper4.txt >> screens.txt
-sed -n 25,73p viper-neck.txt >> screens.txt
-sed -n 73,96p sprites2.txt >> screens.txt
-
-# Bitmaps
-cat stats-screen.txt >> screens.txt
-cat end-of-game-screen.txt >> screens.txt

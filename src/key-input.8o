@@ -6,12 +6,6 @@
   i := long player
   load v2
 
-  # Show mini map
-  v0 := OCTO_KEY_1
-  if v0 key then jump mini-map
-  v0 := OCTO_KEY_Q
-  if v0 key then jump mini-map
-
   # Rotation
   v0 := OCTO_KEY_A
   if v0 key then jump rotate-left
@@ -107,38 +101,16 @@
   v0 := v4
   i := long player
   save v1
-  check-triggers
   mark-screen-dirty
   # Fall through
 
 : wait-key-release
   vA := 0
 : wait-key-release-loop
-  clock-tick
   if vA key then jump wait-key-release-loop
   vA += 1
   if vA != 16 then jump wait-key-release-loop
   return
-
-: check-triggers
-  # Did we hit a trigger tile?
-  v0 := 0xF0
-  v3 &= v0
-  if v3 == 0 then return
-  v3 >>= v3
-  v3 >>= v3
-  v3 >>= v3
-  map-metadata-start
-  v0 := 2
-  i += v0
-  i += v3
-  load v1
-  i := check-triggers-smc
-  v2 := 0x10
-  v0 |= v2
-  save v1
-: check-triggers-smc
-  0 0
 
 # Blocking "press any key" routine
 # (does play music though)
@@ -146,7 +118,6 @@
 : wait-key-press
   vA := 0
 : wait-key-press-loop
-  clock-tick
   if vA key then return
   vA += 1
   if vA != 16 then jump wait-key-press-loop
