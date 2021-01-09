@@ -80,12 +80,12 @@ where in memory.
 
 The result wasn't very promising.
 
-| Address space | Size | Contents                    |
-|---------------|------|-----------------------------|
-| $0000 - $0200 |  512 | Interpreter code            |
-| $0200 - $0B70 | 2416 | Game code                   |
-| $0B70 - $2700 | 7056 | Tiles, screens, binary tree |
-| $2700 - $29A8 |  680 | Map data and game state     |
+|  Address space  | Size | Contents                    |
+|-----------------|------|-----------------------------|
+| `$0000 - $0200` |  512 | Interpreter code            |
+| `$0200 - $0B70` | 2416 | Game code                   |
+| `$0B70 - $2700` | 7056 | Tiles, screens, binary tree |
+| `$2700 - $29A8` |  680 | Map data and game state     |
 
 Even without the text and music code, my program code size alone was nearing the
 3.5K limit 😮
@@ -131,8 +131,28 @@ the interactivity, the stuff that makes the game worth playing.
 
 So needless to say, I'm not a happy coder at this point 😂
 
-Maybe I just need to go back to the start, and instead of trying to reduce a
+Maybe I just needed to go back to the start, and instead of trying to reduce a
 complete game with all these bells and whistles, try to get the 3D rendering
 stuff to run on Chip-8 first. And then see what we can add, if anything. That
-may make it more of a "tech demo" than a game though. But I suppose that's fine
+may reduce the whole exercise to a tech demo instead of a game, but that's okay
 too.
+
+So I proceeded to strip everything out except for rendering and player movement.
+After the first rough pass I reduced the code size down to 580 bytes and I left
+in just a single map and the game state, which comes in at 146 bytes. That's
+quite reasonable. But the screen data and the decision tree still accounted for
+almost 6000 bytes. After removing the top and bottom rows from the screen data
+(since we're not rendering those anyway) I ended with 5324 bytes of data.
+
+So where does this leave us?
+
+|  Address space  | Size | Contents                    |
+|-----------------|------|-----------------------------|
+| `$0000 - $0200` |  512 | Interpreter code            |
+| `$0200 - $0444` |  580 | Game code                   |
+| `$0444 - $1910` | 5324 | Tiles, screens, binary tree |
+| `$1910 - $1A56` |  146 | Map data and game state     |
+
+Our memory map should end at the most at `$FFF`, but preferably at `$E90`. So
+we're at least ~2650 bytes over budget. Could we halve the screen data and
+decision tree size to ~2670 bytes? Would that be a reasonable thing to expect?
