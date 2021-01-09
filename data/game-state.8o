@@ -29,12 +29,5 @@
 : current-map
   pointer training1
 
-: current-text
-  0 0
-: text-visible
-  0
-: current-text-line
-  0
-
 : bcd-pad
   0 0 0
