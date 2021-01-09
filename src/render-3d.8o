@@ -36,17 +36,14 @@
   v3 := 1
 
   v1 := 1
-  i += v3
   sprite v0 v1 15
   i += v2
   v1 := 16
   sprite v0 v1 15
   i += v2
-  i += v3
   v0 += 8
 
   v1 := 1
-  i += v3
   sprite v0 v1 15
   i += v2
   v1 := 16

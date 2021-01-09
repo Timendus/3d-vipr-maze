@@ -16,10 +16,10 @@ do
 
       for ((x=0;x<64;x+=8))
       do
-        for ((y=0;y<32;y+=8))
+        for ((y=1;y<31;y+=15))
         do
           # Read in the source file as RGB values, one per line
-          values=`convert "$file" -crop 8x8+$x+$y rgb:- | xxd -ps | tr -d '\n' | fold -w6`
+          values=`convert "$file" -crop 8x15+$x+$y rgb:- | xxd -ps | tr -d '\n' | fold -w6`
 
           # Convert RGB colours to one bit layer
           layer1=()
