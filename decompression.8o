@@ -1,0 +1,110 @@
+
+: scratchpad
+	0 0 0 0  0 0 0 0
+
+: main
+  :monitor scratchpad 8
+	i := test1
+	decompress
+: endless-loop
+  jump endless-loop
+
+: decompress
+	ve := 8
+: decompress-loop
+  vc := v0
+	load v0
+  vf := 0x0F
+  vd := v0
+	vd &= vf
+  vf := 0xF0
+  vb := v0
+  vb &= vf
+  decompress-shift
+  if vb == 0 then jump decompress-repeat
+  # Fall through
+
+: decompress-load
+  v0 := vd
+  v0 -= 1
+  v0 <<= v0
+  v0 <<= v0
+  jump0 decompress-load-bytes
+
+: decompress-load-bytes
+  load v0  jump decompress-next
+  load v1  jump decompress-next
+  load v2  jump decompress-next
+  load v3  jump decompress-next
+  load v4  jump decompress-next
+  load v5  jump decompress-next
+  load v6  jump decompress-next
+  load v7  jump decompress-next
+
+: decompress-repeat
+	v1 := 8
+  v1 -= vd
+  v1 <<= v1
+  load v0
+  vf := v0
+  v0 := v1
+  jump0 decompress-repeat-bytes
+
+: decompress-repeat-bytes
+  v7 := vf  v6 := vf  v5 := vf  v4 := vf
+  v3 := vf  v2 := vf  v1 := vf  v0 := vf
+  jump decompress-next
+
+: decompress-shift
+  v0 := 8
+  v0 -= vd
+  v0 <<= v0
+  jump0 decompress-shift-bytes
+
+: decompress-shift-bytes
+  decompress-shift-one
+  decompress-shift-one
+  decompress-shift-one
+  decompress-shift-one
+  decompress-shift-one
+  decompress-shift-one
+  decompress-shift-one
+  decompress-shift-one
+  return
+
+: decompress-shift-one
+  v7 := v6  v6 := v5  v5 := v4  v4 := v3
+  v3 := v2  v2 := v1  v1 := vc
+  return
+
+: decompress-next
+  ve -= vd
+  if ve != 0 then jump decompress-loop
+: decompress-done
+  i := scratchpad
+  save v7
+  return
+
+: test1
+  # Compression factor: 0%
+  # 0xEE 0xEE 0x01 0x02 0x03 0xAA 0xAA 0xAA
+  0x03 0xAA
+  0x13 0x01 0x02 0x03
+  0x02 0xEE
+
+: test2
+  # Compression factor: 75%
+  # 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff
+	0x08 0xff
+
+: test3
+  # Compression factor: 12,5%
+  # 0x00 0x00 0x00 0x00 0x77 0x0A 0x00 0x80
+	0x14 0x77 0x0A 0x00 0x80
+	0x04 0x00
+
+: test4
+  # Compression factor: 25%
+  # 0x40 0x0 0x80 0x0 0x0 0x0 0x0 0x0
+  0x05 0x0
+	0x13 0x40 0x0 0x80
