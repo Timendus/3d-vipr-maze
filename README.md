@@ -192,5 +192,5 @@ one or two levels of depth that we can't see anyway, and drop a lot of bytes.
 
 At this point I had already written a simple run length decoder in Chip-8, so
 the next step was to write an encoder for our compile step and see what
-compression ratio we can get. This would determine which other, more drastic,
+compression ratio we could get. This would determine which other, more drastic,
 measures would have to be taken to get to that working Chip-8 prototype.
