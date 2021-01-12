@@ -6,28 +6,8 @@
 : player-orientation
   0 # orientation
 
-: game-stats
-: coins-collected
-  0
-: num-deaths
-  0
-: secrets-visited
-  0
-
 : dirty
-  0
-
-: current-song
-  0 0
-: music-position
-  0
-: current-song-backup
-  0 0
-: music-position-backup
   0
 
 : current-map
   pointer training1
-
-: bcd-pad
-  0 0 0
