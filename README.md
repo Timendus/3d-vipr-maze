@@ -98,8 +98,8 @@ roughly measure the size of each of my source code files.
 
 Roughly speaking, each line of code in Chip-8 is two bytes, give or take. So my
 script just iterates over all files, throws out comments and empty lines and
-does the remaining line count times two. It's by no means perfect, but it's a
-good enough estimate for now.
+does the remaining line count times two. It's by no means perfect and it seems
+to under-estimate the sizes, but it's a good enough estimate for now.
 
 These were the results:
 
@@ -111,7 +111,6 @@ Rough size estimation:
   372  ./src/map-triggers.8o
   136  ./src/mini-map.8o
   224  ./src/render-3d.8o
-  16   ./src/shared-macros.8o
   348  ./src/transitions.8o
   252  ./src/viper-ai.8o
 ```
@@ -137,6 +136,16 @@ stuff to run on Chip-8 first. And then see what we can add, if anything. That
 may reduce the whole exercise to a tech demo instead of a game, but that's okay
 too.
 
+```
+Rough size estimation:
+  172  ./src/key-input.8o
+   38  ./src/main.8o
+  130  ./src/map-management.8o
+  148  ./src/render-3d.8o
+------------------------------- +
+  488 bytes
+```
+
 So I proceeded to strip everything out except for rendering and player movement.
 After the first rough pass I reduced the code size down to 580 bytes and I left
 in just a single map and the game state, which comes in at 146 bytes. That's
@@ -146,13 +155,42 @@ almost 6000 bytes. After removing the top and bottom rows from the screen data
 
 So where does this leave us?
 
-|  Address space  | Size | Contents                    |
-|-----------------|------|-----------------------------|
-| `$0000 - $0200` |  512 | Interpreter code            |
-| `$0200 - $0444` |  580 | Game code                   |
-| `$0444 - $1910` | 5324 | Tiles, screens, binary tree |
-| `$1910 - $1A56` |  146 | Map data and game state     |
+|  Address space  | Size | Contents                |
+|-----------------|------|-------------------------|
+| `$0000 - $0200` |  512 | Interpreter code        |
+| `$0200 - $0444` |  580 | Game code               |
+| `$0444 - $1910` | 5324 | Screens, binary tree    |
+| `$1910 - $1A56` |  146 | Map data and game state |
 
 Our memory map should end at the most at `$FFF`, but preferably at `$E90`. So
 we're at least ~2650 bytes over budget. Could we halve the screen data and
 decision tree size to ~2670 bytes? Would that be a reasonable thing to expect?
+
+The answer is a solid _maybe_ 😉. Writing a couple more scripts to dissect the
+data segments of our memory map reveals that 90% of it is screen bitmaps:
+
+```
+4920 bytes in screens.txt
+ 404 bytes in binary-tree.8o
+   6 bytes in game-state.8o
+ 128 bytes in maps.8o
+---------------------------- +
+5458 bytes
+```
+
+_(Note for the accurate people among us: I've removed a couple of bytes from the
+game state in between these two tests, which is why this total is 12 bytes short
+of the addition of the two sizes above.)_
+
+This was actually good news for two reasons:
+
+1. We can compress image data, and/or use a smaller portion of the display,
+reducing the resolution and thus the amount of image data.
+2. Having reduced our colour palette (and maybe the resolution too), the amount
+of detail that is visible in the distance is greatly reduced. We can strip out
+one or two levels of depth that we can't see anyway, and drop a lot of bytes.
+
+At this point I had already written a simple run length decoder in Chip-8, so
+the next step was to write an encoder for our compile step and see what
+compression ratio we can get. This would determine which other, more drastic,
+measures would have to be taken to get to that working Chip-8 prototype.
