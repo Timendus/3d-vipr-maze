@@ -4,6 +4,7 @@ cd screens
 ./convert.sh
 ./combine.sh
 cd ..
+./scripts/compress.js screens/screens.txt screens/compressed-screens.txt
 
 cat src/shared-macros.8o > 3dvipermaze.8o
 
@@ -14,7 +15,7 @@ echo >> 3dvipermaze.8o
 echo ":org 0xB70" >> 3dvipermaze.8o
 echo >> 3dvipermaze.8o
 
-cat screens/screens.txt >> 3dvipermaze.8o
+cat screens/compressed-screens.txt >> 3dvipermaze.8o
 cat data/binary-tree.8o >> 3dvipermaze.8o
 
 # Put program code below 3.5K border
