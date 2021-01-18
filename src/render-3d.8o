@@ -10,28 +10,33 @@
 : column-one
   i := long nodes-column-one
   find-sprite
+  decompress
   v0 := 0
   jump render-column
 
 : column-two
   i := long nodes-column-two
   find-sprite
+  decompress
   v0 := 16
   jump render-column
 
 : column-three
   i := long nodes-column-three
   find-sprite
+  decompress
   v0 := 32
   jump render-column
 
 : column-four
   i := long nodes-column-four
   find-sprite
+  decompress
   v0 := 48
   # Fall through
 
 : render-column
+  i := decompression-buffer
   v2 := 15
   v3 := 1
 
@@ -89,12 +94,6 @@
     i += v0
     load v1
     # We now have the address of the leaf image in v0 and v1
-    # Use self-modifying code trick to (long) load this address in `i`:
-    i := find-sprite-smc
-    save v1
-    0xF0 0x00 # i := long ...
-: find-sprite-smc
-    0 0
     return
   else
     # Next is a node, load it and restart

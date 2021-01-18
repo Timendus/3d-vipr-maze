@@ -28,6 +28,7 @@ cat src/main.8o >> 3dvipermaze.8o
 cat src/map-management.8o >> 3dvipermaze.8o
 cat src/render-3d.8o >> 3dvipermaze.8o
 cat src/key-input.8o >> 3dvipermaze.8o
+cat src/decompression.8o >> 3dvipermaze.8o
 
 # Map data is an exception, because maps reference map triggers. And the game
 # state references the start map. So these need to be loaded last, but reside in

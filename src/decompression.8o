@@ -128,7 +128,7 @@
 # Otherwise, re-unpack source pointer to v0 and v1 and restart
 
 : decompress-done
-  if target-counter == 15 then return
+  if target-counter == 60 then return
   i := decompression-source
   load v1
   jump decompress-loop
