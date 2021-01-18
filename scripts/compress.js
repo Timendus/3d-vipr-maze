@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+const MAX_RL_SIZE = 12;
+
 const source = process.argv[2];
 const target = process.argv[3];
 
@@ -56,26 +58,42 @@ function runlengths(segments) {
   for ( const segment of segments ) {
     if ( segment[0] == 1 ) {
       // Combine single elements to an array
-      if ( !runlengths[j] ) runlengths[j] = [ 0 ];
+      if ( !runlengths[j] )
+        runlengths[j] = [ 0 ];
+      if ( runlengths[j].length > MAX_RL_SIZE )
+        runlengths[++j] = [ 0 ];
+
       runlengths[j].push(segment[1]);
     } else if ( segment[0] == 2 ) {
       // We don't separate pairs, because they are more likely to cost us space
       // than save it.
-      if ( !runlengths[j] ) runlengths[j] = [ 0 ];
+      if ( !runlengths[j] )
+        runlengths[j] = [ 0 ];
+      if ( runlengths[j].length > MAX_RL_SIZE - 1 )
+        runlengths[++j] = [ 0 ];
+
       runlengths[j].push(segment[1]);
       runlengths[j].push(segment[1]);
     } else {
       // Longer runs will be encoded
       if ( runlengths[j] ) j++;
-      runlengths[j] = segment;
-      j++;
+      let count = segment[0];
+      while ( count > MAX_RL_SIZE ) {
+        runlengths[j++] = [MAX_RL_SIZE, segment[1]];
+        count -= MAX_RL_SIZE;
+      }
+      runlengths[j++] = [count, segment[1]];
     }
   }
 
   for ( let i = 0; i < runlengths.length; i++ ) {
-    // Replace zeros with the actual length and a one in the first nibble
+    const length = runlengths[i][0] || (runlengths[i].length - 1);
+    // Warn if we exceed the max run length (which should obviously never happen)
+    if ( length > MAX_RL_SIZE )
+      console.log(`ERROR: Found run that's longer than decompression can handle: ${length}`);
+    // Replace zeros with the actual length and a one in the MSB
     if ( runlengths[i][0] == 0 )
-      runlengths[i][0] = (runlengths[i].length - 1) | 0x10;
+      runlengths[i][0] = length | 0x80;
     // Convert run lengths to hex
     runlengths[i][0] = '0x' + runlengths[i][0].toString(16);
   }
