@@ -12,6 +12,7 @@ console.log(`Compressing ${source} to ${target}...`);
 
 const fs = require('fs');
 const byteExpr = /0x[0-9a-fA-F]{1,2}/g;
+const linesSeen = [];
 let compressed = 0;
 let uncompressed = 0;
 let output = '';
@@ -22,6 +23,10 @@ const input = fs.readFileSync(source)
 
 for(let line of input) {
   if ( line.match(byteExpr) ) {
+    if ( linesSeen.includes(line) )
+      console.log("Duplicate data found!");
+    else
+      linesSeen.push(line);
     uncompressed += countBytes(line);
     line = compress(line);
     compressed += countBytes(line);
