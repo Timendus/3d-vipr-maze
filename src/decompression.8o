@@ -3,6 +3,7 @@
 # Input: start of compressed data unpacked in v0 and v1
 # Output: 60 uncompressed bytes in decompression-buffer
 # Destroys: absolutely everything 😂
+# Size: 326 bytes including buffers
 
 : decompress
   :alias num-bytes      vC
