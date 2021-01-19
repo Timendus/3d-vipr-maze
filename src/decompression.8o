@@ -1,15 +1,3 @@
-
-: decompression-buffer
-	0 0 0 0 0 0 0 0 0 0
-  0 0 0 0 0 0 0 0 0 0
-  0 0 0 0 0 0 0 0 0 0
-  0 0 0 0 0 0 0 0 0 0
-  0 0 0 0 0 0 0 0 0 0
-  0 0 0 0 0 0 0 0 0 0
-
-: decompression-source
-  0 0
-
 #####################
 # Decompress some data to the decompression buffer
 # Input: start of compressed data unpacked in v0 and v1
@@ -17,8 +5,6 @@
 # Destroys: absolutely everything 😂
 
 : decompress
-  :monitor decompression-buffer 60
-  :monitor decompression-source 2
   :alias num-bytes      vC
   :alias source-counter vD
   :alias target-counter vE
@@ -132,3 +118,15 @@
   i := decompression-source
   load v1
   jump decompress-loop
+
+
+: decompression-buffer
+	0 0 0 0 0 0 0 0 0 0
+  0 0 0 0 0 0 0 0 0 0
+  0 0 0 0 0 0 0 0 0 0
+  0 0 0 0 0 0 0 0 0 0
+  0 0 0 0 0 0 0 0 0 0
+  0 0 0 0 0 0 0 0 0 0
+
+: decompression-source
+  0 0
