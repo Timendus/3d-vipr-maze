@@ -16,6 +16,7 @@ const linesSeen = [];
 let compressed = 0;
 let uncompressed = 0;
 let output = '';
+let lastLabel;
 
 const input = fs.readFileSync(source)
                 .toString()
@@ -24,12 +25,14 @@ const input = fs.readFileSync(source)
 for(let line of input) {
   if ( line.match(byteExpr) ) {
     if ( linesSeen.includes(line) )
-      console.log("Duplicate data found!");
+      console.log(`Duplicate data found at label '${lastLabel}'`);
     else
       linesSeen.push(line);
     uncompressed += countBytes(line);
     line = compress(line);
     compressed += countBytes(line);
+  } else {
+    lastLabel = line;
   }
   output += `${line}\n`;
 }
@@ -61,24 +64,17 @@ function runlengths(segments) {
   let j = 0;
 
   for ( const segment of segments ) {
-    if ( segment[0] == 1 ) {
-      // Combine single elements to an array
+    // Runs of less than four make no sense because it costs three bytes to
+    // interrupt a plain copy run, and each new run makes the decompression
+    // slower. Add segments of less than 4 items to a plain copy.
+    if ( segment[0] < 4 ) {
       if ( !runlengths[j] )
         runlengths[j] = [ 0 ];
-      if ( runlengths[j].length > MAX_RL_SIZE )
+      if ( runlengths[j].length > MAX_RL_SIZE - (segment[0]-1) )
         runlengths[++j] = [ 0 ];
 
-      runlengths[j].push(segment[1]);
-    } else if ( segment[0] == 2 ) {
-      // We don't separate pairs, because they are more likely to cost us space
-      // than save it.
-      if ( !runlengths[j] )
-        runlengths[j] = [ 0 ];
-      if ( runlengths[j].length > MAX_RL_SIZE - 1 )
-        runlengths[++j] = [ 0 ];
-
-      runlengths[j].push(segment[1]);
-      runlengths[j].push(segment[1]);
+      for(let i = segment[0]; i > 0; i--)
+        runlengths[j].push(segment[1]);
     } else {
       // Longer runs will be encoded
       if ( runlengths[j] ) j++;
