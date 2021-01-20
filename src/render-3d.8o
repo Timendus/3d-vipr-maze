@@ -2,10 +2,14 @@
 # Render the map to the screen in pseudo-3D
 # (for the actual gameplay)
 : render-3d
-  column-two
+  column-four
+  column-five
   column-three
+  column-six
+  column-two
+  column-seven
   column-one
-  jump column-four
+  jump column-eight
 
 : column-one
   i := long nodes-column-one
@@ -18,35 +22,54 @@
   i := long nodes-column-two
   find-sprite
   decompress
-  v0 := 16
+  v0 := 8
   jump render-column
 
 : column-three
   i := long nodes-column-three
   find-sprite
   decompress
-  v0 := 32
+  v0 := 16
   jump render-column
 
 : column-four
   i := long nodes-column-four
   find-sprite
   decompress
+  v0 := 24
+  jump render-column
+
+: column-five
+  i := long nodes-column-five
+  find-sprite
+  decompress
+  v0 := 32
+  jump render-column
+
+: column-six
+  i := long nodes-column-six
+  find-sprite
+  decompress
+  v0 := 40
+  jump render-column
+
+: column-seven
+  i := long nodes-column-seven
+  find-sprite
+  decompress
   v0 := 48
+  jump render-column
+
+: column-eight
+  i := long nodes-column-eight
+  find-sprite
+  decompress
+  v0 := 56
   # Fall through
 
 : render-column
   i := decompression-buffer
   v2 := 15
-
-  v1 := 1
-  sprite v0 v1 15
-  i += v2
-  v1 := 16
-  sprite v0 v1 15
-  i += v2
-  v0 += 8
-
   v1 := 1
   sprite v0 v1 15
   i += v2
