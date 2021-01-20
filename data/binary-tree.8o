@@ -268,11 +268,11 @@
   pointer hall-0+16+1     # leaf 0
   pointer hall-3+16+1     # leaf 1
   pointer hall-5+16+1     # leaf 2
-  pointer hall-6+16+1     # leaf 3
+  pointer hall-0+16+1     # leaf 3
   pointer hall-4+16+1     # leaf 4
-  pointer hall-6+16+1     # leaf 5
+  pointer hall-0+16+1     # leaf 5
   pointer hall-5+16+1     # leaf 6
-  pointer hall-6+16+1     # leaf 7
+  pointer hall-0+16+1     # leaf 7
   pointer wall-1+16+1     # leaf 8
   pointer wall-2+16+1     # leaf 9
   pointer wall-3+16+1     # leaf 10
@@ -297,11 +297,11 @@
   pointer hall-0+24+1     # leaf 0
   pointer hall-3+24+1     # leaf 1
   pointer hall-5+24+1     # leaf 2
-  pointer hall-6+24+1     # leaf 3
+  pointer hall-0+24+1     # leaf 3
   pointer hall-4+24+1     # leaf 4
-  pointer hall-6+24+1     # leaf 5
+  pointer hall-0+24+1     # leaf 5
   pointer hall-5+24+1     # leaf 6
-  pointer hall-6+24+1     # leaf 7
+  pointer hall-0+24+1     # leaf 7
   pointer wall-1+24+1     # leaf 8
   pointer wall-2+24+1     # leaf 9
   pointer wall-3+24+1     # leaf 10
@@ -326,11 +326,11 @@
   pointer hall-0+32+1     # leaf 0
   pointer hall-3+32+1     # leaf 1
   pointer hall-5+32+1     # leaf 2
-  pointer hall-6+32+1     # leaf 3
+  pointer hall-0+32+1     # leaf 3
   pointer hall-4+32+1     # leaf 4
-  pointer hall-6+32+1     # leaf 5
+  pointer hall-0+32+1     # leaf 5
   pointer hall-5+32+1     # leaf 6
-  pointer hall-6+32+1     # leaf 7
+  pointer hall-0+32+1     # leaf 7
   pointer wall-1+32+1     # leaf 8
   pointer wall-2+32+1     # leaf 9
   pointer wall-3+32+1     # leaf 10
@@ -355,11 +355,11 @@
   pointer hall-0+40+1     # leaf 0
   pointer hall-3+40+1     # leaf 1
   pointer hall-5+40+1     # leaf 2
-  pointer hall-6+40+1     # leaf 3
+  pointer hall-0+40+1     # leaf 3
   pointer hall-4+40+1     # leaf 4
-  pointer hall-6+40+1     # leaf 5
+  pointer hall-0+40+1     # leaf 5
   pointer hall-5+40+1     # leaf 6
-  pointer hall-6+40+1     # leaf 7
+  pointer hall-0+40+1     # leaf 7
   pointer wall-1+40+1     # leaf 8
   pointer wall-2+40+1     # leaf 9
   pointer wall-3+40+1     # leaf 10
