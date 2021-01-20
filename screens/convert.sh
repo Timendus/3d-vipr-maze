@@ -14,12 +14,12 @@ do
       echo "Converting '$file'..."
       echo "" > "$filename"
 
-      for ((x=0;x<64;x+=16))
+      for ((x=0;x<64;x+=8))
       do
         for ((y=1;y<31;y+=30))
         do
           # Read in the source file as RGB values, one per line
-          values=`convert "$file" -crop 16x30+$x+$y rgb:- | xxd -ps | tr -d '\n' | fold -w6`
+          values=`convert "$file" -crop 8x30+$x+$y rgb:- | xxd -ps | tr -d '\n' | fold -w6`
 
           # Convert RGB colours to one bit layer
           layer1=()
@@ -45,24 +45,10 @@ do
 
           # Fix the order of the bytes so we have left column first, then right
           layer1=`echo $layer1 | fold -w8`
-          left=()
-          right=()
-          col=1
-          for value in $layer1
-          do
-            if [ "$col" == "1" ]; then
-              left+=" $value"
-              col=2
-            else
-              right+=" $value"
-              col=1
-            fi
-          done
-          fixedlayer=("${left[@]}" "${right[@]}")
 
           # Convert to hexadecimal values
           layer1bytes=()
-          for value in ${fixedlayer[@]}
+          for value in $layer1
           do
             layer1bytes+=`printf '0x%x ' "$((2#$value))"`
           done
