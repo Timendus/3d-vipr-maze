@@ -15,6 +15,8 @@ const byteExpr = /0x[0-9a-fA-F]{1,2}/g;
 const linesSeen = [];
 let compressed = 0;
 let uncompressed = 0;
+let numImgs = 0;
+let avgRuns = 0;
 let output = '';
 let lastLabel;
 
@@ -39,9 +41,11 @@ for(let line of input) {
 
 fs.writeFileSync(target, output);
 
-console.log(`Original size:     ${uncompressed} bytes`);
-console.log(`Compressed size:   ${compressed} bytes`);
-console.log(`Compression ratio: ${Math.round((1-compressed/uncompressed)*1000)/10}%`);
+console.log(`Original size:         ${uncompressed} bytes`);
+console.log(`Compressed size:       ${compressed} bytes`);
+console.log(`Compression ratio:     ${Math.round((1-compressed/uncompressed)*1000)/10}%`);
+console.log(`Number of images:      ${numImgs}`);
+console.log(`Average RLs per image: ${avgRuns}`);
 
 function segments(bytes) {
   const segments = [];
@@ -106,6 +110,7 @@ function compress(line) {
   line = line.trim().split(' ');
   const sgmnts = segments(line);
   const rnlngts = runlengths(sgmnts);
+  avgRuns = ( avgRuns * numImgs + rnlngts.length ) / ++numImgs;
   return '  ' + rnlngts.flat().join(' ');
 }
 
