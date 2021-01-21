@@ -1,7 +1,7 @@
 #####################
 # Decompress some data to the decompression buffer
 # Input: start of compressed data unpacked in v0 and v1
-# Output: 60 uncompressed bytes in decompression-buffer
+# Output: 30 uncompressed bytes in decompression-buffer
 # Destroys: absolutely everything 😂
 # Size: 326 bytes including buffers
 
@@ -115,7 +115,7 @@
 # Otherwise, re-unpack source pointer to v0 and v1 and restart
 
 : decompress-done
-  if target-counter == 60 then return
+  if target-counter == 30 then return
   i := decompression-source
   load v1
   jump decompress-loop
@@ -123,9 +123,6 @@
 
 : decompression-buffer
 	0 0 0 0 0 0 0 0 0 0
-  0 0 0 0 0 0 0 0 0 0
-  0 0 0 0 0 0 0 0 0 0
-  0 0 0 0 0 0 0 0 0 0
   0 0 0 0 0 0 0 0 0 0
   0 0 0 0 0 0 0 0 0 0
 
