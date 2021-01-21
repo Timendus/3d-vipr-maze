@@ -149,14 +149,14 @@ we're at least ~2650 bytes over budget. Could we halve the screen data and
 decision tree size to ~2670 bytes? Would that be a reasonable thing to expect?
 
 The answer is a solid _maybe_ 😉. Writing a couple more scripts to dissect the
-data segments of our memory map reveals that 90% of it is screen bitmaps:
+data segments of our memory map revealed that 90% of it was screen bitmaps:
 
 ```
-4920 bytes in screens.txt
- 404 bytes in binary-tree.8o
-   6 bytes in game-state.8o
- 128 bytes in maps.8o
----------------------------- +
+4920 bytes in screens.txt     -  90%
+ 404 bytes in binary-tree.8o  -   7%
+   6 bytes in game-state.8o   -  <1%
+ 128 bytes in maps.8o         -   2%
+----------------------------- +
 5458 bytes
 ```
 
@@ -168,11 +168,240 @@ This was actually good news for two reasons:
 
 1. We can compress image data, and/or use a smaller portion of the display,
 reducing the resolution and thus the amount of image data.
-2. Having reduced our colour palette (and maybe the resolution too), the amount
-of detail that is visible in the distance is greatly reduced. We can strip out
-one or two levels of depth that we can't see anyway, and drop a lot of bytes.
 
-At this point I had already written a simple run length decoder in Chip-8, so
-the next step was to write an encoder for our compile step and see what
-compression ratio we could get. This would determine which other, more drastic,
-measures would have to be taken to get to that working Chip-8 prototype.
+2. Having reduced our colour palette (and maybe the resolution too), the amount
+of detail that is visible in the distance is greatly reduced. We can probably
+strip out one or two levels of depth that we can't see anyway, and drop a lot of
+bytes.
+
+### Squeezing bytes
+
+Alright, so on to that first point. We needed to shave ~2650 bytes off our 4920
+bytes of screen data. That comes down to needing a compression ratio of 46%. If
+we could hit that, we'd have liftoff!
+
+But decompressing image data isn't for free. It takes space in the sense of
+needing to have a decompression algorithm and some data buffer to decompress
+into and it takes a lot of CPU cycles to do the actual decompression. Neither of
+which we have a lot of. So the first challenge is to write a decompression
+algorithm that isn't too depressingly slow and isn't overly huge.
+
+So I started work on a simple run length encoding scheme. Use a bit to encode if
+we're in plain copy or run length mode, use the other seven bits to encode for
+how many bytes that goes, and the byte(s) that follow are the image data.
+
+```
+# Run length mode, eight times 0xff:
+0x08 0xff
+
+# Plain copy mode, for four bytes:
+0x84 0x77 0x0A 0x00 0x80
+```
+
+Worst case scenario this adds one byte per run, best case scenario this reduces
+an entire run to two bytes. And a run can be a maximum of 127 bytes, although we
+will never hit that theoretical maximum. Note that runs of two or three bytes
+will make no sense with this encoding scheme. Replacing two identical bytes with
+one byte indicating a run of two and the next byte indicating what to be
+repeated makes no sense, and has the downside of breaking up the plain copy run.
+So we have to restart that too, taking up one **more** byte than if we just left
+the two bytes in the copy run. For three bytes it doesn't really make any
+difference, more on that later.
+
+So the question then becomes: how many runs, of which types and which lengths do
+we have?
+
+#### Side note
+
+Okay, so a little side-note about writing decompression algorithms for Chip-8 is
+in order, I think. Chip-8 has only one 16-bit index register, so you can only
+point to one place at a time. As you'll understand, this is a problem when
+you're trying to write a subroutine of any kind that can move or manipulate data
+from one place to another.
+
+The general solution to this issue is to "unpack" your addresses in registers
+and then use self-modifying code to load the addresses into the only available
+16-bit register when needed. To make matters more complicated, the first couple
+of registers are at a premium because we can only read from and write to memory
+(including the SMC trick) using the first couple of registers. So all in all,
+just copying one byte from one supplied address to another would look something
+like this madness:
+
+```
+: main
+  # pretend we have this macro: (which adds code too, btw)
+  unpack-to v6, v7, compressed-data
+  unpack-to v8, v9, destination-buffer
+  decompress
+  # End
+
+: decompress
+  v0 := v6
+  v1 := v7
+  v2 := $A0
+  v0 |= v2
+  i := decompress-smc1
+  save v1
+: decompress-smc1
+  0 0
+  load v0
+  v5 := v0
+  v0 := v8
+  v1 := v9
+  v0 |= v2
+  i := decompress-smc2
+  save v1
+: decompress-smc2
+  0 0
+  v0 := v5
+  save v0
+  return
+```
+
+This code hasn't been tested, and it's probably wrong, but you get the idea 😉
+We can't be doing something like this for each and every byte we need to draw to
+the screen, because it would be way too slow.
+
+So I thought to myself: if we decompress as many bytes as we can from a given
+memory location to _registers_ first, we can then write those bytes to the
+destination buffer in one go. This would speed up the decompression step because
+we're not constantly switching between pointers. My first implementation allowed
+for a maximum of 11 bytes to be decompressed before we ran out of registers.
+Also, because the first couple of registers do the heavy lifting, this required
+me to store the compressed data segments in reverse. So not really an optimal
+solution, but the concept was a good start. However, I needed to be able to
+decompress more than 11 bytes.
+
+So I wrote a second implementation, that loads the source address from memory
+using the SMC trick once per "run". It then loads the entire run into registers
+and writes the run back to memory in one go. I was able to save one more
+register, so this means that this time a run can be no longer than 12 bytes. But
+there is no more limit on the length of the entire data segment, so that's a
+bonus.
+
+Another optimisation that I found was to not load the destination address from
+memory, but to use a fixed buffer location, and use a register to point to the
+current byte in that buffer. This limits the length of our decompressed data to
+255 bytes, but that's well within what we need.
+
+These are nice optimisations, but still: decompression and Chip-8 weren't really
+made for each other.
+
+#### Back on track
+
+Alright, so back to that question about what kind of runs we can get, and with
+that: what our compression ratio is going to be.
+
+After writing a compression script that also takes into account the 12 bytes run
+length limit, and only compresses runs of three bytes or more, I ended up with a
+compression ratio of around ~27%. Which is nice, but nowhere near our target of
+46%.
+
+Also, having to decompress our images turns out to be pretty slow. So as a minor
+improvement I opted to compress runs of four bytes or more, to reduce the
+average number of runs per image. This _should_ have no impact on the ratio in
+an ideal world, but because we can only have runs of 12 bytes and the cut-offs
+for the runs fall in different places, in practice it costs us one or two
+percent of compression efficiency.
+
+Alright, so we have 4920 bytes to compress, 25% of that is 1230 bytes. My
+decompression algorithm is 326 bytes including the buffers, so we've just saved
+ourselves ~900 bytes. Saving almost a kilobyte is impressive on this platform,
+but it was nowhere near enough.
+
+But I had a couple of other, compatible ideas to test.
+
+### Those flippin' images
+
+Half of our images is completely redundant. In 99% of cases, the images on the
+left half of the screen are a flipped but otherwise identical version of the
+images on the right. So if I could flip the images on the fly, that would save
+us almost 50%! Talk about impressive compression ratios.
+
+I considered this idea before in my original 3D Viper Maze, but thought it would
+be way too slow in practice. So I opted (as I did in so many places) to
+sacrifice some storage for speed. But now it was time to give it a try, to see
+if we could sacrifice some speed for storage, and be happy with it.
+
+[The algorithm](experiments/flip.8o) to flip the images was a lot easier to
+write than the decompression algorithm, and it required no compression step. So
+at first I thought: why didn't I try this idea first? It's so much simpler, more
+effective and faster to build!
+
+But the answer to that question was that my initial hunch was correct. Flipping
+images is a per-bit operation. Decompressing them is a per-run-of-several-bytes
+operation. On a platform as limited as Chip-8, this really matters:
+
+![Rendering images directly (left) and after flipping (right)](flipping.gif)
+
+_Images on the left are rendered from memory, images on the right are flipped
+first. Running at 30 cycles/frame in Octo._
+
+![Rendering images directly (left) and after decompression (right)](decompressing.gif)
+
+_Images on the left are rendered from memory, images on the right are
+decompressed first. Running at 30 cycles/frame in Octo._
+
+So while a great idea in theory, flipping images on the fly seems like a no-go.
+
+### Duplicates
+
+But there is yet another way to save a lot of bytes in the image data.
+
+As I explained in my [development notes for 3D Viper
+Maze](https://github.com/Timendus/3d-viper-maze#development-notes), I render
+four 16 pixels wide columns for which I determine the right image using a
+decision tree. This way the screen gets composited together with all the right
+parts, and I don't need to have an image in memory for each and every possible
+permutation of the map. As I hinted there, I could have a decision tree for each
+column of 8 pixels instead.
+
+The downside of that is obvious: we have to traverse twice as many decision
+trees to render one screen, which will be more slow. We will also have more data
+in the decision tree. The upside may not be so obvious: having 8 pixel wide
+columns allows for more permutations in the composition step, reducing the
+number of permutations of the images that we need. In many of the 16 pixel wide
+images, either the left or the right side of the image is the same as some other
+image.
+
+So I set out to try this approach. It was quite a lot of work to rewrite the
+image cutting and importing code, update the rendering code and most
+importantly: redo the decision trees to have eight of them and filter out the
+duplicate images. And while I was at it, I removed the images where there's a
+hall to the left or right in the far distance, because the difference of a
+single pixel was pretty much indistinguishable anyway. It was not much fun to
+have to revisit these trees, and it made the game run a lot slower.
+
+But the good news was that the 4920 bytes of uncompressed image data was now
+reduced to only 3000 bytes. The decision tree grew a bit from 404 bytes to 624
+bytes, but this was a net gain of 1700 bytes! Way more impressive than my
+compression algorithms actually. (**TODO**: change to right numbers after more
+pruning).
+
+In fact, this step almost made the compression useless. The compressed size of
+these images is now 2337 bytes, and after subtracting the 296 bytes of the
+decompression algorithm (which shrunk: remember, we dropped 30 bytes of image
+buffer too!) we're left with a net compression gain of just 367 bytes. So much
+work for so little result 🙈😂.
+
+But hey, this is Chip-8: every byte counts!
+
+### Where are we now?
+
+After all this shaving off bytes left and right in the image data and adding
+code, let's take another look at that memory map:
+
+|  Address space  | Size | Contents                |
+|-----------------|------|-------------------------|
+| `$0000 - $0200` |  512 | Interpreter code        |
+| `$0200 - $056E` |  878 | Game code               |
+| `$056E - $10FF` | 2961 | Screens, binary tree    |
+| `$10FF - $1185` |  134 | Map data and game state |
+
+So close! We're only 390 bytes over budget. Or 757 bytes to run it with the
+original Cosmac VIP interpreter. But either way, this feels like we're almost
+there! We've had to strip out absolutely everything that ever made it feel like
+a fun and polished game and reduced it to a slow tech demo, but we are getting
+pretty close now.
+
+### Stay tuned 😉
