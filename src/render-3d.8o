@@ -81,47 +81,41 @@
 # This routine walks through the binary tree with nodes and leafs
 # Input: i pointing to a node
 # Output: i pointing to the image to be rendered
+# Destroys: 0v-v6, vF, i
+
 : find-sprite
   # Load this node and find what's there
   load v2
-  v5 := v1
+  v5 := v1  # look-ahead destroys these
   v6 := v2
   # Coordinates are stored together in first byte, so unpack
-  v1 := 0x0F
-  v4 := v0
-  v4 &= v1
-  v0 >>= v0
-  v0 >>= v0
-  v0 >>= v0
-  v0 >>= v0
-  v0 &= v1
   v3 := v0
-  look-ahead
+  v4 := v0
+  v1 := 0x0F
+  v4 &= v1
+  v3 >>= v3
+  v3 >>= v3
+  v3 >>= v3
+  v3 >>= v3
+  look-ahead  # v3 and v4 are inputs, v0 is output
   # Did we encounter a wall?
-  if v0 == 1 begin
-    v0 := v6
-  else
-    v0 := v5
-  end
+  v1 := v5
+  if v0 == 1 then v1 := v6
   # Is the next step a node or a leaf?
-  v1 := 0x80
-  v2 := v0
-  v2 &= v1
-  if v2 == 0x80 begin
-    # Next is a leaf, extract the pointer
-    i := long leafs
-    v1 := 0b01111111
-    v0 &= v1 # AND out the leaf indicator bit
-    v0 <<= v0
-    i += v0
-    load v1
-    # We now have the address of the leaf image in v0 and v1
-    return
-  else
-    # Next is a node, load it and restart
-    i := long nodes
-    i += v0
-    i += v0
-    i += v0
-    jump find-sprite
-  end
+  v2 := v1
+  v2 <<= v2
+  if vF == 1 then jump find-sprite-done
+  # Next is a node, load it and restart
+  i := long nodes
+  i += v1
+  i += v1
+  i += v1
+  jump find-sprite
+: find-sprite-done
+  # Next is a leaf, extract the image pointer
+  # Each pointer is two bytes, bonus: we rotated out leaf indicator bit
+  i := long leafs
+  i += v2
+  load v1
+  # We now have the address of the leaf image in v0 and v1
+  return

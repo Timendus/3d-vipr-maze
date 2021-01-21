@@ -27,48 +27,29 @@
   v0 += 1
   v0 -= v3
   v1 += v4
-  jump map-get
+  # Fall through
 
 #####################
 # Query the map for the value at a given position
 # Input: X in v0, Y in v1 (destructive)
 # Output: map value in v0
 : map-get
-  map-point
-  load v0
-  return
-
-# Input: X in v0, Y in v1 (destructive)
-# Output: i points to right place on map
-# Destroys v0, v1, v2, v3
-: map-point
   v2 := v0
   v3 := v1
-  map-start
+  i := long current-map
+  load v1
+  i := map-get-smc
+  save v1
+  0xF0 0x00 # i := long ...
+: map-get-smc
+  0 0
   i += v2
   v3 <<= v3
   v3 <<= v3
   v3 <<= v3
   v3 <<= v3
   i += v3
-  return
-
-# Destroys v0, v1
-: map-start
-  i := long current-map
-  load v1
-  i := map-point-smc
-  save v1
-  0xF0 0x00 # i := long ...
-  : map-point-smc
-  0 0
-  return
-
-# Destroys v0, v1
-: map-metadata-start
-  map-start
-  v0 := 128
-  i += v0
+  load v0
   return
 
 #####################
