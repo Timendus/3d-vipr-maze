@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const MAX_RL_SIZE = 12;
+const MAX_RL_SIZE = 11;
 
 const source = process.argv[2];
 const target = process.argv[3];
