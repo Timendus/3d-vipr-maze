@@ -6,8 +6,5 @@
 : player-orientation
   0 # orientation
 
-: dirty
-  0
-
 : current-map
   pointer training1

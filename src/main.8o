@@ -11,24 +11,10 @@
 : main-redraw
   clear
   render-3d
-  mark-screen-clean
+  # Mark screen clean
+  vE := 0
 : main-loop
   check-keys
-  i := long dirty    # Is the screen dirty?
-  load v0
-  if v0 == 1 then jump main-redraw
+  # Is the screen dirty?
+  if vE == 1 then jump main-redraw
   jump main-loop
-
-# Mark the screen dirty or clean to manage redraws
-
-: mark-screen-dirty
-  i := long dirty
-  v0 := 1
-  save v0
-  return
-
-: mark-screen-clean
-  i := long dirty
-  v0 := 0
-  save v0
-  return

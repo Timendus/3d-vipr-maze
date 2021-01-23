@@ -33,6 +33,7 @@
 # Query the map for the value at a given position
 # Input: X in v0, Y in v1 (destructive)
 # Output: map value in v0
+# Destroys: v0 - v3, i
 : map-get
   v2 := v0
   v3 := v1

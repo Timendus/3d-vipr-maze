@@ -1,88 +1,75 @@
 #####################
 # Non-blocking key input check
 # Updates the player data on input, checks for collisions
-# Destroys v0 - v3
+# Destroys: v0 - v5, i
 : check-keys
   i := long player
   load v2
 
   # Rotation
-  v0 := OCTO_KEY_A
-  if v0 key then jump rotate-left
-  v0 := OCTO_KEY_D
-  if v0 key then jump rotate-right
+  v3 := OCTO_KEY_A
+  if v3 key then jump rotate-left
+  v3 := OCTO_KEY_D
+  if v3 key then jump rotate-right
 
   # Movement
+  v3 := OCTO_KEY_W
+  v4 := OCTO_KEY_S
   if v2 == 0 then jump going-up
   if v2 == 1 then jump going-right
   if v2 == 2 then jump going-down
-  # Else fall through:
+  # Else fall through
 
 : going-left
-  v0 := OCTO_KEY_W
-  if v0 key then jump move-left
-  v0 := OCTO_KEY_S
-  if v0 key then jump move-right
+  if v3 key then jump move-left
+  if v4 key then jump move-right
   return
 : going-up
-  v0 := OCTO_KEY_W
-  if v0 key then jump move-up
-  v0 := OCTO_KEY_S
-  if v0 key then jump move-down
+  if v3 key then jump move-up
+  if v4 key then jump move-down
   return
 : going-right
-  v0 := OCTO_KEY_W
-  if v0 key then jump move-right
-  v0 := OCTO_KEY_S
-  if v0 key then jump move-left
+  if v3 key then jump move-right
+  if v4 key then jump move-left
   return
 : going-down
-  v0 := OCTO_KEY_W
-  if v0 key then jump move-down
-  v0 := OCTO_KEY_S
-  if v0 key then jump move-up
+  if v3 key then jump move-down
+  if v4 key then jump move-up
   return
 
 : rotate-left
-  v0 := 3
   v2 -= 1
-  v0 &= v2
-  i := long player-orientation
-  save v0
-  mark-screen-dirty
-  jump wait-key-release
+  jump rotate
 : rotate-right
-  v0 := 3
   v2 += 1
+: rotate
+  v0 := 3
   v0 &= v2
   i := long player-orientation
   save v0
-  mark-screen-dirty
+  # Mark screen dirty
+  vE := 1
   jump wait-key-release
+
 : move-right
-  i := long player
-  load v1
   v2 := 15
   v0 += 1
   v0 &= v2
   jump collide-or-save
+
 : move-left
-  i := long player
-  load v1
   v2 := 15
   v0 -= 1
   v0 &= v2
   jump collide-or-save
+
 : move-up
-  i := long player
-  load v1
   v2 := 7
   v1 -= 1
   v1 &= v2
   jump collide-or-save
+
 : move-down
-  i := long player
-  load v1
   v2 := 7
   v1 += 1
   v1 &= v2
@@ -96,12 +83,12 @@
   map-get
   if v0 == 1 then jump wait-key-release
   # Otherwise, update position
-  v1 := v5
-  v3 := v0 # save v0 for check-triggers
   v0 := v4
+  v1 := v5
   i := long player
   save v1
-  mark-screen-dirty
+  # Mark screen dirty
+  vE := 1
   # Fall through
 
 : wait-key-release
@@ -111,14 +98,3 @@
   vA += 1
   if vA != 16 then jump wait-key-release-loop
   return
-
-# Blocking "press any key" routine
-# (does play music though)
-# Returns pressed key in v5
-: wait-key-press
-  vA := 0
-: wait-key-press-loop
-  if vA key then return
-  vA += 1
-  if vA != 16 then jump wait-key-press-loop
-  jump wait-key-press
