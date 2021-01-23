@@ -2,7 +2,7 @@
 # Look at place (v3 - 1, v4) relative to the player
 # Return value at that position in v0
 : look-ahead
-  i := long player
+  i := player
   load v2
   if v2 == 0 then jump look-ahead-up
   if v2 == 1 then jump look-ahead-right

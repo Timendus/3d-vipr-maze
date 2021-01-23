@@ -9,62 +9,62 @@
   column-two
   column-seven
   column-one
-  jump column-eight
+  # Fall through
+
+: column-eight
+  i := nodes-column-eight
+  find-sprite
+  decompress
+  v0 := 56
+  jump render-column
 
 : column-one
-  i := long nodes-column-one
+  i := nodes-column-one
   find-sprite
   decompress
   v0 := 0
   jump render-column
 
 : column-two
-  i := long nodes-column-two
+  i := nodes-column-two
   find-sprite
   decompress
   v0 := 8
   jump render-column
 
 : column-three
-  i := long nodes-column-three
+  i := nodes-column-three
   find-sprite
   decompress
   v0 := 16
   jump render-column
 
 : column-four
-  i := long nodes-column-four
+  i := nodes-column-four
   find-sprite
   decompress
   v0 := 24
   jump render-column
 
 : column-five
-  i := long nodes-column-five
+  i := nodes-column-five
   find-sprite
   decompress
   v0 := 32
   jump render-column
 
 : column-six
-  i := long nodes-column-six
+  i := nodes-column-six
   find-sprite
   decompress
   v0 := 40
   jump render-column
 
 : column-seven
-  i := long nodes-column-seven
+  i := nodes-column-seven
   find-sprite
   decompress
   v0 := 48
-  jump render-column
-
-: column-eight
-  i := long nodes-column-eight
-  find-sprite
-  decompress
-  v0 := 56
   # Fall through
 
 : render-column
@@ -106,7 +106,7 @@
   v2 <<= v2
   if vF == 1 then jump find-sprite-done
   # Next is a node, load it and restart
-  i := long nodes
+  i := nodes
   i += v1
   i += v1
   i += v1
@@ -114,7 +114,7 @@
 : find-sprite-done
   # Next is a leaf, extract the image pointer
   # Each pointer is two bytes, bonus: we rotated out leaf indicator bit
-  i := long leafs
+  i := leafs
   i += v2
   load v1
   # We now have the address of the leaf image in v0 and v1

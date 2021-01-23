@@ -16,12 +16,9 @@
 
 : decompress-loop
   i := decompress-loop-smc
-
-  # Fix this once we can get rid of the long load
-  #v2 := 0xA0
-  #v0 |= v2
+  v2 := 0xA0
+  v0 |= v2
   save v1
-  0xF0 0x00 # i := long ...
 : decompress-loop-smc
   0 0
   # i points to start

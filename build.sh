@@ -19,10 +19,9 @@ cat src/key-input.8o >> 3dvipermaze.8o
 cat src/decompression.8o >> 3dvipermaze.8o
 
 cat screens/compressed-screens.txt >> 3dvipermaze.8o
-cat data/binary-tree.8o >> 3dvipermaze.8o
-
 cat data/maps.8o >> 3dvipermaze.8o
 cat data/game-state.8o >> 3dvipermaze.8o
+cat data/binary-tree.8o >> 3dvipermaze.8o
 
 echo "# That's all folks!" >> 3dvipermaze.8o
 

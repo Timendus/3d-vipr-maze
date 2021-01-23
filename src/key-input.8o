@@ -3,7 +3,7 @@
 # Updates the player data on input, checks for collisions
 # Destroys: v0 - v5, i
 : check-keys
-  i := long player
+  i := player
   load v2
 
   # Rotation
@@ -45,7 +45,7 @@
 : rotate
   v0 := 3
   v0 &= v2
-  i := long player-orientation
+  i := player-orientation
   save v0
   # Mark screen dirty
   vE := 1
@@ -85,7 +85,7 @@
   # Otherwise, update position
   v0 := v4
   v1 := v5
-  i := long player
+  i := player
   save v1
   # Mark screen dirty
   vE := 1
