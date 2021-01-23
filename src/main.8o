@@ -5,10 +5,6 @@
 # https://github.com/Timendus/3d-viper-maze
 
 : main
-  # Start with training map
-  send-player-back-to-start
-
-: main-redraw
   clear
   render-3d
   # Mark screen clean
@@ -16,5 +12,5 @@
 : main-loop
   check-keys
   # Is the screen dirty?
-  if vE == 1 then jump main-redraw
+  if vE == 1 then jump main
   jump main-loop

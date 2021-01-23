@@ -2,9 +2,6 @@
 # Game state
 
 : player
-  0 0 # X, Y
+  4 2 # X, Y
 : player-orientation
-  0 # orientation
-
-: current-map
-  pointer training1
+  1 # orientation
