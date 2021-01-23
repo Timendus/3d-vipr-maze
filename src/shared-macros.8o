@@ -9,5 +9,3 @@
   v0 := hi
   v1 := lo
 }
-
-:alias viper-delay vE
