@@ -7,10 +7,10 @@
 
 :const numc18nodes 14
 :const numc27nodes 6
-:const numc36nodes 18
+:const numc36nodes 16
 :const numc45nodes 20
 #      --------------- +
-#      116 nodes
+#      112 nodes
 
 :const numc18leafs 14
 :const numc27leafs 7
@@ -80,21 +80,19 @@
   coord  0 1  c3node 1   c3leaf 3   # node 0
   coord  0 2  c3node 2   c3leaf 4   # node 1
   coord -1 2  c3node 3   c3node 7   # node 2
-  coord  0 3  c3node 4   c3node 12  # node 3
+  coord  0 3  c3node 4   c3node 11  # node 3
   coord  0 4  c3node 5   c3leaf 1   # node 4
   coord  0 5  c3node 6   c3leaf 1   # node 5
   coord -1 4  c3leaf 0   c3leaf 1   # node 6
   coord  0 3  c3node 8   c3leaf 5   # node 7
-  coord -1 3  c3node 9   c3node 11  # node 8
-  coord  0 4  c3node 10  c3node 15  # node 9
-  coord  0 5  c3node 17  c3leaf 2   # node 10
-  coord  0 4  c3leaf 0   c3leaf 0   # node 11
-  coord -1 3  c3node 13  c3leaf 6   # node 12
-  coord -1 4  c3node 14  c3leaf 7   # node 13
-  coord -1 5  c3leaf 9   c3leaf 8   # node 14
-  coord -1 4  c3node 16  c3leaf 2   # node 15
-  coord -1 5  c3leaf 11  c3leaf 10  # node 16
-  coord -1 5  c3leaf 0   c3leaf 2   # node 17
+  coord -1 3  c3node 9   c3leaf 0   # node 8
+  coord  0 4  c3node 10  c3node 14  # node 9
+  coord  0 5  c3leaf 0   c3leaf 2   # node 10
+  coord -1 3  c3node 12  c3leaf 6   # node 11
+  coord -1 4  c3node 13  c3leaf 7   # node 12
+  coord -1 5  c3leaf 9   c3leaf 8   # node 13
+  coord -1 4  c3node 15  c3leaf 2   # node 14
+  coord -1 5  c3leaf 11  c3leaf 10  # node 15
 
 : nodes-column-four # TODO: reduce (more) duplicates in this tree
 #        X Y  no wall    wall
@@ -147,21 +145,19 @@
   coord  0 1  c6node 1   c6leaf 3   # node 0
   coord  0 2  c6node 2   c6leaf 4   # node 1
   coord  1 2  c6node 3   c6node 7   # node 2
-  coord  0 3  c6node 4   c6node 12  # node 3
+  coord  0 3  c6node 4   c6node 11  # node 3
   coord  0 4  c6node 5   c6leaf 1   # node 4
   coord  0 5  c6node 6   c6leaf 1   # node 5
   coord  1 4  c6leaf 0   c6leaf 1   # node 6
   coord  0 3  c6node 8   c6leaf 5   # node 7
-  coord  1 3  c6node 9   c6node 11  # node 8
-  coord  0 4  c6node 10  c6node 15  # node 9
-  coord  0 5  c6node 17  c6leaf 2   # node 10
-  coord  0 4  c6leaf 0   c6leaf 0   # node 11
-  coord  1 3  c6node 13  c6leaf 6   # node 12
-  coord  1 4  c6node 14  c6leaf 7   # node 13
-  coord  1 5  c6leaf 9   c6leaf 8   # node 14
-  coord  1 4  c6node 16  c6leaf 2   # node 15
-  coord  1 5  c6leaf 11  c6leaf 10  # node 16
-  coord  1 5  c6leaf 0   c6leaf 2   # node 17
+  coord  1 3  c6node 9   c6leaf 0   # node 8
+  coord  0 4  c6node 10  c6node 14  # node 9
+  coord  0 5  c6leaf 0   c6leaf 2   # node 10
+  coord  1 3  c6node 12  c6leaf 6   # node 11
+  coord  1 4  c6node 13  c6leaf 7   # node 12
+  coord  1 5  c6leaf 9   c6leaf 8   # node 13
+  coord  1 4  c6node 15  c6leaf 2   # node 14
+  coord  1 5  c6leaf 11  c6leaf 10  # node 15
 
 : nodes-column-seven
 #        X Y  no wall   wall
