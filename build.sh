@@ -23,8 +23,6 @@ cat data/maps.8o >> 3dvipermaze.8o
 cat data/game-state.8o >> 3dvipermaze.8o
 cat data/binary-tree.8o >> 3dvipermaze.8o
 
-echo ": the-end" >> 3dvipermaze.8o
-
 echo "# That's all folks!" >> 3dvipermaze.8o
 
 ./scripts/macros.js 3dvipermaze.8o 3dviprmaze-vip.8o VIP
