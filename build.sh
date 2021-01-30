@@ -27,6 +27,7 @@ echo "# That's all folks!" >> 3dvipermaze.8o
 
 ./scripts/macros.js 3dvipermaze.8o 3dviprmaze-vip.8o VIP
 ./scripts/macros.js 3dvipermaze.8o 3dviprmaze-schip.8o SCHIP
+rm 3dvipermaze.8o
 
 # Put on the clipboard for convenient pasting into Octo
-cat 3dvipermaze.8o | pbcopy
+cat 3dviprmaze-vip.8o | pbcopy
