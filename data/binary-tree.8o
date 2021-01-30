@@ -15,10 +15,9 @@
 :const numc18leafs 14
 :const numc27leafs 7
 :const numc36leafs 12
-:const numc4leafs 14
-:const numc5leafs 13
+:const numc45leafs 13
 #      --------------- +
-#      93 leafs
+#      92 leafs
 
 :macro coord X Y {
   :byte { ( ( X + 1 ) << 4 ) | Y }
@@ -37,10 +36,10 @@
 :macro c2leaf X { :byte { 0x80 + numc18leafs + X } }
 :macro c3leaf X { :byte { 0x80 + numc18leafs + numc27leafs + X } }
 :macro c4leaf X { :byte { 0x80 + numc18leafs + numc27leafs + numc36leafs + X } }
-:macro c5leaf X { :byte { 0x80 + numc18leafs + numc27leafs + numc36leafs + numc4leafs + X } }
-:macro c6leaf X { :byte { 0x80 + numc18leafs + numc27leafs + numc36leafs + numc4leafs + numc5leafs + X } }
-:macro c7leaf X { :byte { 0x80 + numc18leafs + numc27leafs + numc36leafs + numc36leafs + numc4leafs + numc5leafs + X } }
-:macro c8leaf X { :byte { 0x80 + numc18leafs + ( 2 * numc27leafs ) + numc36leafs + numc36leafs + numc4leafs + numc5leafs + X } }
+:macro c5leaf X { :byte { 0x80 + numc18leafs + numc27leafs + numc36leafs + numc45leafs + X } }
+:macro c6leaf X { :byte { 0x80 + numc18leafs + numc27leafs + numc36leafs + numc45leafs + numc45leafs + X } }
+:macro c7leaf X { :byte { 0x80 + numc18leafs + numc27leafs + numc36leafs + numc36leafs + numc45leafs + numc45leafs + X } }
+:macro c8leaf X { :byte { 0x80 + numc18leafs + ( 2 * numc27leafs ) + numc36leafs + numc36leafs + numc45leafs + numc45leafs + X } }
 
 
 # Nodes represent decisions: given this point relative to the player, if there
@@ -103,18 +102,18 @@
   coord  0 4  c4node 5   c4leaf 6   # node 4
   coord  0 5  c4node 6   c4node 7   # node 5
   coord -1 4  c4leaf 1   c4leaf 0   # node 6
-  coord -1 4  c4node 18  c4leaf 10  # node 7
+  coord -1 4  c4node 18  c4leaf 9   # node 7
   coord  0 3  c4node 9   c4leaf 5   # node 8
   coord -1 3  c4node 10  c4node 12  # node 9
   coord  0 4  c4node 11  c4node 16  # node 10
-  coord  0 5  c4node 19  c4leaf 11  # node 11
+  coord  0 5  c4node 19  c4leaf 10  # node 11
   coord  0 4  c4node 13  c4leaf 6   # node 12
   coord -1 4  c4node 14  c4node 15  # node 13
   coord  0 5  c4leaf 1   c4node 18  # node 14
-  coord  0 5  c4leaf 0   c4leaf 10  # node 15
-  coord -1 4  c4node 17  c4leaf 7   # node 16
-  coord -1 5  c4leaf 9   c4leaf 8   # node 17
-  coord -1 5  c4leaf 13  c4leaf 12  # node 18
+  coord  0 5  c4leaf 0   c4leaf 9   # node 15
+  coord -1 4  c4node 17  c4leaf 6   # node 16
+  coord -1 5  c4leaf 8   c4leaf 7   # node 17
+  coord -1 5  c4leaf 12  c4leaf 11  # node 18
   coord -1 5  c4leaf 0   c4leaf 2   # node 19
 
 : nodes-column-five # TODO: reduce (more) duplicates in this tree
@@ -236,13 +235,12 @@
   pointer wall-2+24+1     # leaf 4
   pointer wall-3+24+1     # leaf 5
   pointer wall-4+24+1     # leaf 6
-  pointer wall-4-4+24+1   # leaf 7
-  pointer wall-4-5+24+1   # leaf 8
-  pointer wall-4-6+24+1   # leaf 9
-  pointer wall-5+24+1     # leaf 10
-  pointer wall-5-4+24+1   # leaf 11
-  pointer wall-5-5+24+1   # leaf 12
-  pointer wall-5-6+24+1   # leaf 13
+  pointer wall-4-5+24+1   # leaf 7
+  pointer wall-4-6+24+1   # leaf 8
+  pointer wall-5+24+1     # leaf 9
+  pointer wall-5-4+24+1   # leaf 10
+  pointer wall-5-5+24+1   # leaf 11
+  pointer wall-5-6+24+1   # leaf 12
 
   # Column 5
   pointer hall-0+32+1     # leaf 0

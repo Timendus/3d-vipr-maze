@@ -39,7 +39,6 @@ sed -n -e 7,10p -e 16,19p wall-3-5.txt >> screens.txt
 sed -n -e 7,10p -e 16,19p wall-3-6.txt >> screens.txt
 sed -n 10,16p wall-4.txt >> screens.txt
 sed -n 10,10p wall-4-3.txt >> screens.txt
-sed -n 10,13p wall-4-4.txt >> screens.txt
 sed -n 7,19p wall-4-5.txt >> screens.txt
 sed -n 7,19p wall-4-6.txt >> screens.txt
 sed -n 10,16p wall-5.txt >> screens.txt
