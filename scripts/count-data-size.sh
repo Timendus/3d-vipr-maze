@@ -10,7 +10,7 @@ POINTERS=`grep -o '  pointer ' data/binary-tree.8o | wc -l`
 POINTERS=$((POINTERS*2))
 echo "$((COORDS + POINTERS)) bytes in binary-tree.8o"
 
-GAMESTATE=`grep -o '0' data/game-state.8o | wc -l`
+GAMESTATE=`grep -o '0x' data/game-state.8o | wc -l`
 POINTERS=`grep -o '  pointer ' data/game-state.8o | wc -l`
 POINTERS=$((POINTERS*2))
 echo "$((POINTERS + GAMESTATE)) bytes in game-state.8o"

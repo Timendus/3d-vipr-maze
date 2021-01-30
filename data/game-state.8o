@@ -2,6 +2,6 @@
 # Game state
 
 : player
-  4 2 # X, Y
+  0x4 0x2 # X, Y
 : player-orientation
-  1 # orientation
+  0x1 # orientation
