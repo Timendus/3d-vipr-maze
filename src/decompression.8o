@@ -39,10 +39,19 @@
 : decompress-load
   source-counter += num-bytes
   source-counter += 1
-  v0 := num-bytes
-  v0 -= 1
-  v0 <<= v0
-  v0 <<= v0
+  #if SCHIP
+    v0 := 1
+    i += v0
+    v2 := num-bytes
+    v2 -= 1
+    v2 <<= v2
+    v2 <<= v2
+  #else
+    v0 := num-bytes
+    v0 -= 1
+    v0 <<= v0
+    v0 <<= v0
+  #end
   jump0 decompress-load-bytes
 
 : decompress-load-bytes
@@ -62,12 +71,23 @@
 
 : decompress-repeat
   source-counter += 2
+  #if SCHIP
+    v0 := 1
+    i += v0
+  #end
   load v0
-  v1 := v0
-	v0 := 11
-  v0 -= num-bytes
-  v0 <<= v0
-  vF := v1
+  #if SCHIP
+  	v2 := 11
+    v2 -= num-bytes
+    v2 <<= v2
+    vF := v0
+  #else
+    v1 := v0
+    v0 := 11
+    v0 -= num-bytes
+    v0 <<= v0
+    vF := v1
+  #end
   jump0 decompress-repeat-bytes
 
 : decompress-repeat-bytes
@@ -84,28 +104,53 @@
   i := decompression-buffer
   i += target-counter
   target-counter += num-bytes
-  vF := v0
-  v0 := num-bytes
-  vC := vF          # We don't need vC / num-bytes anymore
-  v0 -= 1
-  vB := v0          # v0 times six
-  v0 <<= v0
-  v0 += vB
-  v0 <<= v0
+  #if SCHIP
+    vF := v2
+    v2 := num-bytes
+    vC := vF          # We don't need vC / num-bytes anymore
+    v2 -= 1
+    vB := v2          # v2 times six
+    v2 <<= v2
+    v2 += vB
+    v2 <<= v2
+  #else
+    vF := v0
+    v0 := num-bytes
+    vC := vF          # We don't need vC / num-bytes anymore
+    v0 -= 1
+    vB := v0          # v0 times six
+    v0 <<= v0
+    v0 += vB
+    v0 <<= v0
+  #end
   jump0 decompress-save-bytes
 
 : decompress-save-bytes
-  v0 := vC  save v0  jump decompress-done
-  v0 := vC  save v1  jump decompress-done
-  v0 := vC  save v2  jump decompress-done
-  v0 := vC  save v3  jump decompress-done
-  v0 := vC  save v4  jump decompress-done
-  v0 := vC  save v5  jump decompress-done
-  v0 := vC  save v6  jump decompress-done
-  v0 := vC  save v7  jump decompress-done
-  v0 := vC  save v8  jump decompress-done
-  v0 := vC  save v9  jump decompress-done
-  v0 := vC  save vA  # Fall through
+  #if SCHIP
+    v2 := vC  save v0  jump decompress-done
+    v2 := vC  save v1  jump decompress-done
+    v2 := vC  save v2  jump decompress-done
+    v2 := vC  save v3  jump decompress-done
+    v2 := vC  save v4  jump decompress-done
+    v2 := vC  save v5  jump decompress-done
+    v2 := vC  save v6  jump decompress-done
+    v2 := vC  save v7  jump decompress-done
+    v2 := vC  save v8  jump decompress-done
+    v2 := vC  save v9  jump decompress-done
+    v2 := vC  save vA  # Fall through
+  #else
+    v0 := vC  save v0  jump decompress-done
+    v0 := vC  save v1  jump decompress-done
+    v0 := vC  save v2  jump decompress-done
+    v0 := vC  save v3  jump decompress-done
+    v0 := vC  save v4  jump decompress-done
+    v0 := vC  save v5  jump decompress-done
+    v0 := vC  save v6  jump decompress-done
+    v0 := vC  save v7  jump decompress-done
+    v0 := vC  save v8  jump decompress-done
+    v0 := vC  save v9  jump decompress-done
+    v0 := vC  save vA  # Fall through
+  #end
 
 # If we have the desired number of bytes in the buffer, we're done
 # Otherwise, re-unpack source pointer to v0 and v1 and restart
