@@ -12,7 +12,7 @@
   # Fall through
 
 :const leafoffset 92    # 2 bytes * 46 entries
-:const xcoordoffset 2
+:const xcoordoffset 2   # Make -1 coord +1 coords
 
 : column-eight
   i := nodes-column-one

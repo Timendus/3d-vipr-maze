@@ -7,10 +7,10 @@
 
 :const numc18nodes 14
 :const numc27nodes 6
-:const numc36nodes 14
+:const numc36nodes 12
 :const numc45nodes 20
 #      --------------- +
-#      108 nodes
+#      104 nodes
 
 :const numc18leafs 14
 :const numc27leafs 7
@@ -27,10 +27,6 @@
 :macro c2node X { :byte { numc18nodes + X } }
 :macro c3node X { :byte { numc18nodes + numc27nodes + X } }
 :macro c4node X { :byte { numc18nodes + numc27nodes + numc36nodes + X } }
-:macro c5node X { :byte { numc18nodes + numc27nodes + numc36nodes + numc45nodes + X } }
-:macro c6node X { :byte { numc18nodes + numc27nodes + numc36nodes + ( 2 * numc45nodes ) + X } }
-:macro c7node X { :byte { numc18nodes + numc27nodes + ( 2 * numc36nodes ) + ( 2 * numc45nodes ) + X } }
-:macro c8node X { :byte { numc18nodes + ( 2 * numc27nodes ) + ( 2 * numc36nodes ) + ( 2 * numc45nodes ) + X } }
 
 :macro c1leaf X { :byte { 0x80 + X } }
 :macro c2leaf X { :byte { 0x80 + numc18leafs + X } }
@@ -48,7 +44,7 @@
 # implementation detail is hidden through the macros.
 : nodes
 
-: nodes-column-one
+: nodes-column-one # and eight
 #        X Y  no wall   wall
   coord -1 0  c1node 3  c1node 1   # node 0
   coord  0 1  c1node 2  c1leaf 3   # node 1
@@ -65,7 +61,7 @@
   coord -1 4  c1node 13 c1leaf 11  # node 12
   coord -1 5  c1leaf 13 c1leaf 12  # node 13
 
-: nodes-column-two
+: nodes-column-two # and seven
 #        X Y  no wall   wall
   coord  0 1  c2node 1  c2leaf 2   # node 0
   coord -1 1  c2node 2  c2leaf 0   # node 1
@@ -74,24 +70,22 @@
   coord -1 4  c2node 5  c2leaf 4   # node 4
   coord -1 5  c2leaf 6  c2leaf 5   # node 5
 
-: nodes-column-three  # TODO: reduce (more) duplicates in this tree
+: nodes-column-three # and six
 #        X Y  no wall    wall
   coord  0 1  c3node 1   c3leaf 3   # node 0
   coord  0 2  c3node 2   c3leaf 4   # node 1
-  coord -1 2  c3node 3   c3node 5   # node 2
-  coord  0 3  c3node 4   c3node 9   # node 3
-  coord -1 4  c3leaf 0   c3leaf 1   # node 4
-  coord  0 3  c3node 6   c3leaf 5   # node 5
-  coord -1 3  c3node 7   c3leaf 0   # node 6
-  coord  0 4  c3node 8   c3node 12  # node 7
-  coord  0 5  c3leaf 0   c3leaf 2   # node 8
-  coord -1 3  c3node 10  c3leaf 6   # node 9
-  coord -1 4  c3node 11  c3leaf 7   # node 10
-  coord -1 5  c3leaf 9   c3leaf 8   # node 11
-  coord -1 4  c3node 13  c3leaf 2   # node 12
-  coord -1 5  c3leaf 11  c3leaf 10  # node 13
+  coord -1 2  c3node 3   c3node 4   # node 2
+  coord  0 3  c3leaf 1   c3node 7   # node 3
+  coord  0 3  c3node 5   c3leaf 5   # node 4
+  coord -1 3  c3node 6   c3leaf 0   # node 5
+  coord  0 4  c3leaf 2   c3node 10  # node 6
+  coord -1 3  c3node 8   c3leaf 6   # node 7
+  coord -1 4  c3node 9   c3leaf 7   # node 8
+  coord -1 5  c3leaf 9   c3leaf 8   # node 9
+  coord -1 4  c3node 11  c3leaf 2   # node 10
+  coord -1 5  c3leaf 11  c3leaf 10  # node 11
 
-: nodes-column-four # TODO: reduce (more) duplicates in this tree
+: nodes-column-four # and five
 #        X Y  no wall    wall
   coord  0 1  c4node 1   c4leaf 3   # node 0
   coord  0 2  c4node 2   c4leaf 4   # node 1
