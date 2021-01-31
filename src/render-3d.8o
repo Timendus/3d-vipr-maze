@@ -11,8 +11,13 @@
   column-one
   # Fall through
 
+:const leafoffset 92    # 2 bytes * 46 entries
+:const xcoordoffset 2
+
 : column-eight
-  i := nodes-column-eight
+  i := nodes-column-one
+  vA := leafoffset
+  vB := xcoordoffset
   find-sprite
   decompress
   v0 := 56
@@ -20,6 +25,8 @@
 
 : column-one
   i := nodes-column-one
+  vA := 0
+  vB := 0
   find-sprite
   decompress
   v0 := 0
@@ -27,6 +34,8 @@
 
 : column-two
   i := nodes-column-two
+  vA := 0
+  vB := 0
   find-sprite
   decompress
   v0 := 8
@@ -34,6 +43,8 @@
 
 : column-three
   i := nodes-column-three
+  vA := 0
+  vB := 0
   find-sprite
   decompress
   v0 := 16
@@ -41,27 +52,35 @@
 
 : column-four
   i := nodes-column-four
+  vA := 0
+  vB := 0
   find-sprite
   decompress
   v0 := 24
   jump render-column
 
 : column-five
-  i := nodes-column-five
+  i := nodes-column-four
+  vA := leafoffset
+  vB := xcoordoffset
   find-sprite
   decompress
   v0 := 32
   jump render-column
 
 : column-six
-  i := nodes-column-six
+  i := nodes-column-three
+  vA := leafoffset
+  vB := xcoordoffset
   find-sprite
   decompress
   v0 := 40
   jump render-column
 
 : column-seven
-  i := nodes-column-seven
+  i := nodes-column-two
+  vA := leafoffset
+  vB := xcoordoffset
   find-sprite
   decompress
   v0 := 48
@@ -97,6 +116,7 @@
   v3 >>= v3
   v3 >>= v3
   v3 >>= v3
+  if v3 == 0 then v3 += vB
   look-ahead  # v3 and v4 are inputs, v0 is output
   # Did we encounter a wall?
   v1 := v5
@@ -116,6 +136,7 @@
   # Each pointer is two bytes, bonus: we rotated out leaf indicator bit
   i := leafs
   i += v2
+  i += vA
   load v1
   # We now have the address of the leaf image in v0 and v1
   return
