@@ -377,8 +377,7 @@ have to revisit these trees, and it made the game run a lot slower.
 But the good news was that the 4920 bytes of uncompressed image data was now
 reduced to only 3000 bytes. The decision tree grew a bit from 404 bytes to 624
 bytes, but this was a net gain of 1700 bytes! Way more impressive than my
-compression algorithms actually. (**TODO**: change to right numbers after more
-pruning).
+compression algorithms actually.
 
 In fact, this step almost made the compression useless. The compressed size of
 these images is now 2337 bytes, and after subtracting the 296 bytes of the
@@ -424,7 +423,7 @@ micro-differences.
 
 I now had to figure out which images were in the final program that were never
 referenced by the decision tree. I wrote a quick script to figure that out, and
-was able to knock six or seven images off. Yay! 🎉
+was able to knock six or seven images off. This reduced the size of the screen data to "only" 2760 bytes. Yay! 🎉
 
 Finally, we're at the point where I can build a binary that is less than the
 magical 3.5K. 62 bytes less, to be precise. This makes it small enough to run on
