@@ -9,6 +9,7 @@ if ( !source || !target )
   return console.error('Usage: ./compress.js <source file> <target file>');
 
 console.log(`Compressing ${source} to ${target}...`);
+console.log(`Max run length size:   ${MAX_RL_SIZE}`);
 
 const fs = require('fs');
 const byteExpr = /0x[0-9a-fA-F]{1,2}/g;

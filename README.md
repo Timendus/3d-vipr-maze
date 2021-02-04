@@ -1,5 +1,7 @@
 # 3D VIP'r Maze
 
+![In-game screenshot](./screenshot.png)
+
 A watered down version of [3D Viper
 Maze](https://github.com/Timendus/3d-viper-maze), my [Octojam
 7](https://itch.io/jam/octojam-7) submission. Challenge: reduce the instruction
@@ -386,7 +388,7 @@ work for so little result 🙈😂.
 
 But hey, this is Chip-8: every byte counts!
 
-### Where are we now?
+### The last mile
 
 After all this shaving off bytes left and right in the image data and adding
 code, let's take another look at that memory map:
@@ -403,5 +405,64 @@ original Cosmac VIP interpreter. But either way, this feels like we're almost
 there! We've had to strip out absolutely everything that ever made it feel like
 a fun and polished game and reduced it to a slow tech demo, but we are getting
 pretty close now.
+
+To get rid of the last few hundred bytes, I turned my attention to the code
+again. I gave up on being able to switch maps (seeing as having a single map is
+already proving to be a challenge) and I was able to optimize some of the key
+input and map management code, which was some of the first Octo-flavoured Chip-8
+code that I wrote. It turns out that I have learned a thing or two since then 😄
+
+I then got back to the decision trees once more. I had been a bit time
+constrained previously, and left in a bunch of nodes that basically did nothing.
+Also, I had a couple of trees where the left side of the screen differed from
+the right side. That makes no sense, so I'm guessing this has to do with the
+artistic liberties I took when drawing the new images: if I added a pixel here
+or there to make it look better I may have inadvertently introduced differences
+between images where there shouldn't have been any. So in those cases I reduced
+the larger of the two trees to match the smaller one, cleaning up these
+micro-differences.
+
+I now had to figure out which images were in the final program that were never
+referenced by the decision tree. I wrote a quick script to figure that out, and
+was able to knock six or seven images off. Yay! 🎉
+
+Finally, we're at the point where I can build a binary that is less than the
+magical 3.5K. 62 bytes less, to be precise. This makes it small enough to run on
+most modern Chip-8 interpreters, including SCHIP interpreters. To be able to run
+on SCHIP I had to make a few minor adjustments to the decompression algorithm
+though. Changes that would break the program in the "normal" interpreters. So I
+once again wrote a small script, this time to do some pre-processing, so I can
+write things like this in my code:
+
+```
+: decompress-repeat
+  source-counter += 2
+  #if SCHIP
+    v0 := 1
+    i += v0
+  #end
+  load v0
+  #if SCHIP
+    v2 := 11
+    v2 -= num-bytes
+    v2 <<= v2
+    vF := v0
+  #else
+    v1 := v0
+    v0 := 11
+    v0 -= num-bytes
+    v0 <<= v0
+    vF := v1
+  #end
+  jump0 decompress-repeat-bytes
+```
+
+With that preprocessing, we're now building a special SCHIP version of the
+program that is small enough to fit and actually works too! 😉
+
+### Back to the '70s
+
+We need to knock off another 306 bytes to be able to run this on the original
+Cosmac VIP interpreter. Will we be able to do it..?
 
 ### Stay tuned 😉
