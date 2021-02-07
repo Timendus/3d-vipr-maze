@@ -203,74 +203,85 @@
 #####################
 # Render the map to the screen in pseudo-3D
 # (for the actual gameplay)
+
+:const leafoffset 92    # 2 bytes * 46 entries
+:const xcoordoffset 2   # Make -1 coord +1 coords
+
 : render-3d
-  column-four
-  column-five
-  column-three
-  column-six
-  column-two
-  column-seven
-  column-one
-  # Fall through
+  vA := 0
+  vB := 0
 
-: column-eight
-  i := nodes-column-eight
-  find-sprite
-  decompress
-  v0 := 56
-  jump render-column
-
-: column-one
   i := nodes-column-one
   find-sprite
-  decompress
+    decompress
   v0 := 0
-  jump render-column
+  render-column
 
-: column-two
+    vA := 0
+    vB := 0
+
   i := nodes-column-two
   find-sprite
-  decompress
+    decompress
   v0 := 8
-  jump render-column
+  render-column
 
-: column-three
+    vA := 0
+    vB := 0
+
   i := nodes-column-three
   find-sprite
-  decompress
+    decompress
   v0 := 16
-  jump render-column
+  render-column
 
-: column-four
+    vA := 0
+    vB := 0
+
   i := nodes-column-four
   find-sprite
-  decompress
+    decompress
   v0 := 24
-  jump render-column
+  render-column
 
-: column-five
-  i := nodes-column-five
+  vA := leafoffset
+  vB := xcoordoffset
+
+  i := nodes-column-four
   find-sprite
-  decompress
+    decompress
   v0 := 32
-  jump render-column
+  render-column
 
-: column-six
-  i := nodes-column-six
+    vA := leafoffset
+    vB := xcoordoffset
+
+  i := nodes-column-three
   find-sprite
-  decompress
+    decompress
   v0 := 40
-  jump render-column
+  render-column
 
-: column-seven
-  i := nodes-column-seven
+    vA := leafoffset
+    vB := xcoordoffset
+
+  i := nodes-column-two
   find-sprite
-  decompress
+    decompress
   v0 := 48
+  render-column
+
+    vA := leafoffset
+    vB := xcoordoffset
+
+  i := nodes-column-one
+  find-sprite
+    decompress
+  v0 := 56
   # Fall through
 
 : render-column
-  i := decompression-buffer
+    i := decompression-buffer
   v2 := 15
   v1 := 1
   sprite v0 v1 15
@@ -281,8 +292,11 @@
 
 #####################
 # This routine walks through the binary tree with nodes and leafs
-# Input: i pointing to a node
-# Output: i pointing to the image to be rendered
+# Input:
+#  * i pointing to a node
+#  * vA as an offset to the leaf (0 or leafoffset)
+#  * vB as an offset for the X axis (0 or xcoordoffset)
+# Output: address of image to be rendered unpacked in v0 and v1
 # Destroys: 0v-v6, vF, i
 
 : find-sprite
@@ -299,6 +313,7 @@
   v3 >>= v3
   v3 >>= v3
   v3 >>= v3
+  if v3 == 0 then v3 += vB
   look-ahead  # v3 and v4 are inputs, v0 is output
   # Did we encounter a wall?
   v1 := v5
@@ -318,6 +333,7 @@
   # Each pointer is two bytes, bonus: we rotated out leaf indicator bit
   i := leafs
   i += v2
+  i += vA
   load v1
   # We now have the address of the leaf image in v0 and v1
   return
@@ -692,10 +708,6 @@
   
   
   
-: wall-4-4+24+1
-  0xb 0xff 0x88 0x0 0x55 0xaa 0x55 0xaa 0x45 0xaa 0x0 0xb 0xff
-  
-  
 : wall-4-5+16+1
   0x7 0xff 0x8b 0x3f 0xf 0x63 0x29 0x85 0xb1 0x14 0xd 0x60 0x8 0xa9 0x85 0x81 0x29 0x63 0xf 0x3f 0x7 0xff
   
@@ -781,18 +793,17 @@
 
 :const numc18nodes 14
 :const numc27nodes 6
-:const numc36nodes 16
+:const numc36nodes 12
 :const numc45nodes 20
 #      --------------- +
-#      112 nodes
+#      104 nodes
 
 :const numc18leafs 14
 :const numc27leafs 7
 :const numc36leafs 12
-:const numc4leafs 14
-:const numc5leafs 13
+:const numc45leafs 13
 #      --------------- +
-#      93 leafs
+#      92 leafs
 
 :macro coord X Y {
   :byte { ( ( X + 1 ) << 4 ) | Y }
@@ -802,19 +813,15 @@
 :macro c2node X { :byte { numc18nodes + X } }
 :macro c3node X { :byte { numc18nodes + numc27nodes + X } }
 :macro c4node X { :byte { numc18nodes + numc27nodes + numc36nodes + X } }
-:macro c5node X { :byte { numc18nodes + numc27nodes + numc36nodes + numc45nodes + X } }
-:macro c6node X { :byte { numc18nodes + numc27nodes + numc36nodes + ( 2 * numc45nodes ) + X } }
-:macro c7node X { :byte { numc18nodes + numc27nodes + ( 2 * numc36nodes ) + ( 2 * numc45nodes ) + X } }
-:macro c8node X { :byte { numc18nodes + ( 2 * numc27nodes ) + ( 2 * numc36nodes ) + ( 2 * numc45nodes ) + X } }
 
 :macro c1leaf X { :byte { 0x80 + X } }
 :macro c2leaf X { :byte { 0x80 + numc18leafs + X } }
 :macro c3leaf X { :byte { 0x80 + numc18leafs + numc27leafs + X } }
 :macro c4leaf X { :byte { 0x80 + numc18leafs + numc27leafs + numc36leafs + X } }
-:macro c5leaf X { :byte { 0x80 + numc18leafs + numc27leafs + numc36leafs + numc4leafs + X } }
-:macro c6leaf X { :byte { 0x80 + numc18leafs + numc27leafs + numc36leafs + numc4leafs + numc5leafs + X } }
-:macro c7leaf X { :byte { 0x80 + numc18leafs + numc27leafs + numc36leafs + numc36leafs + numc4leafs + numc5leafs + X } }
-:macro c8leaf X { :byte { 0x80 + numc18leafs + ( 2 * numc27leafs ) + numc36leafs + numc36leafs + numc4leafs + numc5leafs + X } }
+:macro c5leaf X { :byte { 0x80 + numc18leafs + numc27leafs + numc36leafs + numc45leafs + X } }
+:macro c6leaf X { :byte { 0x80 + numc18leafs + numc27leafs + numc36leafs + numc45leafs + numc45leafs + X } }
+:macro c7leaf X { :byte { 0x80 + numc18leafs + numc27leafs + numc36leafs + numc36leafs + numc45leafs + numc45leafs + X } }
+:macro c8leaf X { :byte { 0x80 + numc18leafs + ( 2 * numc27leafs ) + numc36leafs + numc36leafs + numc45leafs + numc45leafs + X } }
 
 
 # Nodes represent decisions: given this point relative to the player, if there
@@ -823,52 +830,48 @@
 # implementation detail is hidden through the macros.
 : nodes
 
-: nodes-column-one
+: nodes-column-one # and eight
 #        X Y  no wall   wall
-  coord -1 0  c1node 3  c1node 1   # node 0
-  coord  0 1  c1node 2  c1leaf 3   # node 1
-  coord -1 1  c1node 9  c1leaf 0   # node 2
-  coord  0 1  c1leaf 1  c1node 4   # node 3
-  coord -1 1  c1node 5  c1leaf 4   # node 4
-  coord -1 2  c1node 6  c1leaf 5   # node 5
-  coord -1 3  c1node 7  c1leaf 6   # node 6
-  coord -1 4  c1node 8  c1leaf 7   # node 7
-  coord -1 5  c1leaf 9  c1leaf 8   # node 8
-  coord  0 2  c1leaf 2  c1node 10  # node 9
-  coord -1 2  c1node 11 c1leaf 2   # node 10
-  coord -1 3  c1node 12 c1leaf 10  # node 11
-  coord -1 4  c1node 13 c1leaf 11  # node 12
-  coord -1 5  c1leaf 13 c1leaf 12  # node 13
+  coord -1 0  c1node 3   c1node 1   # node 0
+  coord  0 1  c1node 2   c1leaf 3   # node 1
+  coord -1 1  c1node 9   c1leaf 0   # node 2
+  coord  0 1  c1leaf 1   c1node 4   # node 3
+  coord -1 1  c1node 5   c1leaf 4   # node 4
+  coord -1 2  c1node 6   c1leaf 5   # node 5
+  coord -1 3  c1node 7   c1leaf 6   # node 6
+  coord -1 4  c1node 8   c1leaf 7   # node 7
+  coord -1 5  c1leaf 9   c1leaf 8   # node 8
+  coord  0 2  c1leaf 2   c1node 10  # node 9
+  coord -1 2  c1node 11  c1leaf 2   # node 10
+  coord -1 3  c1node 12  c1leaf 10  # node 11
+  coord -1 4  c1node 13  c1leaf 11  # node 12
+  coord -1 5  c1leaf 13  c1leaf 12  # node 13
 
-: nodes-column-two
+: nodes-column-two # and seven
 #        X Y  no wall   wall
-  coord  0 1  c2node 1  c2leaf 2   # node 0
-  coord -1 1  c2node 2  c2leaf 0   # node 1
-  coord -1 2  c2node 3  c2leaf 1   # node 2
-  coord -1 3  c2node 4  c2leaf 3   # node 3
-  coord -1 4  c2node 5  c2leaf 4   # node 4
-  coord -1 5  c2leaf 6  c2leaf 5   # node 5
+  coord  0 1  c2node 1   c2leaf 2   # node 0
+  coord -1 1  c2node 2   c2leaf 0   # node 1
+  coord -1 2  c2node 3   c2leaf 1   # node 2
+  coord -1 3  c2node 4   c2leaf 3   # node 3
+  coord -1 4  c2node 5   c2leaf 4   # node 4
+  coord -1 5  c2leaf 6   c2leaf 5   # node 5
 
-: nodes-column-three  # TODO: reduce (more) duplicates in this tree
+: nodes-column-three # and six
 #        X Y  no wall    wall
   coord  0 1  c3node 1   c3leaf 3   # node 0
   coord  0 2  c3node 2   c3leaf 4   # node 1
-  coord -1 2  c3node 3   c3node 7   # node 2
-  coord  0 3  c3node 4   c3node 11  # node 3
-  coord  0 4  c3node 5   c3leaf 1   # node 4
-  coord  0 5  c3node 6   c3leaf 1   # node 5
-  coord -1 4  c3leaf 0   c3leaf 1   # node 6
-  coord  0 3  c3node 8   c3leaf 5   # node 7
-  coord -1 3  c3node 9   c3leaf 0   # node 8
-  coord  0 4  c3node 10  c3node 14  # node 9
-  coord  0 5  c3leaf 0   c3leaf 2   # node 10
-  coord -1 3  c3node 12  c3leaf 6   # node 11
-  coord -1 4  c3node 13  c3leaf 7   # node 12
-  coord -1 5  c3leaf 9   c3leaf 8   # node 13
-  coord -1 4  c3node 15  c3leaf 2   # node 14
-  coord -1 5  c3leaf 11  c3leaf 10  # node 15
+  coord -1 2  c3node 3   c3node 4   # node 2
+  coord  0 3  c3leaf 1   c3node 7   # node 3
+  coord  0 3  c3node 5   c3leaf 5   # node 4
+  coord -1 3  c3node 6   c3leaf 0   # node 5
+  coord  0 4  c3leaf 2   c3node 10  # node 6
+  coord -1 3  c3node 8   c3leaf 6   # node 7
+  coord -1 4  c3node 9   c3leaf 7   # node 8
+  coord -1 5  c3leaf 9   c3leaf 8   # node 9
+  coord -1 4  c3node 11  c3leaf 2   # node 10
+  coord -1 5  c3leaf 11  c3leaf 10  # node 11
 
-: nodes-column-four # TODO: reduce (more) duplicates in this tree
+: nodes-column-four # and five
 #        X Y  no wall    wall
   coord  0 1  c4node 1   c4leaf 3   # node 0
   coord  0 2  c4node 2   c4leaf 4   # node 1
@@ -877,87 +880,19 @@
   coord  0 4  c4node 5   c4leaf 6   # node 4
   coord  0 5  c4node 6   c4node 7   # node 5
   coord -1 4  c4leaf 1   c4leaf 0   # node 6
-  coord -1 4  c4node 18  c4leaf 10  # node 7
+  coord -1 4  c4node 18  c4leaf 9   # node 7
   coord  0 3  c4node 9   c4leaf 5   # node 8
   coord -1 3  c4node 10  c4node 12  # node 9
   coord  0 4  c4node 11  c4node 16  # node 10
-  coord  0 5  c4node 19  c4leaf 11  # node 11
+  coord  0 5  c4node 19  c4leaf 10  # node 11
   coord  0 4  c4node 13  c4leaf 6   # node 12
   coord -1 4  c4node 14  c4node 15  # node 13
   coord  0 5  c4leaf 1   c4node 18  # node 14
-  coord  0 5  c4leaf 0   c4leaf 10  # node 15
-  coord -1 4  c4node 17  c4leaf 7   # node 16
-  coord -1 5  c4leaf 9   c4leaf 8   # node 17
-  coord -1 5  c4leaf 13  c4leaf 12  # node 18
+  coord  0 5  c4leaf 0   c4leaf 9   # node 15
+  coord -1 4  c4node 17  c4leaf 6   # node 16
+  coord -1 5  c4leaf 8   c4leaf 7   # node 17
+  coord -1 5  c4leaf 12  c4leaf 11  # node 18
   coord -1 5  c4leaf 0   c4leaf 2   # node 19
-
-: nodes-column-five # TODO: reduce (more) duplicates in this tree
-#        X Y  no wall    wall
-  coord  0 1  c5node 1   c5leaf 3   # node 0
-  coord  0 2  c5node 2   c5leaf 4   # node 1
-  coord  1 2  c5node 3   c5node 8   # node 2
-  coord  0 3  c5node 4   c5leaf 5   # node 3
-  coord  0 4  c5node 5   c5leaf 6   # node 4
-  coord  0 5  c5node 6   c5node 7   # node 5
-  coord  1 4  c5leaf 1   c5leaf 0   # node 6
-  coord  1 4  c5node 18  c5leaf 9   # node 7
-  coord  0 3  c5node 9   c5leaf 5   # node 8
-  coord  1 3  c5node 10  c5node 12  # node 9
-  coord  0 4  c5node 11  c5node 16  # node 10
-  coord  0 5  c5node 19  c5leaf 10  # node 11
-  coord  0 4  c5node 13  c5leaf 6   # node 12
-  coord  1 4  c5node 14  c5node 15  # node 13
-  coord  0 5  c5leaf 1   c5node 18  # node 14
-  coord  0 5  c5leaf 0   c5leaf 9   # node 15
-  coord  1 4  c5node 17  c5leaf 6   # node 16
-  coord  1 5  c5leaf 8   c5leaf 7   # node 17
-  coord  1 5  c5leaf 12  c5leaf 11  # node 18
-  coord  1 5  c5leaf 0   c5leaf 2   # node 19
-
-: nodes-column-six # TODO: reduce (more) duplicates in this tree
-#        X Y  no wall    wall
-  coord  0 1  c6node 1   c6leaf 3   # node 0
-  coord  0 2  c6node 2   c6leaf 4   # node 1
-  coord  1 2  c6node 3   c6node 7   # node 2
-  coord  0 3  c6node 4   c6node 11  # node 3
-  coord  0 4  c6node 5   c6leaf 1   # node 4
-  coord  0 5  c6node 6   c6leaf 1   # node 5
-  coord  1 4  c6leaf 0   c6leaf 1   # node 6
-  coord  0 3  c6node 8   c6leaf 5   # node 7
-  coord  1 3  c6node 9   c6leaf 0   # node 8
-  coord  0 4  c6node 10  c6node 14  # node 9
-  coord  0 5  c6leaf 0   c6leaf 2   # node 10
-  coord  1 3  c6node 12  c6leaf 6   # node 11
-  coord  1 4  c6node 13  c6leaf 7   # node 12
-  coord  1 5  c6leaf 9   c6leaf 8   # node 13
-  coord  1 4  c6node 15  c6leaf 2   # node 14
-  coord  1 5  c6leaf 11  c6leaf 10  # node 15
-
-: nodes-column-seven
-#        X Y  no wall   wall
-  coord  0 1  c7node 1  c7leaf 2   # node 0
-  coord  1 1  c7node 2  c7leaf 0   # node 1
-  coord  1 2  c7node 3  c7leaf 1   # node 2
-  coord  1 3  c7node 4  c7leaf 3   # node 3
-  coord  1 4  c7node 5  c7leaf 4   # node 4
-  coord  1 5  c7leaf 6  c7leaf 5   # node 5
-
-: nodes-column-eight
-#        X Y  no wall   wall
-  coord  1 0  c8node 3  c8node 1   # node 0
-  coord  0 1  c8node 2  c8leaf 3   # node 1
-  coord  1 1  c8node 9  c8leaf 0   # node 2
-  coord  0 1  c8leaf 1  c8node 4   # node 3
-  coord  1 1  c8node 5  c8leaf 4   # node 4
-  coord  1 2  c8node 6  c8leaf 5   # node 5
-  coord  1 3  c8node 7  c8leaf 6   # node 6
-  coord  1 4  c8node 8  c8leaf 7   # node 7
-  coord  1 5  c8leaf 9  c8leaf 8   # node 8
-  coord  0 2  c8leaf 2  c8node 10  # node 9
-  coord  1 2  c8node 11 c8leaf 2   # node 10
-  coord  1 3  c8node 12 c8leaf 10  # node 11
-  coord  1 4  c8node 13 c8leaf 11  # node 12
-  coord  1 5  c8leaf 13 c8leaf 12  # node 13
 
 # Leafs represent images to be rendered. A path of nodes should always lead to
 # a leaf. The leafs themselves are pointers to the right images.
@@ -1010,51 +945,12 @@
   pointer wall-2+24+1     # leaf 4
   pointer wall-3+24+1     # leaf 5
   pointer wall-4+24+1     # leaf 6
-  pointer wall-4-4+24+1   # leaf 7
-  pointer wall-4-5+24+1   # leaf 8
-  pointer wall-4-6+24+1   # leaf 9
-  pointer wall-5+24+1     # leaf 10
-  pointer wall-5-4+24+1   # leaf 11
-  pointer wall-5-5+24+1   # leaf 12
-  pointer wall-5-6+24+1   # leaf 13
-
-  # Column 5
-  pointer hall-0+32+1     # leaf 0
-  pointer hall-5+32+1     # leaf 1
-  pointer hall-4+32+1     # leaf 2
-  pointer wall-1+32+1     # leaf 3
-  pointer wall-2+32+1     # leaf 4
-  pointer wall-3+32+1     # leaf 5
-  pointer wall-4+32+1     # leaf 6
-  pointer wall-4-5+32+1   # leaf 7
-  pointer wall-4-6+32+1   # leaf 8
-  pointer wall-5+32+1     # leaf 9
-  pointer wall-5-4+32+1   # leaf 10
-  pointer wall-5-5+32+1   # leaf 11
-  pointer wall-5-6+32+1   # leaf 12
-
-  # Column 6
-  pointer hall-0+40+1     # leaf 0
-  pointer hall-3+40+1     # leaf 1
-  pointer hall-4+40+1     # leaf 2
-  pointer wall-1+40+1     # leaf 3
-  pointer wall-2+40+1     # leaf 4
-  pointer wall-3+40+1     # leaf 5
-  pointer wall-3-3+40+1   # leaf 6
-  pointer wall-3-4+40+1   # leaf 7
-  pointer wall-3-5+40+1   # leaf 8
-  pointer wall-3-6+40+1   # leaf 9
-  pointer wall-4-5+40+1   # leaf 10
-  pointer wall-4-6+40+1   # leaf 11
-
-  # Column 7
-  pointer hall-0+48+1     # leaf 0
-  pointer hall-2+48+1     # leaf 1
-  pointer wall-1+48+1     # leaf 2
-  pointer wall-2-3+48+1   # leaf 3
-  pointer wall-2-4+48+1   # leaf 4
-  pointer wall-2-5+48+1   # leaf 5
-  pointer wall-2-6+48+1   # leaf 6
+  pointer wall-4-5+24+1   # leaf 7
+  pointer wall-4-6+24+1   # leaf 8
+  pointer wall-5+24+1     # leaf 9
+  pointer wall-5-4+24+1   # leaf 10
+  pointer wall-5-5+24+1   # leaf 11
+  pointer wall-5-6+24+1   # leaf 12
 
   # Column 8
   pointer hall-0+56+1     # leaf 0
@@ -1071,4 +967,42 @@
   pointer wall-2-4+56+1   # leaf 11
   pointer wall-2-5+56+1   # leaf 12
   pointer wall-2-6+56+1   # leaf 13
+
+  # Column 7
+  pointer hall-0+48+1     # leaf 0
+  pointer hall-2+48+1     # leaf 1
+  pointer wall-1+48+1     # leaf 2
+  pointer wall-2-3+48+1   # leaf 3
+  pointer wall-2-4+48+1   # leaf 4
+  pointer wall-2-5+48+1   # leaf 5
+  pointer wall-2-6+48+1   # leaf 6
+
+  # Column 6
+  pointer hall-0+40+1     # leaf 0
+  pointer hall-3+40+1     # leaf 1
+  pointer hall-4+40+1     # leaf 2
+  pointer wall-1+40+1     # leaf 3
+  pointer wall-2+40+1     # leaf 4
+  pointer wall-3+40+1     # leaf 5
+  pointer wall-3-3+40+1   # leaf 6
+  pointer wall-3-4+40+1   # leaf 7
+  pointer wall-3-5+40+1   # leaf 8
+  pointer wall-3-6+40+1   # leaf 9
+  pointer wall-4-5+40+1   # leaf 10
+  pointer wall-4-6+40+1   # leaf 11
+
+  # Column 5
+  pointer hall-0+32+1     # leaf 0
+  pointer hall-5+32+1     # leaf 1
+  pointer hall-4+32+1     # leaf 2
+  pointer wall-1+32+1     # leaf 3
+  pointer wall-2+32+1     # leaf 4
+  pointer wall-3+32+1     # leaf 5
+  pointer wall-4+32+1     # leaf 6
+  pointer wall-4-5+32+1   # leaf 7
+  pointer wall-4-6+32+1   # leaf 8
+  pointer wall-5+32+1     # leaf 9
+  pointer wall-5-4+32+1   # leaf 10
+  pointer wall-5-5+32+1   # leaf 11
+  pointer wall-5-6+32+1   # leaf 12
 # That's all folks!
