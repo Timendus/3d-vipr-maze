@@ -46,29 +46,29 @@
 
 : nodes-column-one # and eight
 #        X Y  no wall   wall
-  coord -1 0  c1node 3  c1node 1   # node 0
-  coord  0 1  c1node 2  c1leaf 3   # node 1
-  coord -1 1  c1node 9  c1leaf 0   # node 2
-  coord  0 1  c1leaf 1  c1node 4   # node 3
-  coord -1 1  c1node 5  c1leaf 4   # node 4
-  coord -1 2  c1node 6  c1leaf 5   # node 5
-  coord -1 3  c1node 7  c1leaf 6   # node 6
-  coord -1 4  c1node 8  c1leaf 7   # node 7
-  coord -1 5  c1leaf 9  c1leaf 8   # node 8
-  coord  0 2  c1leaf 2  c1node 10  # node 9
-  coord -1 2  c1node 11 c1leaf 2   # node 10
-  coord -1 3  c1node 12 c1leaf 10  # node 11
-  coord -1 4  c1node 13 c1leaf 11  # node 12
-  coord -1 5  c1leaf 13 c1leaf 12  # node 13
+  coord -1 0  c1node 3   c1node 1   # node 0
+  coord  0 1  c1node 2   c1leaf 3   # node 1
+  coord -1 1  c1node 9   c1leaf 0   # node 2
+  coord  0 1  c1leaf 1   c1node 4   # node 3
+  coord -1 1  c1node 5   c1leaf 4   # node 4
+  coord -1 2  c1node 6   c1leaf 5   # node 5
+  coord -1 3  c1node 7   c1leaf 6   # node 6
+  coord -1 4  c1node 8   c1leaf 7   # node 7
+  coord -1 5  c1leaf 9   c1leaf 8   # node 8
+  coord  0 2  c1leaf 2   c1node 10  # node 9
+  coord -1 2  c1node 11  c1leaf 2   # node 10
+  coord -1 3  c1node 12  c1leaf 10  # node 11
+  coord -1 4  c1node 13  c1leaf 11  # node 12
+  coord -1 5  c1leaf 13  c1leaf 12  # node 13
 
 : nodes-column-two # and seven
 #        X Y  no wall   wall
-  coord  0 1  c2node 1  c2leaf 2   # node 0
-  coord -1 1  c2node 2  c2leaf 0   # node 1
-  coord -1 2  c2node 3  c2leaf 1   # node 2
-  coord -1 3  c2node 4  c2leaf 3   # node 3
-  coord -1 4  c2node 5  c2leaf 4   # node 4
-  coord -1 5  c2leaf 6  c2leaf 5   # node 5
+  coord  0 1  c2node 1   c2leaf 2   # node 0
+  coord -1 1  c2node 2   c2leaf 0   # node 1
+  coord -1 2  c2node 3   c2leaf 1   # node 2
+  coord -1 3  c2node 4   c2leaf 3   # node 3
+  coord -1 4  c2node 5   c2leaf 4   # node 4
+  coord -1 5  c2leaf 6   c2leaf 5   # node 5
 
 : nodes-column-three # and six
 #        X Y  no wall    wall
