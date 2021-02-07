@@ -13,22 +13,22 @@ let lines = fs.readFileSync(input)
               .toString()
               .split('\n');
 
-let outputting = true;
+let outputting = [ true ];
 lines = lines.filter(line => {
   let matches;
   if ( matches = line.match(/^\s*#if (.*)\s*$/) ) {
-    outputting = options.includes(matches[1]);
+    outputting.push(options.includes(matches[1]));
     return false;
   }
   if ( line.match(/^\s*#else\s*$/) ) {
-    outputting = !outputting;
+    outputting[outputting.length - 1] = !outputting[outputting.length - 1];
     return false;
   }
   if ( line.match(/^\s*#end\s*$/) ) {
-    outputting = true;
+    outputting.pop();
     return false;
   }
-  return outputting;
+  return outputting.every(o => o);
 });
 
 fs.writeFileSync(output, lines.join('\n'));
