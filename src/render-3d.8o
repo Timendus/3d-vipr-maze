@@ -1,105 +1,137 @@
 #####################
 # Render the map to the screen in pseudo-3D
 # (for the actual gameplay)
-: render-3d
-  column-four
-  column-five
-  column-three
-  column-six
-  column-two
-  column-seven
-  column-one
-  # Fall through
 
 :const leafoffset 92    # 2 bytes * 46 entries
 :const xcoordoffset 2   # Make -1 coord +1 coords
 
-: column-eight
+: render-3d
+  vA := 0
+  vB := 0
+
   i := nodes-column-one
+  find-sprite
+  #if VIP
+    decompress
+  #end
+  v3 := 0
+  render-column
+
+  #if VIP
+    vA := 0
+    vB := 0
+  #end
+
+  i := nodes-column-two
+  find-sprite
+  #if VIP
+    decompress
+  #end
+  v3 := 8
+  render-column
+
+  #if VIP
+    vA := 0
+    vB := 0
+  #end
+
+  i := nodes-column-three
+  find-sprite
+  #if VIP
+    decompress
+  #end
+  v3 := 16
+  render-column
+
+  #if VIP
+    vA := 0
+    vB := 0
+  #end
+
+  i := nodes-column-four
+  find-sprite
+  #if VIP
+    decompress
+  #end
+  v3 := 24
+  render-column
+
   vA := leafoffset
   vB := xcoordoffset
-  find-sprite
-  decompress
-  v0 := 56
-  jump render-column
 
-: column-one
+  i := nodes-column-four
+  find-sprite
+  #if VIP
+    decompress
+  #end
+  v3 := 32
+  render-column
+
+  #if VIP
+    vA := leafoffset
+    vB := xcoordoffset
+  #end
+
+  i := nodes-column-three
+  find-sprite
+  #if VIP
+    decompress
+  #end
+  v3 := 40
+  render-column
+
+  #if VIP
+    vA := leafoffset
+    vB := xcoordoffset
+  #end
+
+  i := nodes-column-two
+  find-sprite
+  #if VIP
+    decompress
+  #end
+  v3 := 48
+  render-column
+
+  #if VIP
+    vA := leafoffset
+    vB := xcoordoffset
+  #end
+
   i := nodes-column-one
-  vA := 0
-  vB := 0
   find-sprite
-  decompress
-  v0 := 0
-  jump render-column
-
-: column-two
-  i := nodes-column-two
-  vA := 0
-  vB := 0
-  find-sprite
-  decompress
-  v0 := 8
-  jump render-column
-
-: column-three
-  i := nodes-column-three
-  vA := 0
-  vB := 0
-  find-sprite
-  decompress
-  v0 := 16
-  jump render-column
-
-: column-four
-  i := nodes-column-four
-  vA := 0
-  vB := 0
-  find-sprite
-  decompress
-  v0 := 24
-  jump render-column
-
-: column-five
-  i := nodes-column-four
-  vA := leafoffset
-  vB := xcoordoffset
-  find-sprite
-  decompress
-  v0 := 32
-  jump render-column
-
-: column-six
-  i := nodes-column-three
-  vA := leafoffset
-  vB := xcoordoffset
-  find-sprite
-  decompress
-  v0 := 40
-  jump render-column
-
-: column-seven
-  i := nodes-column-two
-  vA := leafoffset
-  vB := xcoordoffset
-  find-sprite
-  decompress
-  v0 := 48
+  #if VIP
+    decompress
+  #end
+  v3 := 56
   # Fall through
 
 : render-column
-  i := decompression-buffer
+  #if SCHIP
+    i := render-column-smc
+    v2 := 0xA0
+    v0 |= v2
+    save v1
+  : render-column-smc
+    0 0
+  #else
+    i := decompression-buffer
+  #end
   v2 := 15
   v1 := 1
-  sprite v0 v1 15
+  sprite v3 v1 15
   i += v2
   v1 := 16
-  sprite v0 v1 15
+  sprite v3 v1 15
   return
 
 #####################
 # This routine walks through the binary tree with nodes and leafs
-# Input: i pointing to a node
-# Output: i pointing to the image to be rendered
+# Input:
+#  * i pointing to a node
+#  * vA as an offset to the leaf (0 or leafoffset)
+#  * vB as an offset for the X axis (0 or xcoordoffset)
+# Output: address of image to be rendered unpacked in v0 and v1
 # Destroys: 0v-v6, vF, i
 
 : find-sprite
