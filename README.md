@@ -497,8 +497,8 @@ away for a couple of months. Having found some new energy, I redrew the images,
 cleaned up the pointers and voila! I had 410 bytes **left to spare**! And I
 hadn't even optimized the decision tree yet. That's just crazy.
 
-So here it finally was! 3D VIP'r Maze (or what's left of it 😉) running in the
-Emma O2 emulator:
+So here it finally was! 3D VIP'r Maze (or what's left of it 😉) running "on the
+Cosmac VIP" in the Emma O2 emulator:
 
 ![3D VIP'r Maze running on Emma O2](emma.png)
 
