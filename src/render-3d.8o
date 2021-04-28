@@ -11,7 +11,7 @@
 
   i := nodes-column-one
   find-sprite
-  #if VIP
+  #if COMPRESSION
     decompress
   #end
   v3 := 0
@@ -24,7 +24,7 @@
 
   i := nodes-column-two
   find-sprite
-  #if VIP
+  #if COMPRESSION
     decompress
   #end
   v3 := 8
@@ -37,7 +37,7 @@
 
   i := nodes-column-three
   find-sprite
-  #if VIP
+  #if COMPRESSION
     decompress
   #end
   v3 := 16
@@ -50,7 +50,7 @@
 
   i := nodes-column-four
   find-sprite
-  #if VIP
+  #if COMPRESSION
     decompress
   #end
   v3 := 24
@@ -61,7 +61,7 @@
 
   i := nodes-column-four
   find-sprite
-  #if VIP
+  #if COMPRESSION
     decompress
   #end
   v3 := 32
@@ -74,7 +74,7 @@
 
   i := nodes-column-three
   find-sprite
-  #if VIP
+  #if COMPRESSION
     decompress
   #end
   v3 := 40
@@ -87,7 +87,7 @@
 
   i := nodes-column-two
   find-sprite
-  #if VIP
+  #if COMPRESSION
     decompress
   #end
   v3 := 48
@@ -100,22 +100,22 @@
 
   i := nodes-column-one
   find-sprite
-  #if VIP
+  #if COMPRESSION
     decompress
   #end
   v3 := 56
   # Fall through
 
 : render-column
-  #if SCHIP
+  #if COMPRESSION
+    i := decompression-buffer
+  #else
     i := render-column-smc
     v2 := 0xA0
     v0 |= v2
     save v1
   : render-column-smc
     0 0
-  #else
-    i := decompression-buffer
   #end
   v2 := 15
   v1 := 1
