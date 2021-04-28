@@ -425,12 +425,12 @@ I now had to figure out which images were in the final program that were never
 referenced by the decision tree. I wrote a quick script to figure that out, and
 was able to knock six or seven images off. This reduced the size of the screen data to "only" 2760 bytes. Yay! 🎉
 
-Finally, we're at the point where I can build a binary that is less than the
+Finally, we're at the point where I could build a binary that is less than the
 magical 3.5K. 62 bytes less, to be precise. This makes it small enough to run on
 most modern Chip-8 interpreters, including SCHIP interpreters. To be able to run
 on SCHIP I had to make a few minor adjustments to the decompression algorithm
 though. Changes that would break the program in the "normal" interpreters. So I
-once again wrote a small script, this time to do some pre-processing, so I can
+once again wrote a small script, this time to do some preprocessing, so I can
 write things like this in my code:
 
 ```
@@ -461,7 +461,58 @@ program that is small enough to fit and actually works too! 😉
 
 ### Back to the '70s
 
-We need to knock off another 306 bytes to be able to run this on the original
-Cosmac VIP interpreter. Will we be able to do it..?
+So we had a Chip-8 version, under the magic 3.5K limit, running on most modern
+interpeters. Job finished? Well, to be able to run this on the original Cosmac
+VIP interpreter I needed to knock off another 306 bytes. The original interpreter
+stores its internal data structures like the registers and the screen buffer in
+the upper bytes of 12-bit addressable memory. So I wasn't _really_ done yet.
 
-### Stay tuned 😉
+After making the left side of the decision tree match the right side, I realised
+that I was basically storing the same data twice, but with a few different
+offsets. So I rewrote some code to be able to handle the offsets at run time and
+I could halve the node-part of the decision tree. This saved me 171 bytes, 135
+left to go! I was feeling pretty optimistic that I could get there!
+
+But after that, I got kind of stuck. Looking through the code and the data again
+and again I could not find any more things to optimize. The only significant
+improvement that I could think of would be to redraw many of the screens to make
+more wall boundaries fall on 8-pixel boundaries:
+
+![Wall boundaries that don't fall on 8-pixel boundaries](not-on-boundary.png)
+
+_Wall boundaries that don't fall on 8-pixel boundaries_
+
+![Wall boundaries that do fall on 8-pixel boundaries](on-boundary.png)
+
+_Wall boundaries that do fall on 8-pixel boundaries_
+
+The reason that this would save a lot of data is that if wall boundaries fall on
+8-pixel boundaries, we only have to store the separate parts. If they don't, we
+have to store each possible permutation of those parts. This makes quite a
+difference.
+
+But I just didn't feel like redoing my images and the decision tree yet again,
+and I found no other ways to push through this impasse, so I put this project
+away for a couple of months. Having found some new energy, I redrew the images,
+cleaned up the pointers and voila! I had 410 bytes **left to spare**! And I
+hadn't even optimized the decision tree yet. That's just crazy.
+
+So here it finally was! 3D VIP'r Maze (or what's left of it 😉) running in the
+Emma O2 emulator:
+
+![3D VIP'r Maze running on Emma O2](emma.png)
+
+The images were now compressed from 2280 bytes down to 1648 bytes. After
+subtracting the size of the decompression algorithm, the compression only saved
+me 336 bytes, which was actually less than the memory that I had left. So that's
+kind of a depressing return on investment for all the time and effort that that
+cost me 😄 So I built a version that just removed the compression (using the
+preprocessing "macros" described above) to gain back some speed and run a bit
+more smoothly on the VIP.
+
+### So where to go from here?
+
+In the compressed version, I now actually have some space left. I could use those
+bytes I have left to try to make this back into an actual game! Let's see when I find the time to get back to that 👍🏻
+
+### Thanks for reading this far! 😉
