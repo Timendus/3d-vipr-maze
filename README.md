@@ -9,6 +9,9 @@ set, speed requirements and overall program size to make it run on "standard"
 Chip-8 interpreters. And preferably the original hardware from the time period
 too.
 
+* [Play the game in your browser](https://timendus.github.io/3d-vipr-maze/)
+* [Download binaries](https://github.com/Timendus/3d-vipr-maze/tree/main/bin)
+
 ## Development notes
 
 ### Beginning is easy
