@@ -38,17 +38,15 @@ cat data/binary-tree.8o >> 3dvipermaze.8o
 
 echo "# That's all folks!" >> 3dvipermaze.8o
 
-./scripts/macros.js 3dvipermaze.8o bin/3dviprmaze-vip.8o VIP
-./scripts/macros.js 3dvipermaze.8o bin/3dviprmaze-vip-compression.8o VIP COMPRESSION RANDOM-MAPS
-./scripts/macros.js 3dvipermaze.8o bin/3dviprmaze-schip.8o SCHIP
+./scripts/macros.js 3dvipermaze.8o bin/3dviprmaze-vip.8o VIP COMPRESSION RANDOM-MAPS
+./scripts/macros.js 3dvipermaze.8o bin/3dviprmaze-schip.8o SCHIP RANDOM-MAPS
 rm 3dvipermaze.8o
 
 # Put on the clipboard for convenient pasting into Octo
-cat bin/3dviprmaze-vip-compression.8o | pbcopy
+cat bin/3dviprmaze-vip.8o | pbcopy
 
 # Build binaries using command line octo
 # Requires octo repository to have been cloned in the parent directory
 ../Octo/octo bin/3dviprmaze-vip.8o bin/3dviprmaze-vip.ch8
-../Octo/octo bin/3dviprmaze-vip-compression.8o bin/3dviprmaze-vip-compression.ch8
 ../Octo/octo bin/3dviprmaze-schip.8o bin/3dviprmaze-schip.ch8
 ../Octo/octo --options octo-html.json bin/3dviprmaze-vip.8o docs/index.html
