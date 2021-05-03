@@ -5,3 +5,5 @@
   0x4 0x2 # X, Y
 : player-orientation
   0x1 # orientation
+: level
+  0

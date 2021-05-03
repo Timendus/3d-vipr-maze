@@ -82,6 +82,7 @@
   # Is there a wall at this position?
   map-get
   if v0 == 1 then jump wait-key-release
+  if v0 == 7 then vD := 1
   # Otherwise, update position
   v0 := v4
   v1 := v5

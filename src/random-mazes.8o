@@ -1,0 +1,204 @@
+:alias X vA
+:alias Y vB
+:alias FRONTIER vC
+:alias RUN vD
+
+: randomize-map
+  # Clear the map (make it all walls)
+  i := map
+  v1 := 0
+  v0 := 1
+: rm-clear-loop
+  save v0
+	#if SCHIP
+  	i += v0
+	#end
+  v1 += 1
+  if v1 < 128 then jump rm-clear-loop
+
+  # Choose a random starting position
+	v0 := 7
+	rand
+	X := v0
+	X <<= X
+	X += 1
+
+	v0 := 3
+	rand
+	Y := v0
+	Y <<= Y
+	Y += 1
+
+  v0 := 4
+  rand
+  v2 := v0
+  v0 := X
+  v1 := Y
+  i := player
+  save v2
+
+  RUN := 0
+  FRONTIER := 0
+
+: rm-mark-spot
+  # Mark spot as new hallway
+  v0 := 0
+  rm-write
+
+  # Mark the new frontier
+  if Y > 2 begin # Valid coordinate?
+    Y -= 2
+    rm-read
+    if v0 == 1 begin # Empty spot?
+      v0 := 0x12
+      rm-write
+      FRONTIER += 1
+    end
+    Y += 2
+  end
+  if X > 2 begin
+    X -= 2
+    rm-read
+    if v0 == 1 begin
+      v0 := 0x13
+      rm-write
+      FRONTIER += 1
+    end
+    X += 2
+  end
+  if X < 13 begin
+    X += 2
+    rm-read
+    if v0 == 1 begin
+      v0 := 0x14
+      rm-write
+      FRONTIER += 1
+    end
+    X -= 2
+  end
+  if Y < 5 begin
+    Y += 2
+    rm-read
+    if v0 == 1 begin
+      v0 := 0x15
+      rm-write
+      FRONTIER += 1
+    end
+    Y -= 2
+  end
+
+  # Are we done yet?
+  if FRONTIER == 0 begin
+    v0 := 7 # Mark the exit
+    rm-write
+    return
+  end
+
+  # Show progress
+  RUN += 1
+  v0 := 0
+  i := hex v0
+  v0 := RUN
+  v0 <<= v0
+  v0 += RUN
+  v0 -= 1
+  v1 := 20
+  sprite v0 v1 5
+
+  # Pick a new frontier to expand
+  v0 := FRONTIER
+  rand
+  v4 := v0
+  X := 1
+  Y := 1
+  v2 := 0x10
+  loop
+    rm-read
+    v3 := v0
+    v0 &= v2
+    if v0 != 0 begin
+      if v4 == 0 begin
+        FRONTIER -= 1
+        v0 := 0
+        if v3 == 0x12 begin
+          Y += 1
+          rm-write
+          Y -= 1
+        end
+        if v3 == 0x13 begin
+          X += 1
+          rm-write
+          X -= 1
+        end
+        if v3 == 0x14 begin
+          X -= 1
+          rm-write
+          X += 1
+        end
+        if v3 == 0x15 begin
+          Y -= 1
+          rm-write
+          Y += 1
+        end
+        jump rm-mark-spot
+      end
+      v4 -= 1
+    end
+    X += 1
+    if X == 16 begin
+      X := 0
+      Y += 1
+      if Y == 7 then return # This would be an error state
+    end
+  again
+
+# Read map at X,Y into v0
+# Destroys i
+: rm-read
+  i := map
+  i += X
+  v0 := Y
+  v0 <<= v0
+  v0 <<= v0
+  v0 <<= v0
+  v0 <<= v0
+  i += v0
+  load v0
+  return
+
+# Write v0 into map at X,Y
+# Destroys v1, i
+: rm-write
+  i := map
+  i += X
+  v1 := Y
+  v1 <<= v1
+  v1 <<= v1
+  v1 <<= v1
+  v1 <<= v1
+  i += v1
+  save v0
+  return
+
+#####################
+# Get a random number
+# Input: v0 is upper bound (exclusive)
+# Output: v0 is random number
+# Destroys: v1, v2, v3
+: rand
+	# Create bitmask
+	v2 := 0
+	v3 := v0
+: rand-mask
+	v3 >>= v3
+	v2 <<= v2
+	v2 += 1
+	if v3 != 0 then jump rand-mask
+  loop
+  	v1 := random 255
+  	v1 &= v2
+  	if v1 < v0 begin
+      v0 := v1
+  	  return
+    end
+  again

@@ -5,12 +5,27 @@
 # https://github.com/Timendus/3d-viper-maze
 
 : main
+  #if RANDOM-MAPS
+    clear
+    i := level
+    load v0
+    v0 += 1
+    i := level
+    save v0
+    i := hex v0
+    v0 := 30
+    v1 := 10
+    sprite v0 v1 5
+    randomize-map
+  #end
+: redraw-loop
   clear
   render-3d
-  # Mark screen clean
-  vE := 0
+  vD := 0 # Mark exit not found
+  vE := 0 # Mark screen clean
 : main-loop
   check-keys
   # Is the screen dirty?
-  if vE == 1 then jump main
+  if vD == 1 then jump main
+  if vE == 1 then jump redraw-loop
   jump main-loop
