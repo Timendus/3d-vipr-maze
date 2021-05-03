@@ -6,48 +6,9 @@
 :const xcoordoffset 2   # Make -1 coord +1 coords
 
 : render-3d
+  # Column 4
   vA := 0
   vB := 0
-
-  i := nodes-column-one
-  find-sprite
-  #if COMPRESSION
-    decompress
-  #end
-  v3 := 0
-  render-column
-
-  #if VIP
-    vA := 0
-    vB := 0
-  #end
-
-  i := nodes-column-two
-  find-sprite
-  #if COMPRESSION
-    decompress
-  #end
-  v3 := 8
-  render-column
-
-  #if VIP
-    vA := 0
-    vB := 0
-  #end
-
-  i := nodes-column-three
-  find-sprite
-  #if COMPRESSION
-    decompress
-  #end
-  v3 := 16
-  render-column
-
-  #if VIP
-    vA := 0
-    vB := 0
-  #end
-
   i := nodes-column-four
   find-sprite
   #if COMPRESSION
@@ -56,9 +17,9 @@
   v3 := 24
   render-column
 
+  # Column 5
   vA := leafoffset
   vB := xcoordoffset
-
   i := nodes-column-four
   find-sprite
   #if COMPRESSION
@@ -67,11 +28,20 @@
   v3 := 32
   render-column
 
-  #if VIP
-    vA := leafoffset
-    vB := xcoordoffset
+  # Column 3
+  vA := 0
+  vB := 0
+  i := nodes-column-three
+  find-sprite
+  #if COMPRESSION
+    decompress
   #end
+  v3 := 16
+  render-column
 
+  # Column 6
+  vA := leafoffset
+  vB := xcoordoffset
   i := nodes-column-three
   find-sprite
   #if COMPRESSION
@@ -80,11 +50,20 @@
   v3 := 40
   render-column
 
-  #if VIP
-    vA := leafoffset
-    vB := xcoordoffset
+  # Column 2
+  vA := 0
+  vB := 0
+  i := nodes-column-two
+  find-sprite
+  #if COMPRESSION
+    decompress
   #end
+  v3 := 8
+  render-column
 
+  # Column 7
+  vA := leafoffset
+  vB := xcoordoffset
   i := nodes-column-two
   find-sprite
   #if COMPRESSION
@@ -93,11 +72,20 @@
   v3 := 48
   render-column
 
-  #if VIP
-    vA := leafoffset
-    vB := xcoordoffset
+  # Column 1
+  vA := 0
+  vB := 0
+  i := nodes-column-one
+  find-sprite
+  #if COMPRESSION
+    decompress
   #end
+  v3 := 0
+  render-column
 
+  # Column 8
+  vA := leafoffset
+  vB := xcoordoffset
   i := nodes-column-one
   find-sprite
   #if COMPRESSION
