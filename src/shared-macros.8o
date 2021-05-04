@@ -9,3 +9,6 @@
   v0 := hi
   v1 := lo
 }
+
+:alias X vA
+:alias Y vB

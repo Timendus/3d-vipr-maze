@@ -44,3 +44,33 @@
   i += v1
   load v0
   return
+
+#####################
+# Read map at X,Y into v0
+# Destroys i
+: map-read
+  i := map
+  i += X
+  v0 := Y
+  v0 <<= v0
+  v0 <<= v0
+  v0 <<= v0
+  v0 <<= v0
+  i += v0
+  load v0
+  return
+
+#####################
+# Write v0 into map at X,Y
+# Destroys v1, i
+: map-write
+  i := map
+  i += X
+  v1 := Y
+  v1 <<= v1
+  v1 <<= v1
+  v1 <<= v1
+  v1 <<= v1
+  i += v1
+  save v0
+  return
