@@ -10,6 +10,9 @@
   v1 := lo
 }
 
+:alias X vA
+:alias Y vB
+
 :org 0x200
 
 #####################
@@ -19,14 +22,27 @@
 # https://github.com/Timendus/3d-viper-maze
 
 : main
+    clear
+    i := level
+    load v0
+    v0 += 1
+    i := level
+    save v0
+    i := hex v0
+    v0 := 30
+    v1 := 10
+    sprite v0 v1 5
+    randomize-map
+: redraw-loop
   clear
   render-3d
-  # Mark screen clean
-  vE := 0
+  vD := 0 # Mark exit not found
+  vE := 0 # Mark screen clean
 : main-loop
   check-keys
   # Is the screen dirty?
-  if vE == 1 then jump main
+  if vD == 1 then jump main
+  if vE == 1 then jump redraw-loop
   jump main-loop
 #####################
 # Look at place (v3 - 1, v4) relative to the player
@@ -74,6 +90,36 @@
   i += v1
   load v0
   return
+
+#####################
+# Read map at X,Y into v0
+# Destroys i
+: map-read
+  i := map
+  i += X
+  v0 := Y
+  v0 <<= v0
+  v0 <<= v0
+  v0 <<= v0
+  v0 <<= v0
+  i += v0
+  load v0
+  return
+
+#####################
+# Write v0 into map at X,Y
+# Destroys v1, i
+: map-write
+  i := map
+  i += X
+  v1 := Y
+  v1 <<= v1
+  v1 <<= v1
+  v1 <<= v1
+  v1 <<= v1
+  i += v1
+  save v0
+  return
 #####################
 # Render the map to the screen in pseudo-3D
 # (for the actual gameplay)
@@ -82,53 +128,65 @@
 :const xcoordoffset 2   # Make -1 coord +1 coords
 
 : render-3d
+  # Column 4
   vA := 0
   vB := 0
-
-  i := nodes-column-one
-  find-sprite
-  v3 := 0
-  render-column
-
-
-  i := nodes-column-two
-  find-sprite
-  v3 := 8
-  render-column
-
-
-  i := nodes-column-three
-  find-sprite
-  v3 := 16
-  render-column
-
-
   i := nodes-column-four
   find-sprite
   v3 := 24
   render-column
 
+  # Column 5
   vA := leafoffset
   vB := xcoordoffset
-
   i := nodes-column-four
   find-sprite
   v3 := 32
   render-column
 
+  # Column 3
+  vA := 0
+  vB := 0
+  i := nodes-column-three
+  find-sprite
+  v3 := 16
+  render-column
 
+  # Column 6
+  vA := leafoffset
+  vB := xcoordoffset
   i := nodes-column-three
   find-sprite
   v3 := 40
   render-column
 
+  # Column 2
+  vA := 0
+  vB := 0
+  i := nodes-column-two
+  find-sprite
+  v3 := 8
+  render-column
 
+  # Column 7
+  vA := leafoffset
+  vB := xcoordoffset
   i := nodes-column-two
   find-sprite
   v3 := 48
   render-column
 
+  # Column 1
+  vA := 0
+  vB := 0
+  i := nodes-column-one
+  find-sprite
+  v3 := 0
+  render-column
 
+  # Column 8
+  vA := leafoffset
+  vB := xcoordoffset
   i := nodes-column-one
   find-sprite
   v3 := 56
@@ -280,6 +338,7 @@
   # Is there a wall at this position?
   map-get
   if v0 == 1 then jump wait-key-release
+  if v0 == 7 then vD := 1
   # Otherwise, update position
   v0 := v4
   v1 := v5
@@ -296,6 +355,177 @@
   vA += 1
   if vA != 16 then jump wait-key-release-loop
   return
+:alias FRONTIER vC
+:alias RUN vD
+
+: randomize-map
+  # Clear the map (make it all walls)
+  i := map
+  v1 := 0
+  v0 := 1
+: rm-clear-loop
+  save v0
+  	i += v0
+  v1 += 1
+  if v1 < 128 then jump rm-clear-loop
+
+  # Choose a random starting position
+	v0 := 7
+	rand
+	X := v0
+	X <<= X
+	X += 1
+
+	v0 := 3
+	rand
+	Y := v0
+	Y <<= Y
+	Y += 1
+
+  v0 := 4
+  rand
+  v2 := v0
+  v0 := X
+  v1 := Y
+  i := player
+  save v2
+
+  RUN := 0
+  FRONTIER := 0
+
+: rm-mark-spot
+  # Mark spot as new hallway
+  v0 := 0
+  map-write
+
+  # Mark the new frontier
+  if Y > 2 begin # Valid coordinate?
+    Y -= 2
+    map-read
+    if v0 == 1 begin # Empty spot?
+      v0 := 0x12
+      map-write
+      FRONTIER += 1
+    end
+    Y += 2
+  end
+  if X > 2 begin
+    X -= 2
+    map-read
+    if v0 == 1 begin
+      v0 := 0x13
+      map-write
+      FRONTIER += 1
+    end
+    X += 2
+  end
+  if X < 13 begin
+    X += 2
+    map-read
+    if v0 == 1 begin
+      v0 := 0x14
+      map-write
+      FRONTIER += 1
+    end
+    X -= 2
+  end
+  if Y < 6 begin
+    Y += 2
+    map-read
+    if v0 == 1 begin
+      v0 := 0x15
+      map-write
+      FRONTIER += 1
+    end
+    Y -= 2
+  end
+
+  # Are we done yet?
+  if FRONTIER == 0 begin
+    v0 := 7 # Mark the exit
+    map-write
+    return
+  end
+
+  # Show progress
+  RUN += 1
+  v0 := 0
+  i := hex v0
+  v0 := RUN
+  v0 <<= v0
+  v0 += 2
+  v1 := 20
+  sprite v0 v1 5
+
+  # Pick a new frontier to expand
+  v0 := FRONTIER
+  rand
+  v4 := v0
+  X := 1
+  Y := 1
+  v2 := 0x10
+  loop
+    map-read
+    v3 := v0
+    v0 &= v2
+    if v0 != 0 begin
+      if v4 == 0 begin
+        FRONTIER -= 1
+        v0 := 0
+        if v3 == 0x12 begin
+          Y += 1
+          map-write
+          Y -= 1
+        end
+        if v3 == 0x13 begin
+          X += 1
+          map-write
+          X -= 1
+        end
+        if v3 == 0x14 begin
+          X -= 1
+          map-write
+          X += 1
+        end
+        if v3 == 0x15 begin
+          Y -= 1
+          map-write
+          Y += 1
+        end
+        jump rm-mark-spot
+      end
+      v4 -= 1
+    end
+    X += 1
+    if X == 16 begin
+      X := 0
+      Y += 1
+      # if Y == 7 then return # This would be an error state
+    end
+  again
+
+#####################
+# Get a random number
+# Input: v0 is upper bound (exclusive)
+# Output: v0 is random number
+# Destroys: v1, v2, v3
+: rand
+	# Create bitmask
+	v2 := 0
+	v3 := v0
+: rand-mask
+	v3 >>= v3
+	v2 <<= v2
+	v2 += 1
+	if v3 != 0 then jump rand-mask
+  loop
+  	v1 := random 255
+  	v1 &= v2
+  	if v1 < v0 begin
+      v0 := v1
+  	  return
+    end
+  again
 
 : hall-0+0+1
     0xf 0xc3 0xe0 0xf4 0x26 0x7 0x83 0xe0 0xf2 0xf3 0x7b 0x3 0xc0 0xe6 0xf7 0xe7 0xe6 0xc0 0x3 0x7b 0xf3 0xf0 0xe0 0xc3 0x7 0x76 0xe0 0xe0 0xc3 0xf 
@@ -569,27 +799,30 @@
     0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xfc 0xfd 0xc 0x41 0xa0 0xc 0xfd 0xfc 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 0xff 
   
 #####################
-# Level definitions
-# We can only have one for obvious space constraints :(
+# Level definition stored here
 # 0 = nothing
 # 1 = wall
+# 7 = exit
 
 : map
   0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01
-  0x01 0x01 0x00 0x00 0x00 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x00 0x00 0x00 0x01
-  0x01 0x00 0x00 0x01 0x00 0x00 0x00 0x00 0x00 0x00 0x01 0x00 0x00 0x01 0x00 0x01
-  0x01 0x00 0x01 0x01 0x01 0x01 0x00 0x01 0x01 0x00 0x01 0x00 0x01 0x00 0x00 0x01
-  0x01 0x00 0x01 0x01 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x01 0x00 0x01 0x01
-  0x01 0x00 0x00 0x00 0x00 0x01 0x01 0x00 0x01 0x01 0x01 0x00 0x00 0x00 0x00 0x01
-  0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x00 0x01 0x01 0x01 0x01 0x00 0x01 0x01 0x01
+  0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01
+  0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01
+  0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01
+  0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01
+  0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01
+  0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01
+  0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01
   0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01 0x01
 #####################
 # Game state
 
 : player
-  0x4 0x2 # X, Y
+  0 0 # X, Y
 : player-orientation
-  0x1 # orientation
+  0 # orientation
+: level
+  0
 #####################
 # Nodes and leafs - the binary tree that does the decision making
 # This needs to be below the 3D image data in order to be able to reference the
