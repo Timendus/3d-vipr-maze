@@ -527,16 +527,17 @@ The images were now compressed from 2280 bytes down to 1648 bytes. After
 subtracting the size of the decompression algorithm, the compression only saved
 me 336 bytes, which was actually less than the memory that I had left. So that's
 kind of a depressing return on investment for all the time and effort that that
-cost me 😄 So I built a version that just removed the compression (using the
-preprocessing "macros" described above) to gain back some speed and run a bit
-more smoothly on the VIP.
+cost me 😄 So for the SCHIP version, where space is a little more abundant, I
+built a version that just removed the compression (using the preprocessing
+"macros" described above) to gain back some speed and run a bit more smoothly on
+that platform.
 
 ### And back to a game!
 
-In the compressed version, I now actually had some space left. I could use those
-spare bytes to try to make this back into an actual game! It had to be a crappy
-one, seeing as I didn't have much to work with. But any gameplay is better than
-none 😝
+On both Chip-8 and SCHIP, I now actually had some space left to work with. I
+could use those spare bytes to try to make this back into an actual game! It had
+to be a crappy one, seeing as I didn't have much to work with. But any gameplay
+is better than none 😝
 
 So I wrote a simple random maze generator based on [Prim's
 algorithm](https://en.wikipedia.org/wiki/Maze_generation_algorithm#Randomized_Prim's_algorithm),
@@ -550,7 +551,6 @@ to be too large to fit. So instead I opted to increase the size of the generated
 mazes a bit to fill up some more of the remaining space and make the mazes more
 interesting that way.
 
-And with that, we have a working 2.5D game for the original Chip-8 version on
-the Cosmac VIP! With 21 bytes left to spare 🎉
+And with that, we have a working and playable 2.5D game! With 21 bytes left to spare on the Cosmac VIP and 29 bytes free on SCHIP 🎉
 
 ### Thanks for reading this far! 😉
