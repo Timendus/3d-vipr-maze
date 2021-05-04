@@ -548,12 +548,23 @@ progress bar to inform the user 🙈
 
 I wrote a [slightly more complicated version](experiments/random-mazes.8o) of
 the maze generator, that should give more interesting mazes, but that turned out
-to be too large to fit. So instead I opted to increase the size of the generated
-mazes a bit to fill up some more of the remaining space and make the mazes more
-interesting that way.
+to be too large to fit and didn't result in significantly different mazes. So
+instead I opted to increase the size of the generated mazes a bit to fill up
+some more of the remaining space and make the mazes more interesting that way.
 
 And with that, we have a working and playable 2.5D game! With 21 bytes left to spare on the Cosmac VIP and 29 bytes free on SCHIP 🎉
 
 ![3D VIP'r Maze with randomly generated mazes](random-maze.gif)
 
 ### Thanks for reading this far! 😉
+
+Pointers for future me if I ever need more space:
+
+ * I don't think I have fixed the decision tree after making the wall boundaries
+   fall on 8-pixel boundaries. So there's probably duplicate pointers and
+   useless nodes in there.
+ * It's probably possible to halve the pointers too. The offset from an image in
+   the left set to the same image in the right set should be a fixed offset.
+ * There is some slight code duplication in map-management.8o
+
+All in all this can maybe save another ~150 bytes or so.
