@@ -543,7 +543,8 @@ So I wrote a simple random maze generator based on [Prim's
 algorithm](https://en.wikipedia.org/wiki/Maze_generation_algorithm#Randomized_Prim's_algorithm),
 and you can now walk around endless random mazes, looking for the exit. The game
 keeps score of how many mazes you have solved, so you can see how far you have
-progressed!
+progressed! It really takes a while to generate a maze though, so I added a
+progress bar to inform the user 🙈
 
 I wrote a [slightly more complicated version](experiments/random-mazes.8o) of
 the maze generator, that should give more interesting mazes, but that turned out
@@ -552,5 +553,7 @@ mazes a bit to fill up some more of the remaining space and make the mazes more
 interesting that way.
 
 And with that, we have a working and playable 2.5D game! With 21 bytes left to spare on the Cosmac VIP and 29 bytes free on SCHIP 🎉
+
+![3D VIP'r Maze with randomly generated mazes](random-maze.gif)
 
 ### Thanks for reading this far! 😉
