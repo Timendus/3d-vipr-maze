@@ -12,6 +12,24 @@ too.
 * [Play the game in your browser](https://timendus.github.io/3d-vipr-maze/)
 * [Download binaries](https://github.com/Timendus/3d-vipr-maze/tree/main/bin)
 
+## The concept
+
+3D VIP'r Maze is (obviously) an homage to the Sinclair ZX81 game 3D Monster Maze
+from 1981. That game was released just three years after the specification for
+Chip-8 was published, so it's from around the same era. In honour of the first
+computer that ran Chip-8, the Cosmac VIP, and its related magazine, the VIPer, I
+figured it was time for a viper version of 3D Monster Maze, and I created [3D
+Viper Maze](https://github.com/Timendus/3d-viper-maze) for [Octojam
+7](https://itch.io/jam/octojam-7).
+
+The intention I had with 3D Viper Maze, although written using XO-Chip instructions to make it more fun as a game, was always to create a version of the game that
+can run on the original Cosmac VIP Chip-8 interpreter. This version became 3D
+VIP'r Maze, and that is what you're looking at.
+
+3D VIP'r Maze is a game with an endless supply of randomly generated mazes, just
+like its namesake. Your challenge, if you accept it: to find the exit in each
+maze! How far can you get?
+
 ## Development notes
 
 ### Beginning is easy
@@ -513,9 +531,26 @@ cost me 😄 So I built a version that just removed the compression (using the
 preprocessing "macros" described above) to gain back some speed and run a bit
 more smoothly on the VIP.
 
-### So where to go from here?
+### And back to a game!
 
-In the compressed version, I now actually have some space left. I could use those
-bytes I have left to try to make this back into an actual game! Let's see when I find the time to get back to that 👍🏻
+In the compressed version, I now actually had some space left. I could use those
+spare bytes to try to make this back into an actual game! It had to be a crappy
+one, seeing as I didn't have much to work with. But any gameplay is better than
+none 😝
+
+So I wrote a simple random maze generator based on [Prim's
+algorithm](https://en.wikipedia.org/wiki/Maze_generation_algorithm#Randomized_Prim's_algorithm),
+and you can now walk around endless random mazes, looking for the exit. The game
+keeps score of how many mazes you have solved, so you can see how far you have
+progressed!
+
+I wrote a [slightly more complicated version](experiments/random-mazes.8o) of
+the maze generator, that should give more interesting mazes, but that turned out
+to be too large to fit. So instead I opted to increase the size of the generated
+mazes a bit to fill up some more of the remaining space and make the mazes more
+interesting that way.
+
+And with that, we have a working 2.5D game for the original Chip-8 version on
+the Cosmac VIP! With 21 bytes left to spare 🎉
 
 ### Thanks for reading this far! 😉
