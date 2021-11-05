@@ -7,10 +7,16 @@ Maze](https://github.com/Timendus/3d-viper-maze), my [Octojam
 7](https://itch.io/jam/octojam-7) submission. Challenge: reduce the instruction
 set, speed requirements and overall program size to make it run on "standard"
 Chip-8 interpreters. And preferably the original hardware from the time period
-too.
+too. I submitted this game as a "Show and tell" entry to
+[Octojam 8](https://itch.io/jam/octojam-8).
 
+* [The game on Itch.io](https://timendus.itch.io/3d-vipr-maze)
 * [Play the game in your browser](https://timendus.github.io/3d-vipr-maze/)
 * [Download binaries](https://github.com/Timendus/3d-vipr-maze/tree/main/bin)
+
+3D VIP'r Maze has been featured on:
+
+* [Darzington's Jammy Wednesday](https://www.twitch.tv/videos/1195053174/?t=00h27m52s) (Twitch)
 
 ## The concept
 
