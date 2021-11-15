@@ -17,6 +17,7 @@ too. I submitted this game as a "Show and tell" entry to
 3D VIP'r Maze has been featured on:
 
 * [Darzington's Jammy Wednesday](https://www.twitch.tv/videos/1195053174/?t=00h27m52s) (Twitch)
+* [Octojam 8 Showcase](https://www.youtube.com/watch?v=52AdEMjciDY&t=3597s&ab_channel=AwfulJams) (YouTube)
 
 ## The concept
 
