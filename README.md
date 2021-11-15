@@ -7,8 +7,9 @@ Maze](https://github.com/Timendus/3d-viper-maze), my [Octojam
 7](https://itch.io/jam/octojam-7) submission. Challenge: reduce the instruction
 set, speed requirements and overall program size to make it run on "standard"
 Chip-8 interpreters. And preferably the original hardware from the time period
-too. I submitted this game as a "Show and tell" entry to
-[Octojam 8](https://itch.io/jam/octojam-8).
+too. I submitted this game as a "Show and tell" entry to [Octojam
+8](https://itch.io/jam/octojam-8), next to my "real" entry [Alien
+Inv8sion](https://github.com/Timendus/alien-inv8sion).
 
 * [The game on Itch.io](https://timendus.itch.io/3d-vipr-maze)
 * [Play the game in your browser](https://timendus.github.io/3d-vipr-maze/)
